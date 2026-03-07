@@ -52,33 +52,7 @@
   --ease-out:cubic-bezier(0.0,0,0.2,1);
 }
 
-@media(prefers-color-scheme:light){
-  :root{
-    --navy:        #f0ece4;
-    --navy-raised: #e8e2d8;
-    --navy-surface:#ddd7cb;
-    --navy-deep:   #f8f4ee;
 
-    --silver:       #4a5a72;
-    --silver-light: #2a3a52;
-    --silver-dim:   rgba(74,90,114,0.08);
-    --silver-border:rgba(74,90,114,0.12);
-    --silver-hover: rgba(74,90,114,0.14);
-    --silver-glow:  rgba(74,90,114,0.12);
-
-    --lavender:     #6060a0;
-    --lavender-dim: rgba(96,96,160,0.08);
-    --teal:         #3a7090;
-    --teal-dim:     rgba(58,112,144,0.08);
-
-    --text-1: #1a2234;
-    --text-2: #4a5a72;
-    --text-3: #7a8a9a;
-
-    --recording: #8a5040;
-    --error:     #8a4848;
-  }
-}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
@@ -102,9 +76,7 @@ body::after{
 
 ::selection{background:rgba(168,184,204,0.20);color:var(--silver-light)}
 
-@media(prefers-color-scheme:light){
-  ::selection{background:rgba(74,90,114,0.15);color:var(--silver-light)}
-}
+
 
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--navy-deep)}
@@ -161,10 +133,7 @@ body::after{
 .theme-toggle:focus-visible{outline:1px solid var(--silver);outline-offset:3px}
 .theme-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
-@media(prefers-color-scheme:light){
-  .header{background:rgba(240,236,228,0.88)}
-  .theme-toggle{border-color:rgba(74,90,114,0.15)}
-}
+
 
 .header-brand{display:flex;align-items:center;gap:var(--s3)}
 .header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9}
@@ -516,7 +485,6 @@ select.field-input{
 
   applyTheme(currentTheme);
 
-\n  // Theme toggle\n  var MOON_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';\n  var SUN_SVG  = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';\n\n  var themeToggle = document.getElementById('themeToggle');\n  var themeIcon   = document.getElementById('themeIcon');\n\n  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');\n  var currentTheme = localStorage.getItem('phiyo-theme') ||\n                     (prefersDark.matches ? 'dark' : 'light');\n\n  function applyTheme(theme) {\n    currentTheme = theme;\n    document.documentElement.setAttribute('data-theme', theme);\n    localStorage.setItem('phiyo-theme', theme);\n    if (theme === 'dark') {\n      themeIcon.innerHTML = MOON_SVG;\n      themeToggle.setAttribute('aria-label', 'Switch to light mode');\n    } else {\n      themeIcon.innerHTML = SUN_SVG;\n      themeToggle.setAttribute('aria-label', 'Switch to dark mode');\n    }\n  }\n\n  themeToggle.addEventListener('click', function() {\n    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');\n  });\n\n  applyTheme(currentTheme);\n
 
   var voicePanel    = document.getElementById('voicePanel');
   var textPanel     = document.getElementById('textPanel');
