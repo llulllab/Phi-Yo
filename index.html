@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,7 +107,7 @@ body::after{
   display:flex;align-items:center;
 }
 .header-brand{display:flex;align-items:center;gap:var(--s3)}
-.header-phi{font-family:var(--serif);font-size:24px;font-weight:300;font-style:italic;color:var(--silver);line-height:1}
+.header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9}
 .header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.4}
 .header-name{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-2)}
 
@@ -116,6 +116,18 @@ body::after{
 .intro h1{font-family:var(--serif);font-weight:300;font-size:42px;letter-spacing:-0.02em;line-height:1.15;color:var(--text-1);margin-bottom:var(--s3)}
 .intro h1 em{font-style:italic;color:var(--silver)}
 .intro-sub{font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-3)}
+.intro-powered{
+  margin-top:var(--s3);
+  font-family:var(--serif);font-size:14px;font-weight:300;font-style:italic;
+  color:var(--text-3);letter-spacing:0.03em;line-height:1.5;
+  opacity:0;animation:up .8s var(--ease-out) forwards .35s;
+}
+.intro-powered span{
+  background:linear-gradient(135deg, var(--lavender), var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  font-weight:400;
+}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 /* ─── KULLANICI ALANLARI ─── */
@@ -249,7 +261,7 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 
 <header class="header">
   <div class="header-brand">
-    <span class="header-phi" aria-hidden="true">&phi;</span>
+    <img src="logo.jpg" alt="Phi-Yo" class="header-logo">
     <span class="header-sep"></span>
     <span class="header-name">Phi-Yo</span>
   </div>
@@ -259,15 +271,16 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
   <section class="intro">
     <h1><em>Phi-Yo</em></h1>
     <p class="intro-sub">Scientific Dream Analysis</p>
+    <p class="intro-powered">powered by <span>Freud for Machines: A Computational Psychoanalytic Ontology</span></p>
   </section>
 
   <div class="user-fields">
-    <input class="field-input" type="text" id="userId" placeholder="Kullan&#305;c&#305; ID" aria-label="Kullan&#305;c&#305; kimli&#287;i">
-    <input class="field-input" type="text" id="userName" placeholder="Ad&#305;n&#305;z" aria-label="Ad&#305;n&#305;z">
-    <select class="field-input" id="langSelect" aria-label="Konu&#351;ma dili">
-      <option value="tr-TR">T&#252;rk&#231;e</option>
-      <option value="en-US">English</option>
+    <input class="field-input" type="text" id="userId" placeholder="User ID" aria-label="User ID">
+    <input class="field-input" type="text" id="userName" placeholder="Your Name" aria-label="Your Name">
+    <select class="field-input" id="langSelect" aria-label="Speech language">
       <option value="fr-FR">Fran&#231;ais</option>
+      <option value="en-US">English</option>
+      <option value="tr-TR">T&#252;rk&#231;e</option>
       <option value="de-DE">Deutsch</option>
       <option value="es-ES">Espa&#241;ol</option>
       <option value="ja-JP">&#26085;&#26412;&#35486;</option>
@@ -277,16 +290,16 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
   </div>
 
   <div class="mode-selector" role="tablist">
-    <button class="mode-tab active" role="tab" aria-selected="true" data-mode="voice" onclick="switchMode('voice')">Sesli Anlat&#305;m</button>
-    <button class="mode-tab" role="tab" aria-selected="false" data-mode="text" onclick="switchMode('text')">Yaz&#305;l&#305; Anlat&#305;m</button>
+    <button class="mode-tab active" role="tab" aria-selected="true" data-mode="voice" onclick="switchMode('voice')">Voice Input</button>
+    <button class="mode-tab" role="tab" aria-selected="false" data-mode="text" onclick="switchMode('text')">Text Input</button>
   </div>
 
   <div class="voice-panel visible" id="voicePanel" role="tabpanel">
     <div class="voice-status">
-      <span class="voice-label" id="voiceLabel">R&#252;yan&#305;z&#305; anlatmak i&#231;in dokunun</span>
+      <span class="voice-label" id="voiceLabel">Tap to describe your dream</span>
       <span class="voice-timer" id="voiceTimer"></span>
     </div>
-    <button class="mic-btn" id="micBtn" onclick="toggleRecording()" aria-label="Ses kayd&#305;">
+    <button class="mic-btn" id="micBtn" onclick="toggleRecording()" aria-label="Voice recording">
       <div class="mic-ring"></div>
       <svg id="micIcon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
     </button>
@@ -294,27 +307,27 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
   </div>
 
   <div class="text-panel" id="textPanel" role="tabpanel">
-    <textarea class="dream-input" id="dreamInput" placeholder="R&#252;yan&#305;z&#305; anlat&#305;n..." aria-label="R&#252;ya metni"></textarea>
+    <textarea class="dream-input" id="dreamInput" placeholder="Describe your dream..." aria-label="Dream text"></textarea>
   </div>
 
   <div class="submit-row">
-    <button class="submit-btn" id="submitBtn" onclick="submitDream()">Yorumla</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitDream()">Interpret</button>
   </div>
 
   <div class="error-bar" id="errorBar" role="alert"></div>
 
   <div class="loading-state" id="loadingState">
     <span class="loading-phi" aria-hidden="true">&phi;</span>
-    <p class="loading-text">Phi-Yo d&#252;&#351;&#252;n&#252;yor...</p>
+    <p class="loading-text">Phi-Yo is thinking...</p>
   </div>
 
   <section class="result" id="resultSection">
-    <div class="result-label">Yorum</div>
+    <div class="result-label">Interpretation</div>
     <div class="result-text" id="resultText"></div>
     <div class="result-meta" id="resultMeta"></div>
   </section>
 
-  <footer class="footer">Phi-Yo</footer>
+  <footer class="footer">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,106,136,0.3);transition:border-color .3s">Llull Lab</a></footer>
 </main>
 
 <script>
@@ -354,7 +367,7 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 
   function createRec() {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { showError('Taray\u0131c\u0131n\u0131z ses tan\u0131may\u0131 desteklemiyor. Chrome veya Edge kullan\u0131n.'); return null; }
+    if (!SR) { showError('Your browser does not support speech recognition. Please use Chrome or Edge.'); return null; }
     var r = new SR();
     r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
     r.lang = document.getElementById('langSelect').value;
@@ -368,7 +381,7 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
     };
     r.onerror = function(e) {
       if (e.error === 'no-speech') return;
-      if (e.error === 'not-allowed') showError('Mikrofon eri\u015fimi reddedildi.');
+      if (e.error === 'not-allowed') showError('Microphone access denied.');
       stopRec();
     };
     r.onend = function() { if (isRecording) try { r.start(); } catch(x) {} };
@@ -384,13 +397,13 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
       recognition.start(); isRecording = true;
       micBtn.classList.add('recording'); micIcon.style.display = 'none';
       var s = document.createElement('div'); s.className = 'stop-icon'; s.id = 'stopIcon'; micBtn.appendChild(s);
-      voiceLabel.textContent = 'Dinliyorum...'; voiceTimer.textContent = '00:00';
+      voiceLabel.textContent = 'Listening...'; voiceTimer.textContent = '00:00';
       transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
       recTimer = setInterval(function() {
         seconds++;
         voiceTimer.textContent = String(Math.floor(seconds/60)).padStart(2,'0') + ':' + String(seconds%60).padStart(2,'0');
       }, 1000);
-    } catch(e) { showError('Ses kayd\u0131 ba\u015flat\u0131lamad\u0131.'); }
+    } catch(e) { showError('Could not start recording.'); }
   }
 
   function stopRec() {
@@ -400,7 +413,7 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
     micBtn.classList.remove('recording');
     var si = document.getElementById('stopIcon'); if (si) si.remove();
     micIcon.style.display = '';
-    voiceLabel.textContent = transcript.trim() ? 'Kay\u0131t tamamland\u0131' : 'R\u00fcyan\u0131z\u0131 anlatmak i\u00e7in dokunun';
+    voiceLabel.textContent = transcript.trim() ? 'Recording complete' : 'Tap to describe your dream';
     voiceTimer.textContent = ''; updateTx();
   }
 
@@ -412,11 +425,11 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
   window.submitDream = async function() {
     hideErr();
 
-    // Kayıt devam ediyorsa önce durdur
+    // If recording is in progress, stop it first
     if (isRecording) stopRec();
 
     var dt = mode === 'voice' ? transcript.trim() : dreamInput.value.trim();
-    if (!dt) { showError(mode === 'voice' ? 'L\u00fctfen r\u00fcyan\u0131z\u0131 sesli anlat\u0131n.' : 'L\u00fctfen r\u00fcyan\u0131z\u0131 yaz\u0131n.'); return; }
+    if (!dt) { showError(mode === 'voice' ? 'Please describe your dream using voice input.' : 'Please write your dream.'); return; }
 
     var uid = document.getElementById('userId').value.trim() || 'phiyo-web-' + Date.now();
     var un = document.getElementById('userName').value.trim() || '';
@@ -427,33 +440,33 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
       var res = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ dream:dt, user_id:uid, user_name:un, session_id:'dream_'+Date.now(), input_type:mode, duration:dur, language:document.getElementById('langSelect').value })
       });
-      if (!res.ok) throw new Error('Sunucu hatas\u0131: ' + res.status);
+      if (!res.ok) throw new Error('Server error: ' + res.status);
       var data = await res.json();
 
-      // Backend iki farklı format dönebilir — her ikisini de destekle
+      // Backend may return two different formats — support both
       if (data.success || data.interpretation || data.displayResponse) {
         showResult(data);
         resetInput();
       } else {
-        throw new Error(data.error || 'Bilinmeyen hata');
+        throw new Error(data.error || 'Unknown error');
       }
-    } catch(e) { showError('Ba\u011flant\u0131 hatas\u0131: ' + e.message); }
+    } catch(e) { showError('Connection error: ' + e.message); }
     finally { submitBtn.disabled = false; loadingState.classList.remove('visible'); }
   };
 
   function resetInput() {
-    // Sonuç geldikten sonra giriş alanlarını temizle
+    // Clear input fields after result is received
     if (mode === 'voice') {
       transcript = ''; interim = ''; seconds = 0;
       transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
-      voiceLabel.textContent = 'R\u00fcyan\u0131z\u0131 anlatmak i\u00e7in dokunun';
+      voiceLabel.textContent = 'Tap to describe your dream';
     } else {
       dreamInput.value = '';
     }
   }
 
   function showResult(data) {
-    // Her iki backend format: interpretation veya displayResponse
+    // Support both backend formats: interpretation or displayResponse
     var text = data.interpretation || data.displayResponse || '';
     resultText.textContent = text;
     resultMeta.innerHTML = '';
