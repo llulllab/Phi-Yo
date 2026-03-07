@@ -146,11 +146,24 @@ body::after{
   background:rgba(14,24,36,0.88);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--silver-border);
-  display:flex;align-items:center;
+  display:flex;align-items:center;justify-content:space-between;
 }
+
+.theme-toggle{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--silver-border);background:transparent;
+  color:var(--text-2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .3s var(--ease),color .3s var(--ease),background .3s var(--ease);
+  min-width:44px;min-height:44px;flex-shrink:0;
+}
+.theme-toggle:hover{border-color:var(--silver);color:var(--silver-light);background:var(--silver-dim)}
+.theme-toggle:focus-visible{outline:1px solid var(--silver);outline-offset:3px}
+.theme-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
 @media(prefers-color-scheme:light){
   .header{background:rgba(240,236,228,0.88)}
+  .theme-toggle{border-color:rgba(74,90,114,0.15)}
 }
 
 .header-brand{display:flex;align-items:center;gap:var(--s3)}
@@ -332,6 +345,56 @@ select.field-input{
 }
 .footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,106,136,0.3);transition:border-color .3s var(--ease)}
 .footer a:hover{border-color:var(--silver)}
+
+[data-theme="light"] {
+    --navy:        #f0ece4;
+    --navy-raised: #e8e2d8;
+    --navy-surface:#ddd7cb;
+    --navy-deep:   #f8f4ee;
+    --silver:       #4a5a72;
+    --silver-light: #2a3a52;
+    --silver-dim:   rgba(74,90,114,0.08);
+    --silver-border:rgba(74,90,114,0.12);
+    --silver-hover: rgba(74,90,114,0.14);
+    --silver-glow:  rgba(74,90,114,0.12);
+    --lavender:     #6060a0;
+    --lavender-dim: rgba(96,96,160,0.08);
+    --teal:         #3a7090;
+    --teal-dim:     rgba(58,112,144,0.08);
+    --text-1: #1a2234;
+    --text-2: #4a5a72;
+    --text-3: #7a8a9a;
+    --recording: #8a5040;
+    --error:     #8a4848;
+}
+
+[data-theme="dark"] {
+    --navy:        #141e30;
+    --navy-raised: #1a2840;
+    --navy-surface:#203050;
+    --navy-deep:   #0e1824;
+    --silver:       #a8b8cc;
+    --silver-light: #d0daea;
+    --silver-dim:   rgba(168,184,204,0.10);
+    --silver-border:rgba(168,184,204,0.08);
+    --silver-hover: rgba(168,184,204,0.18);
+    --silver-glow:  rgba(168,184,204,0.15);
+    --lavender:     #8080a8;
+    --lavender-dim: rgba(128,128,168,0.10);
+    --teal:         #5a90a8;
+    --teal-dim:     rgba(90,144,168,0.10);
+    --text-1: #dce4ee;
+    --text-2: #8898b0;
+    --text-3: #5a6a88;
+    --recording: #a87060;
+    --error:     #a86868;
+}
+
+[data-theme="light"] .header { background: rgba(240,236,228,0.88); }
+[data-theme="dark"]  .header { background: rgba(14,24,36,0.88); }
+[data-theme="light"] ::selection { background: rgba(74,90,114,0.15); color: #2a3a52; }
+[data-theme="dark"]  ::selection { background: rgba(168,184,204,0.20); color: #d0daea; }
+
 </style>
 </head>
 <body>
@@ -344,6 +407,9 @@ select.field-input{
     <span class="header-sep" aria-hidden="true"></span>
     <span class="header-name">Phi-Yo</span>
   </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
+    <svg id="themeIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
 </header>
 
 <main class="app" id="main-content">
@@ -421,6 +487,36 @@ select.field-input{
   var mode = 'voice', isRecording = false, recognition = null;
   var transcript = '', interim = '', recTimer = null, seconds = 0;
   var errTimer = null;
+  var MOON_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  var SUN_SVG  = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  var themeToggle = document.getElementById('themeToggle');
+  var themeIcon   = document.getElementById('themeIcon');
+
+  var prefersDark  = window.matchMedia('(prefers-color-scheme: dark)');
+  var currentTheme = localStorage.getItem('phiyo-theme') ||
+                     (prefersDark.matches ? 'dark' : 'light');
+
+  function applyTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('phiyo-theme', theme);
+    if (theme === 'dark') {
+      themeIcon.innerHTML = MOON_SVG;
+      themeToggle.setAttribute('aria-label', 'Switch to light mode');
+    } else {
+      themeIcon.innerHTML = SUN_SVG;
+      themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+    }
+  }
+
+  themeToggle.addEventListener('click', function() {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+
+  applyTheme(currentTheme);
+
+\n  // Theme toggle\n  var MOON_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';\n  var SUN_SVG  = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';\n\n  var themeToggle = document.getElementById('themeToggle');\n  var themeIcon   = document.getElementById('themeIcon');\n\n  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');\n  var currentTheme = localStorage.getItem('phiyo-theme') ||\n                     (prefersDark.matches ? 'dark' : 'light');\n\n  function applyTheme(theme) {\n    currentTheme = theme;\n    document.documentElement.setAttribute('data-theme', theme);\n    localStorage.setItem('phiyo-theme', theme);\n    if (theme === 'dark') {\n      themeIcon.innerHTML = MOON_SVG;\n      themeToggle.setAttribute('aria-label', 'Switch to light mode');\n    } else {\n      themeIcon.innerHTML = SUN_SVG;\n      themeToggle.setAttribute('aria-label', 'Switch to dark mode');\n    }\n  }\n\n  themeToggle.addEventListener('click', function() {\n    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');\n  });\n\n  applyTheme(currentTheme);\n
 
   var voicePanel    = document.getElementById('voicePanel');
   var textPanel     = document.getElementById('textPanel');
