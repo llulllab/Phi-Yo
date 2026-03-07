@@ -119,12 +119,14 @@ body::after{
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 /* ─── KULLANICI ALANLARI ─── */
-.user-fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s6);opacity:0;animation:up .8s var(--ease-out) forwards .3s}
+.user-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s3);margin-bottom:var(--s6);opacity:0;animation:up .8s var(--ease-out) forwards .3s}
 .field-input{
   background:var(--navy-raised);border:1px solid var(--silver-border);border-radius:var(--r2);
   padding:var(--s3) var(--s4);font-family:var(--sans);font-size:14px;font-weight:300;
   color:var(--text-1);outline:none;transition:border-color .3s var(--ease);
+  -webkit-appearance:none;appearance:none;
 }
+select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%235a6a88' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 .field-input::placeholder{color:var(--text-3);font-style:italic}
 .field-input:focus{border-color:var(--silver-hover)}
 
@@ -262,6 +264,16 @@ body::after{
   <div class="user-fields">
     <input class="field-input" type="text" id="userId" placeholder="Kullan&#305;c&#305; ID" aria-label="Kullan&#305;c&#305; kimli&#287;i">
     <input class="field-input" type="text" id="userName" placeholder="Ad&#305;n&#305;z" aria-label="Ad&#305;n&#305;z">
+    <select class="field-input" id="langSelect" aria-label="Konu&#351;ma dili">
+      <option value="tr-TR">T&#252;rk&#231;e</option>
+      <option value="en-US">English</option>
+      <option value="fr-FR">Fran&#231;ais</option>
+      <option value="de-DE">Deutsch</option>
+      <option value="es-ES">Espa&#241;ol</option>
+      <option value="ja-JP">&#26085;&#26412;&#35486;</option>
+      <option value="ru-RU">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+      <option value="ar-SA">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+    </select>
   </div>
 
   <div class="mode-selector" role="tablist">
@@ -345,7 +357,7 @@ body::after{
     if (!SR) { showError('Taray\u0131c\u0131n\u0131z ses tan\u0131may\u0131 desteklemiyor. Chrome veya Edge kullan\u0131n.'); return null; }
     var r = new SR();
     r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
-    // Dil ayarlanmıyor — tarayıcı sistemin dilini kullanır ve otomatik algılar
+    r.lang = document.getElementById('langSelect').value;
     r.onresult = function(e) {
       interim = '';
       for (var i = e.resultIndex; i < e.results.length; i++) {
@@ -413,7 +425,7 @@ body::after{
     submitBtn.disabled = true; loadingState.classList.add('visible'); resultSection.classList.remove('visible');
     try {
       var res = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ dream:dt, user_id:uid, user_name:un, session_id:'dream_'+Date.now(), input_type:mode, duration:dur })
+        body: JSON.stringify({ dream:dt, user_id:uid, user_name:un, session_id:'dream_'+Date.now(), input_type:mode, duration:dur, language:document.getElementById('langSelect').value })
       });
       if (!res.ok) throw new Error('Sunucu hatas\u0131: ' + res.status);
       var data = await res.json();
