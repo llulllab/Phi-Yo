@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phi-Yo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  /* ═══ 60-30-10: GECE MÜREKKEBİ ═══
+     60% — Deep navy (zemin, yüzeyler, kartlar)
+     30% — Cool silver (başlıklar, aktif durumlar, butonlar, çizgiler)
+     10% — Lavanta + Teal (metadata, ikincil aksanlar)
+  ══════════════════════════════════════ */
+
+  /* 60% — Navy System */
+  --navy:        #141e30;
+  --navy-raised: #1a2840;
+  --navy-surface:#203050;
+  --navy-deep:   #0e1824;
+
+  /* 30% — Silver System */
+  --silver:       #a8b8cc;
+  --silver-light: #d0daea;
+  --silver-dim:   rgba(168,184,204,0.10);
+  --silver-border:rgba(168,184,204,0.08);
+  --silver-hover: rgba(168,184,204,0.18);
+  --silver-glow:  rgba(168,184,204,0.15);
+
+  /* 10% — Accent: Lavanta + Teal */
+  --lavender:     #8080a8;
+  --lavender-dim: rgba(128,128,168,0.10);
+  --teal:         #5a90a8;
+  --teal-dim:     rgba(90,144,168,0.10);
+
+  /* Metin */
+  --text-1: #dce4ee;
+  --text-2: #8898b0;
+  --text-3: #5a6a88;
+
+  /* Fonksiyonel */
+  --recording: #a87060;
+  --error:     #a86868;
+
+  /* Tipografi */
+  --serif: 'Cormorant Garamond','Georgia',serif;
+  --sans:  'IBM Plex Sans','Helvetica Neue',sans-serif;
+  --mono:  'IBM Plex Mono','Consolas',monospace;
+
+  /* Aralık */
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;
+  --s6:32px;--s7:48px;--s8:64px;--s9:96px;--s10:128px;
+  --r2:8px;--r3:12px;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --ease-out:cubic-bezier(0.0,0,0.2,1);
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+
+body{
+  font-family:var(--sans);font-weight:300;
+  background:var(--navy);color:var(--text-1);
+  line-height:1.6;min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection{background:var(--silver-dim);color:var(--silver-light)}
+:focus-visible{outline:1px solid var(--silver);outline-offset:3px}
+
+/* Ortam */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0}
+.ambient::before{
+  content:'';position:absolute;width:900px;height:900px;top:-300px;right:-200px;
+  background:radial-gradient(circle,rgba(168,184,204,0.04) 0%,transparent 65%);
+  animation:drift 40s ease-in-out infinite;
+}
+.ambient::after{
+  content:'';position:absolute;width:700px;height:700px;bottom:-200px;left:-150px;
+  background:radial-gradient(circle,rgba(90,144,168,0.03) 0%,transparent 65%);
+  animation:drift 50s ease-in-out infinite reverse;
+}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+
+.app{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:var(--s10) var(--s5) var(--s9)}
+
+/* ─── HEADER ─── */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:var(--s4) var(--s6);
+  background:rgba(14,24,36,0.88);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--silver-border);
+  display:flex;align-items:center;
+}
+.header-brand{display:flex;align-items:center;gap:var(--s3)}
+.header-phi{font-family:var(--serif);font-size:24px;font-weight:300;font-style:italic;color:var(--silver);line-height:1}
+.header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.4}
+.header-name{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-2)}
+
+/* ─── GİRİŞ ─── */
+.intro{text-align:left;margin-bottom:var(--s8);opacity:0;animation:up .8s var(--ease-out) forwards .15s}
+.intro h1{font-family:var(--serif);font-weight:300;font-size:42px;letter-spacing:-0.02em;line-height:1.15;color:var(--text-1);margin-bottom:var(--s3)}
+.intro h1 em{font-style:italic;color:var(--silver)}
+.intro-sub{font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-3)}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── KULLANICI ALANLARI ─── */
+.user-fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s6);opacity:0;animation:up .8s var(--ease-out) forwards .3s}
+.field-input{
+  background:var(--navy-raised);border:1px solid var(--silver-border);border-radius:var(--r2);
+  padding:var(--s3) var(--s4);font-family:var(--sans);font-size:14px;font-weight:300;
+  color:var(--text-1);outline:none;transition:border-color .3s var(--ease);
+}
+.field-input::placeholder{color:var(--text-3);font-style:italic}
+.field-input:focus{border-color:var(--silver-hover)}
+
+/* ─── MOD SEÇİCİ ─── */
+.mode-selector{display:flex;margin-bottom:var(--s5);border-bottom:1px solid var(--silver-border);opacity:0;animation:up .8s var(--ease-out) forwards .4s}
+.mode-tab{
+  flex:1;padding:var(--s4) var(--s4) var(--s3);background:none;border:none;
+  font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0.05em;
+  color:var(--text-3);cursor:pointer;position:relative;transition:color .3s var(--ease);
+}
+.mode-tab::after{
+  content:'';position:absolute;bottom:-1px;left:var(--s4);right:var(--s4);
+  height:1px;background:var(--silver);transform:scaleX(0);transition:transform .35s var(--ease);
+}
+.mode-tab.active{color:var(--silver-light)}
+.mode-tab.active::after{transform:scaleX(1)}
+.mode-tab:not(.active):hover{color:var(--text-2)}
+
+/* ─── SES PANELİ ─── */
+.voice-panel{
+  display:none;flex-direction:column;align-items:center;gap:var(--s5);
+  padding:var(--s8) var(--s5);
+  background:var(--navy-raised);border:1px solid var(--silver-border);border-radius:var(--r3);
+}
+.voice-panel.visible{display:flex;animation:pin .4s var(--ease-out)}
+@keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.voice-status{text-align:center}
+.voice-label{font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;color:var(--text-3)}
+.voice-timer{display:block;font-family:var(--mono);font-size:28px;font-weight:300;color:var(--text-2);letter-spacing:0.05em;margin-top:var(--s2);min-height:36px}
+
+.mic-btn{
+  width:80px;height:80px;border-radius:50%;
+  border:1px solid rgba(168,184,204,0.18);background:rgba(168,184,204,0.05);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  position:relative;transition:background .3s var(--ease),border-color .3s var(--ease);
+  min-width:44px;min-height:44px;
+}
+.mic-btn:hover{background:rgba(168,184,204,0.10);border-color:rgba(168,184,204,0.30)}
+.mic-btn svg{width:24px;height:24px;fill:none;stroke:var(--silver);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s var(--ease)}
+.mic-ring{position:absolute;inset:-6px;border-radius:50%;border:1px solid transparent;pointer-events:none;transition:border-color .3s var(--ease)}
+
+.mic-btn.recording{border-color:rgba(168,112,96,0.35);background:rgba(168,112,96,0.08)}
+.mic-btn.recording svg{stroke:var(--recording)}
+.mic-btn.recording .mic-ring{border-color:rgba(168,112,96,0.20);animation:ring 4s linear infinite;border-top-color:var(--recording)}
+@keyframes ring{to{transform:rotate(360deg)}}
+.stop-icon{width:18px;height:18px;background:var(--recording);border-radius:3px}
+
+.transcript-area{
+  width:100%;max-height:160px;overflow-y:auto;padding:var(--s4);
+  background:rgba(0,0,0,0.20);border-radius:var(--r2);
+  font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;
+  line-height:1.7;color:var(--text-3);display:none;
+}
+.transcript-area.has-text{display:block}
+
+/* ─── METİN PANELİ ─── */
+.text-panel{display:none}
+.text-panel.visible{display:block;animation:pin .4s var(--ease-out)}
+.dream-input{
+  width:100%;min-height:180px;
+  background:var(--navy-raised);border:1px solid var(--silver-border);border-radius:var(--r3);
+  padding:var(--s5);font-family:var(--sans);font-size:15px;font-weight:300;
+  line-height:1.75;color:var(--text-1);resize:vertical;outline:none;
+  transition:border-color .3s var(--ease);
+}
+.dream-input::placeholder{font-family:var(--serif);font-style:italic;color:var(--text-3)}
+.dream-input:focus{border-color:var(--silver-hover)}
+
+/* ─── GÖNDER ─── */
+.submit-row{display:flex;justify-content:flex-end;margin-top:var(--s5);margin-bottom:var(--s8)}
+.submit-btn{
+  padding:var(--s3) var(--s6);background:var(--silver);color:var(--navy);
+  border:none;border-radius:var(--r2);
+  font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.08em;
+  cursor:pointer;min-width:44px;min-height:44px;
+  transition:opacity .25s var(--ease),box-shadow .25s var(--ease),transform .2s var(--ease);
+}
+.submit-btn:hover{box-shadow:0 0 24px var(--silver-glow);transform:translateY(-1px)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ─── YÜKLEME ─── */
+.loading-state{display:none;text-align:center;padding:var(--s8) 0;margin-bottom:var(--s6)}
+.loading-state.visible{display:block}
+.loading-phi{font-family:var(--serif);font-size:36px;font-style:italic;font-weight:300;color:var(--silver);animation:breathe 2.5s ease-in-out infinite;margin-bottom:var(--s4);display:block}
+@keyframes breathe{0%,100%{opacity:0.3}50%{opacity:1}}
+.loading-text{font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;color:var(--text-3)}
+
+/* ─── HATA ─── */
+.error-bar{display:none;padding:var(--s3) var(--s4);background:rgba(168,104,104,0.08);border:1px solid rgba(168,104,104,0.15);border-radius:var(--r2);font-size:13px;color:var(--error);margin-bottom:var(--s5)}
+.error-bar.visible{display:block}
+
+/* ─── SONUÇ ─── */
+.result{display:none;margin-bottom:var(--s8)}
+.result.visible{display:block;animation:up .6s var(--ease-out)}
+.result-label{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:var(--s5);padding-bottom:var(--s3);border-bottom:1px solid var(--silver-border)}
+.result-text{font-family:var(--serif);font-size:18px;font-weight:400;line-height:1.85;color:var(--text-1);max-width:62ch;white-space:pre-wrap;word-wrap:break-word}
+
+.result-meta{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s6);padding-top:var(--s5);border-top:1px solid var(--silver-border)}
+.pill{padding:4px 12px;border-radius:20px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.03em}
+.pill-symbol{color:var(--silver);border:1px solid rgba(168,184,204,0.20);background:var(--silver-dim)}
+.pill-emotion{color:var(--lavender);border:1px solid rgba(128,128,168,0.20);background:var(--lavender-dim)}
+.pill-theme{color:var(--teal);border:1px solid rgba(90,144,168,0.20);background:var(--teal-dim)}
+
+.footer{text-align:center;padding-top:var(--s8);font-family:var(--sans);font-size:11px;letter-spacing:0.1em;color:var(--text-3);opacity:0.35}
+
+@media(max-width:600px){
+  .app{padding:var(--s9) var(--s4) var(--s8)}
+  .intro h1{font-size:32px}
+  .user-fields{grid-template-columns:1fr}
+  .mic-btn{width:68px;height:68px}
+  .voice-timer{font-size:22px}
+  .result-text{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<header class="header">
+  <div class="header-brand">
+    <span class="header-phi" aria-hidden="true">&phi;</span>
+    <span class="header-sep"></span>
+    <span class="header-name">Phi-Yo</span>
+  </div>
+</header>
+
+<main class="app">
+  <section class="intro">
+    <h1><em>Phi-Yo</em></h1>
+    <p class="intro-sub">Scientific Dream Analysis</p>
+  </section>
+
+  <div class="user-fields">
+    <input class="field-input" type="text" id="userId" placeholder="Kullan&#305;c&#305; ID" aria-label="Kullan&#305;c&#305; kimli&#287;i">
+    <input class="field-input" type="text" id="userName" placeholder="Ad&#305;n&#305;z" aria-label="Ad&#305;n&#305;z">
+  </div>
+
+  <div class="mode-selector" role="tablist">
+    <button class="mode-tab active" role="tab" aria-selected="true" data-mode="voice" onclick="switchMode('voice')">Sesli Anlat&#305;m</button>
+    <button class="mode-tab" role="tab" aria-selected="false" data-mode="text" onclick="switchMode('text')">Yaz&#305;l&#305; Anlat&#305;m</button>
+  </div>
+
+  <div class="voice-panel visible" id="voicePanel" role="tabpanel">
+    <div class="voice-status">
+      <span class="voice-label" id="voiceLabel">R&#252;yan&#305;z&#305; anlatmak i&#231;in dokunun</span>
+      <span class="voice-timer" id="voiceTimer"></span>
+    </div>
+    <button class="mic-btn" id="micBtn" onclick="toggleRecording()" aria-label="Ses kayd&#305;">
+      <div class="mic-ring"></div>
+      <svg id="micIcon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+    </button>
+    <div class="transcript-area" id="transcriptArea"></div>
+  </div>
+
+  <div class="text-panel" id="textPanel" role="tabpanel">
+    <textarea class="dream-input" id="dreamInput" placeholder="R&#252;yan&#305;z&#305; anlat&#305;n..." aria-label="R&#252;ya metni"></textarea>
+  </div>
+
+  <div class="submit-row">
+    <button class="submit-btn" id="submitBtn" onclick="submitDream()">Yorumla</button>
+  </div>
+
+  <div class="error-bar" id="errorBar" role="alert"></div>
+
+  <div class="loading-state" id="loadingState">
+    <span class="loading-phi" aria-hidden="true">&phi;</span>
+    <p class="loading-text">Phi-Yo d&#252;&#351;&#252;n&#252;yor...</p>
+  </div>
+
+  <section class="result" id="resultSection">
+    <div class="result-label">Yorum</div>
+    <div class="result-text" id="resultText"></div>
+    <div class="result-meta" id="resultMeta"></div>
+  </section>
+
+  <footer class="footer">Phi-Yo</footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  var WEBHOOK_URL = 'https://n8n.tropus.io/webhook/phiyo-dream';
+
+  var mode = 'voice', isRecording = false, recognition = null;
+  var transcript = '', interim = '', recTimer = null, seconds = 0;
+
+  var voicePanel = document.getElementById('voicePanel');
+  var textPanel = document.getElementById('textPanel');
+  var voiceLabel = document.getElementById('voiceLabel');
+  var voiceTimer = document.getElementById('voiceTimer');
+  var micBtn = document.getElementById('micBtn');
+  var micIcon = document.getElementById('micIcon');
+  var transcriptArea = document.getElementById('transcriptArea');
+  var dreamInput = document.getElementById('dreamInput');
+  var submitBtn = document.getElementById('submitBtn');
+  var errorBar = document.getElementById('errorBar');
+  var loadingState = document.getElementById('loadingState');
+  var resultSection = document.getElementById('resultSection');
+  var resultText = document.getElementById('resultText');
+  var resultMeta = document.getElementById('resultMeta');
+
+  window.switchMode = function(m) {
+    mode = m;
+    document.querySelectorAll('.mode-tab').forEach(function(t) {
+      var a = t.dataset.mode === m;
+      t.classList.toggle('active', a);
+      t.setAttribute('aria-selected', String(a));
+    });
+    voicePanel.classList.toggle('visible', m === 'voice');
+    textPanel.classList.toggle('visible', m === 'text');
+  };
+
+  function createRec() {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { showError('Taray\u0131c\u0131n\u0131z ses tan\u0131may\u0131 desteklemiyor. Chrome veya Edge kullan\u0131n.'); return null; }
+    var r = new SR();
+    r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
+    // Dil ayarlanmıyor — tarayıcı sistemin dilini kullanır ve otomatik algılar
+    r.onresult = function(e) {
+      interim = '';
+      for (var i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) transcript += e.results[i][0].transcript + ' ';
+        else interim += e.results[i][0].transcript;
+      }
+      updateTx();
+    };
+    r.onerror = function(e) {
+      if (e.error === 'no-speech') return;
+      if (e.error === 'not-allowed') showError('Mikrofon eri\u015fimi reddedildi.');
+      stopRec();
+    };
+    r.onend = function() { if (isRecording) try { r.start(); } catch(x) {} };
+    return r;
+  }
+
+  window.toggleRecording = function() { isRecording ? stopRec() : startRec(); };
+
+  function startRec() {
+    transcript = ''; interim = ''; seconds = 0;
+    recognition = createRec(); if (!recognition) return;
+    try {
+      recognition.start(); isRecording = true;
+      micBtn.classList.add('recording'); micIcon.style.display = 'none';
+      var s = document.createElement('div'); s.className = 'stop-icon'; s.id = 'stopIcon'; micBtn.appendChild(s);
+      voiceLabel.textContent = 'Dinliyorum...'; voiceTimer.textContent = '00:00';
+      transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
+      recTimer = setInterval(function() {
+        seconds++;
+        voiceTimer.textContent = String(Math.floor(seconds/60)).padStart(2,'0') + ':' + String(seconds%60).padStart(2,'0');
+      }, 1000);
+    } catch(e) { showError('Ses kayd\u0131 ba\u015flat\u0131lamad\u0131.'); }
+  }
+
+  function stopRec() {
+    isRecording = false;
+    if (recognition) { recognition.stop(); recognition = null; }
+    if (recTimer) { clearInterval(recTimer); recTimer = null; }
+    micBtn.classList.remove('recording');
+    var si = document.getElementById('stopIcon'); if (si) si.remove();
+    micIcon.style.display = '';
+    voiceLabel.textContent = transcript.trim() ? 'Kay\u0131t tamamland\u0131' : 'R\u00fcyan\u0131z\u0131 anlatmak i\u00e7in dokunun';
+    voiceTimer.textContent = ''; updateTx();
+  }
+
+  function updateTx() {
+    var f = transcript + interim;
+    if (f.trim()) { transcriptArea.textContent = f; transcriptArea.classList.add('has-text'); }
+  }
+
+  window.submitDream = async function() {
+    hideErr();
+
+    // Kayıt devam ediyorsa önce durdur
+    if (isRecording) stopRec();
+
+    var dt = mode === 'voice' ? transcript.trim() : dreamInput.value.trim();
+    if (!dt) { showError(mode === 'voice' ? 'L\u00fctfen r\u00fcyan\u0131z\u0131 sesli anlat\u0131n.' : 'L\u00fctfen r\u00fcyan\u0131z\u0131 yaz\u0131n.'); return; }
+
+    var uid = document.getElementById('userId').value.trim() || 'phiyo-web-' + Date.now();
+    var un = document.getElementById('userName').value.trim() || '';
+    var dur = mode === 'voice' ? seconds : 0;
+
+    submitBtn.disabled = true; loadingState.classList.add('visible'); resultSection.classList.remove('visible');
+    try {
+      var res = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ dream:dt, user_id:uid, user_name:un, session_id:'dream_'+Date.now(), input_type:mode, duration:dur })
+      });
+      if (!res.ok) throw new Error('Sunucu hatas\u0131: ' + res.status);
+      var data = await res.json();
+
+      // Backend iki farklı format dönebilir — her ikisini de destekle
+      if (data.success || data.interpretation || data.displayResponse) {
+        showResult(data);
+        resetInput();
+      } else {
+        throw new Error(data.error || 'Bilinmeyen hata');
+      }
+    } catch(e) { showError('Ba\u011flant\u0131 hatas\u0131: ' + e.message); }
+    finally { submitBtn.disabled = false; loadingState.classList.remove('visible'); }
+  };
+
+  function resetInput() {
+    // Sonuç geldikten sonra giriş alanlarını temizle
+    if (mode === 'voice') {
+      transcript = ''; interim = ''; seconds = 0;
+      transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
+      voiceLabel.textContent = 'R\u00fcyan\u0131z\u0131 anlatmak i\u00e7in dokunun';
+    } else {
+      dreamInput.value = '';
+    }
+  }
+
+  function showResult(data) {
+    // Her iki backend format: interpretation veya displayResponse
+    var text = data.interpretation || data.displayResponse || '';
+    resultText.textContent = text;
+    resultMeta.innerHTML = '';
+    var m = data.metadata || {};
+    (m.symbols||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-symbol')); });
+    (m.emotions||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-emotion')); });
+    (m.themes||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-theme')); });
+    resultSection.classList.add('visible');
+    setTimeout(function(){ resultSection.scrollIntoView({behavior:'smooth',block:'start'}); },100);
+  }
+
+  function pill(t,c){ var e=document.createElement('span'); e.className='pill '+c; e.textContent=t; return e; }
+  var errTimer = null;
+  function showError(m){ errorBar.textContent=m; errorBar.classList.add('visible'); clearTimeout(errTimer); errTimer=setTimeout(hideErr,6000); }
+  function hideErr(){ errorBar.classList.remove('visible'); clearTimeout(errTimer); }
+})();
+</script>
+</body>
+</html>
