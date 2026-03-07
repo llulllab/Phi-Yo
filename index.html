@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phi-Yo</title>
+<title>Phi-Yo — Scientific Dream Analysis powered by Freud for Machines</title>
+<meta name="description" content="Phi-Yo is an AI-powered dream analysis tool grounded in Freud for Machines: A Computational Psychoanalytic Ontology. Describe your dream by voice or text and receive a scientific interpretation.">
+<meta property="og:title" content="Phi-Yo — Scientific Dream Analysis">
+<meta property="og:description" content="AI-powered dream interpretation grounded in computational psychoanalytic ontology.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>φ</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -11,19 +17,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root {
-  /* ═══ 60-30-10: GECE MÜREKKEBİ ═══
-     60% — Deep navy (zemin, yüzeyler, kartlar)
-     30% — Cool silver (başlıklar, aktif durumlar, butonlar, çizgiler)
-     10% — Lavanta + Teal (metadata, ikincil aksanlar)
-  ══════════════════════════════════════ */
-
-  /* 60% — Navy System */
   --navy:        #141e30;
   --navy-raised: #1a2840;
   --navy-surface:#203050;
   --navy-deep:   #0e1824;
 
-  /* 30% — Silver System */
   --silver:       #a8b8cc;
   --silver-light: #d0daea;
   --silver-dim:   rgba(168,184,204,0.10);
@@ -31,27 +29,22 @@
   --silver-hover: rgba(168,184,204,0.18);
   --silver-glow:  rgba(168,184,204,0.15);
 
-  /* 10% — Accent: Lavanta + Teal */
   --lavender:     #8080a8;
   --lavender-dim: rgba(128,128,168,0.10);
   --teal:         #5a90a8;
   --teal-dim:     rgba(90,144,168,0.10);
 
-  /* Metin */
   --text-1: #dce4ee;
   --text-2: #8898b0;
   --text-3: #5a6a88;
 
-  /* Fonksiyonel */
   --recording: #a87060;
   --error:     #a86868;
 
-  /* Tipografi */
   --serif: 'Cormorant Garamond','Georgia',serif;
   --sans:  'IBM Plex Sans','Helvetica Neue',sans-serif;
   --mono:  'IBM Plex Mono','Consolas',monospace;
 
-  /* Aralık */
   --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;
   --s6:32px;--s7:48px;--s8:64px;--s9:96px;--s10:128px;
   --r2:8px;--r3:12px;
@@ -59,45 +52,94 @@
   --ease-out:cubic-bezier(0.0,0,0.2,1);
 }
 
+@media(prefers-color-scheme:light){
+  :root{
+    --navy:        #f0ece4;
+    --navy-raised: #e8e2d8;
+    --navy-surface:#ddd7cb;
+    --navy-deep:   #f8f4ee;
+
+    --silver:       #4a5a72;
+    --silver-light: #2a3a52;
+    --silver-dim:   rgba(74,90,114,0.08);
+    --silver-border:rgba(74,90,114,0.12);
+    --silver-hover: rgba(74,90,114,0.14);
+    --silver-glow:  rgba(74,90,114,0.12);
+
+    --lavender:     #6060a0;
+    --lavender-dim: rgba(96,96,160,0.08);
+    --teal:         #3a7090;
+    --teal-dim:     rgba(58,112,144,0.08);
+
+    --text-1: #1a2234;
+    --text-2: #4a5a72;
+    --text-3: #7a8a9a;
+
+    --recording: #8a5040;
+    --error:     #8a4848;
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+  html{scroll-behavior:auto}
 }
 
 html{font-size:16px;scroll-behavior:smooth}
 
 body{
   font-family:var(--sans);font-weight:300;
-  background:var(--navy);color:var(--text-1);
+  background:var(--navy-deep);color:var(--text-1);
   line-height:1.6;min-height:100vh;overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
 
 body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-::selection{background:var(--silver-dim);color:var(--silver-light)}
+::selection{background:rgba(168,184,204,0.20);color:var(--silver-light)}
+
+@media(prefers-color-scheme:light){
+  ::selection{background:rgba(74,90,114,0.15);color:var(--silver-light)}
+}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--navy-deep)}
+::-webkit-scrollbar-thumb{background:var(--text-3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--silver)}
+
 :focus-visible{outline:1px solid var(--silver);outline-offset:3px}
 
-/* Ortam */
+.skip-link{
+  position:absolute;top:-100%;left:var(--s4);
+  padding:var(--s2) var(--s4);
+  background:var(--navy-raised);border:1px solid var(--silver-border);
+  color:var(--silver-light);font-family:var(--sans);font-size:13px;font-weight:400;
+  border-radius:0 0 var(--r2) var(--r2);text-decoration:none;
+  z-index:10000;transition:top 0.2s var(--ease-out);
+}
+.skip-link:focus{top:0}
+
 .ambient{position:fixed;inset:0;pointer-events:none;z-index:0}
 .ambient::before{
   content:'';position:absolute;width:900px;height:900px;top:-300px;right:-200px;
   background:radial-gradient(circle,rgba(168,184,204,0.04) 0%,transparent 65%);
   animation:drift 40s ease-in-out infinite;
+  will-change:transform;
 }
 .ambient::after{
   content:'';position:absolute;width:700px;height:700px;bottom:-200px;left:-150px;
   background:radial-gradient(circle,rgba(90,144,168,0.03) 0%,transparent 65%);
   animation:drift 50s ease-in-out infinite reverse;
+  will-change:transform;
 }
 @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
 
 .app{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:var(--s10) var(--s5) var(--s9)}
 
-/* ─── HEADER ─── */
 .header{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:var(--s4) var(--s6);
@@ -106,12 +148,16 @@ body::after{
   border-bottom:1px solid var(--silver-border);
   display:flex;align-items:center;
 }
+
+@media(prefers-color-scheme:light){
+  .header{background:rgba(240,236,228,0.88)}
+}
+
 .header-brand{display:flex;align-items:center;gap:var(--s3)}
 .header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9}
 .header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.4}
 .header-name{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-2)}
 
-/* ─── GİRİŞ ─── */
 .intro{text-align:left;margin-bottom:var(--s8);opacity:0;animation:up .8s var(--ease-out) forwards .15s}
 .intro h1{font-family:var(--serif);font-weight:300;font-size:42px;letter-spacing:-0.02em;line-height:1.15;color:var(--text-1);margin-bottom:var(--s3)}
 .intro h1 em{font-style:italic;color:var(--silver)}
@@ -130,34 +176,54 @@ body::after{
 }
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* ─── KULLANICI ALANLARI ─── */
-.user-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s3);margin-bottom:var(--s6);opacity:0;animation:up .8s var(--ease-out) forwards .3s}
+.user-fields{
+  display:grid;grid-template-columns:1fr;
+  gap:var(--s3);margin-bottom:var(--s6);
+  opacity:0;animation:up .8s var(--ease-out) forwards .3s
+}
+
+@media(min-width:601px){
+  .user-fields{grid-template-columns:1fr 1fr 1fr}
+}
+
 .field-input{
   background:var(--navy-raised);border:1px solid var(--silver-border);border-radius:var(--r2);
   padding:var(--s3) var(--s4);font-family:var(--sans);font-size:14px;font-weight:300;
-  color:var(--text-1);outline:none;transition:border-color .3s var(--ease);
+  color:var(--text-1);outline:none;
+  transition:border-color .3s var(--ease);
   -webkit-appearance:none;appearance:none;
+  min-height:44px;
 }
-select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%235a6a88' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select.field-input{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%235a6a88' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px
+}
 .field-input::placeholder{color:var(--text-3);font-style:italic}
 .field-input:focus{border-color:var(--silver-hover)}
 
-/* ─── MOD SEÇİCİ ─── */
-.mode-selector{display:flex;margin-bottom:var(--s5);border-bottom:1px solid var(--silver-border);opacity:0;animation:up .8s var(--ease-out) forwards .4s}
+.mode-selector{
+  display:flex;margin-bottom:var(--s5);
+  border-bottom:1px solid var(--silver-border);
+  opacity:0;animation:up .8s var(--ease-out) forwards .4s
+}
 .mode-tab{
   flex:1;padding:var(--s4) var(--s4) var(--s3);background:none;border:none;
   font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0.05em;
-  color:var(--text-3);cursor:pointer;position:relative;transition:color .3s var(--ease);
+  color:var(--text-3);cursor:pointer;position:relative;
+  transition:color .3s var(--ease);
+  min-height:44px;
 }
 .mode-tab::after{
   content:'';position:absolute;bottom:-1px;left:var(--s4);right:var(--s4);
-  height:1px;background:var(--silver);transform:scaleX(0);transition:transform .35s var(--ease);
+  height:1px;background:var(--silver);transform:scaleX(0);
+  transition:transform .35s var(--ease);
 }
 .mode-tab.active{color:var(--silver-light)}
 .mode-tab.active::after{transform:scaleX(1)}
 .mode-tab:not(.active):hover{color:var(--text-2)}
+.mode-tab:focus-visible{outline:1px solid var(--silver);outline-offset:-2px}
 
-/* ─── SES PANELİ ─── */
 .voice-panel{
   display:none;flex-direction:column;align-items:center;gap:var(--s5);
   padding:var(--s8) var(--s5);
@@ -174,10 +240,12 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
   width:80px;height:80px;border-radius:50%;
   border:1px solid rgba(168,184,204,0.18);background:rgba(168,184,204,0.05);
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  position:relative;transition:background .3s var(--ease),border-color .3s var(--ease);
+  position:relative;
+  transition:background .3s var(--ease),border-color .3s var(--ease);
   min-width:44px;min-height:44px;
 }
 .mic-btn:hover{background:rgba(168,184,204,0.10);border-color:rgba(168,184,204,0.30)}
+.mic-btn:focus-visible{outline:1px solid var(--silver);outline-offset:4px}
 .mic-btn svg{width:24px;height:24px;fill:none;stroke:var(--silver);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s var(--ease)}
 .mic-ring{position:absolute;inset:-6px;border-radius:50%;border:1px solid transparent;pointer-events:none;transition:border-color .3s var(--ease)}
 
@@ -195,7 +263,6 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 }
 .transcript-area.has-text{display:block}
 
-/* ─── METİN PANELİ ─── */
 .text-panel{display:none}
 .text-panel.visible{display:block;animation:pin .4s var(--ease-out)}
 .dream-input{
@@ -208,35 +275,50 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 .dream-input::placeholder{font-family:var(--serif);font-style:italic;color:var(--text-3)}
 .dream-input:focus{border-color:var(--silver-hover)}
 
-/* ─── GÖNDER ─── */
 .submit-row{display:flex;justify-content:flex-end;margin-top:var(--s5);margin-bottom:var(--s8)}
 .submit-btn{
-  padding:var(--s3) var(--s6);background:var(--silver);color:var(--navy);
+  padding:var(--s3) var(--s6);background:var(--silver);color:var(--navy-deep);
   border:none;border-radius:var(--r2);
   font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.08em;
   cursor:pointer;min-width:44px;min-height:44px;
   transition:opacity .25s var(--ease),box-shadow .25s var(--ease),transform .2s var(--ease);
 }
-.submit-btn:hover{box-shadow:0 0 24px var(--silver-glow);transform:translateY(-1px)}
-.submit-btn:active{transform:translateY(0)}
+.submit-btn:hover:not(:disabled){box-shadow:0 0 24px var(--silver-glow);transform:translateY(-1px)}
+.submit-btn:active:not(:disabled){transform:translateY(0)}
 .submit-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-btn:focus-visible{outline:2px solid var(--silver);outline-offset:3px}
 
-/* ─── YÜKLEME ─── */
 .loading-state{display:none;text-align:center;padding:var(--s8) 0;margin-bottom:var(--s6)}
 .loading-state.visible{display:block}
-.loading-phi{font-family:var(--serif);font-size:36px;font-style:italic;font-weight:300;color:var(--silver);animation:breathe 2.5s ease-in-out infinite;margin-bottom:var(--s4);display:block}
+.loading-phi{
+  font-family:var(--serif);font-size:36px;font-style:italic;font-weight:300;
+  color:var(--silver);animation:breathe 2.5s ease-in-out infinite;
+  margin-bottom:var(--s4);display:block;
+  will-change:opacity;
+}
 @keyframes breathe{0%,100%{opacity:0.3}50%{opacity:1}}
 .loading-text{font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;color:var(--text-3)}
 
-/* ─── HATA ─── */
-.error-bar{display:none;padding:var(--s3) var(--s4);background:rgba(168,104,104,0.08);border:1px solid rgba(168,104,104,0.15);border-radius:var(--r2);font-size:13px;color:var(--error);margin-bottom:var(--s5)}
+.error-bar{
+  display:none;padding:var(--s3) var(--s4);
+  background:rgba(168,104,104,0.08);border:1px solid rgba(168,104,104,0.15);
+  border-radius:var(--r2);font-size:13px;color:var(--error);
+  margin-bottom:var(--s5);
+}
 .error-bar.visible{display:block}
 
-/* ─── SONUÇ ─── */
 .result{display:none;margin-bottom:var(--s8)}
 .result.visible{display:block;animation:up .6s var(--ease-out)}
-.result-label{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:var(--s5);padding-bottom:var(--s3);border-bottom:1px solid var(--silver-border)}
-.result-text{font-family:var(--serif);font-size:18px;font-weight:400;line-height:1.85;color:var(--text-1);max-width:62ch;white-space:pre-wrap;word-wrap:break-word}
+.result-label{
+  font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--text-3);
+  margin-bottom:var(--s5);padding-bottom:var(--s3);
+  border-bottom:1px solid var(--silver-border);
+}
+.result-text{
+  font-family:var(--serif);font-size:18px;font-weight:400;line-height:1.85;
+  color:var(--text-1);max-width:62ch;white-space:pre-wrap;word-wrap:break-word;
+}
 
 .result-meta{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s6);padding-top:var(--s5);border-top:1px solid var(--silver-border)}
 .pill{padding:4px 12px;border-radius:20px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.03em}
@@ -244,32 +326,29 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 .pill-emotion{color:var(--lavender);border:1px solid rgba(128,128,168,0.20);background:var(--lavender-dim)}
 .pill-theme{color:var(--teal);border:1px solid rgba(90,144,168,0.20);background:var(--teal-dim)}
 
-.footer{text-align:center;padding-top:var(--s8);font-family:var(--sans);font-size:11px;letter-spacing:0.1em;color:var(--text-3);opacity:0.35}
-
-@media(max-width:600px){
-  .app{padding:var(--s9) var(--s4) var(--s8)}
-  .intro h1{font-size:32px}
-  .user-fields{grid-template-columns:1fr}
-  .mic-btn{width:68px;height:68px}
-  .voice-timer{font-size:22px}
-  .result-text{font-size:17px}
+.footer{
+  text-align:center;padding-top:var(--s8);
+  font-family:var(--sans);font-size:11px;letter-spacing:0.1em;color:var(--text-3);opacity:0.35;
 }
+.footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,106,136,0.3);transition:border-color .3s var(--ease)}
+.footer a:hover{border-color:var(--silver)}
 </style>
 </head>
 <body>
-<div class="ambient"></div>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="ambient" aria-hidden="true"></div>
 
-<header class="header">
+<header class="header" role="banner">
   <div class="header-brand">
-    <img src="logo.jpg" alt="Phi-Yo" class="header-logo">
-    <span class="header-sep"></span>
+    <img src="logo.jpg" alt="Phi-Yo logo" class="header-logo" width="28" height="28">
+    <span class="header-sep" aria-hidden="true"></span>
     <span class="header-name">Phi-Yo</span>
   </div>
 </header>
 
-<main class="app">
-  <section class="intro">
-    <h1><em>Phi-Yo</em></h1>
+<main class="app" id="main-content">
+  <section class="intro" aria-labelledby="main-heading">
+    <h1 id="main-heading"><em>Phi-Yo</em></h1>
     <p class="intro-sub">Scientific Dream Analysis</p>
     <p class="intro-powered">powered by <span>Freud for Machines: A Computational Psychoanalytic Ontology</span></p>
   </section>
@@ -278,56 +357,59 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
     <input class="field-input" type="text" id="userId" placeholder="User ID" aria-label="User ID">
     <input class="field-input" type="text" id="userName" placeholder="Your Name" aria-label="Your Name">
     <select class="field-input" id="langSelect" aria-label="Speech language">
-      <option value="fr-FR">Fran&#231;ais</option>
+      <option value="fr-FR">Français</option>
       <option value="en-US">English</option>
-      <option value="tr-TR">T&#252;rk&#231;e</option>
+      <option value="tr-TR">Türkçe</option>
       <option value="de-DE">Deutsch</option>
-      <option value="es-ES">Espa&#241;ol</option>
-      <option value="ja-JP">&#26085;&#26412;&#35486;</option>
-      <option value="ru-RU">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
-      <option value="ar-SA">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+      <option value="es-ES">Español</option>
+      <option value="ja-JP">日本語</option>
+      <option value="ru-RU">Русский</option>
+      <option value="ar-SA">العربية</option>
     </select>
   </div>
 
-  <div class="mode-selector" role="tablist">
+  <div class="mode-selector" role="tablist" aria-label="Input mode">
     <button class="mode-tab active" role="tab" aria-selected="true" data-mode="voice" onclick="switchMode('voice')">Voice Input</button>
     <button class="mode-tab" role="tab" aria-selected="false" data-mode="text" onclick="switchMode('text')">Text Input</button>
   </div>
 
-  <div class="voice-panel visible" id="voicePanel" role="tabpanel">
+  <div class="voice-panel visible" id="voicePanel" role="tabpanel" aria-label="Voice input panel">
     <div class="voice-status">
       <span class="voice-label" id="voiceLabel">Tap to describe your dream</span>
-      <span class="voice-timer" id="voiceTimer"></span>
+      <span class="voice-timer" id="voiceTimer" aria-live="polite" aria-label="Recording duration"></span>
     </div>
-    <button class="mic-btn" id="micBtn" onclick="toggleRecording()" aria-label="Voice recording">
-      <div class="mic-ring"></div>
-      <svg id="micIcon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+    <button class="mic-btn" id="micBtn" onclick="toggleRecording()" aria-label="Start voice recording">
+      <div class="mic-ring" aria-hidden="true"></div>
+      <svg id="micIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
     </button>
-    <div class="transcript-area" id="transcriptArea"></div>
+    <div class="transcript-area" id="transcriptArea" aria-live="polite" aria-label="Voice transcript"></div>
   </div>
 
-  <div class="text-panel" id="textPanel" role="tabpanel">
-    <textarea class="dream-input" id="dreamInput" placeholder="Describe your dream..." aria-label="Dream text"></textarea>
+  <div class="text-panel" id="textPanel" role="tabpanel" aria-label="Text input panel">
+    <label for="dreamInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Describe your dream</label>
+    <textarea class="dream-input" id="dreamInput" placeholder="Describe your dream..." aria-label="Dream text input"></textarea>
   </div>
 
   <div class="submit-row">
     <button class="submit-btn" id="submitBtn" onclick="submitDream()">Interpret</button>
   </div>
 
-  <div class="error-bar" id="errorBar" role="alert"></div>
+  <div class="error-bar" id="errorBar" role="alert" aria-live="assertive" tabindex="-1"></div>
 
-  <div class="loading-state" id="loadingState">
-    <span class="loading-phi" aria-hidden="true">&phi;</span>
-    <p class="loading-text">Phi-Yo is thinking...</p>
+  <div class="loading-state" id="loadingState" aria-live="polite" role="status">
+    <span class="loading-phi" aria-hidden="true">φ</span>
+    <p class="loading-text">Phi-Yo is thinking…</p>
   </div>
 
-  <section class="result" id="resultSection">
+  <section class="result" id="resultSection" aria-live="polite" aria-label="Dream interpretation result">
     <div class="result-label">Interpretation</div>
     <div class="result-text" id="resultText"></div>
     <div class="result-meta" id="resultMeta"></div>
   </section>
 
-  <footer class="footer">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,106,136,0.3);transition:border-color .3s">Llull Lab</a></footer>
+  <footer class="footer">
+    &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>
+  </footer>
 </main>
 
 <script>
@@ -338,21 +420,22 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 
   var mode = 'voice', isRecording = false, recognition = null;
   var transcript = '', interim = '', recTimer = null, seconds = 0;
+  var errTimer = null;
 
-  var voicePanel = document.getElementById('voicePanel');
-  var textPanel = document.getElementById('textPanel');
-  var voiceLabel = document.getElementById('voiceLabel');
-  var voiceTimer = document.getElementById('voiceTimer');
-  var micBtn = document.getElementById('micBtn');
-  var micIcon = document.getElementById('micIcon');
-  var transcriptArea = document.getElementById('transcriptArea');
-  var dreamInput = document.getElementById('dreamInput');
-  var submitBtn = document.getElementById('submitBtn');
-  var errorBar = document.getElementById('errorBar');
-  var loadingState = document.getElementById('loadingState');
+  var voicePanel    = document.getElementById('voicePanel');
+  var textPanel     = document.getElementById('textPanel');
+  var voiceLabel    = document.getElementById('voiceLabel');
+  var voiceTimer    = document.getElementById('voiceTimer');
+  var micBtn        = document.getElementById('micBtn');
+  var micIcon       = document.getElementById('micIcon');
+  var transcriptArea= document.getElementById('transcriptArea');
+  var dreamInput    = document.getElementById('dreamInput');
+  var submitBtn     = document.getElementById('submitBtn');
+  var errorBar      = document.getElementById('errorBar');
+  var loadingState  = document.getElementById('loadingState');
   var resultSection = document.getElementById('resultSection');
-  var resultText = document.getElementById('resultText');
-  var resultMeta = document.getElementById('resultMeta');
+  var resultText    = document.getElementById('resultText');
+  var resultMeta    = document.getElementById('resultMeta');
 
   window.switchMode = function(m) {
     mode = m;
@@ -392,16 +475,24 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
 
   function startRec() {
     transcript = ''; interim = ''; seconds = 0;
-    recognition = createRec(); if (!recognition) return;
+    recognition = createRec();
+    if (!recognition) return;
     try {
-      recognition.start(); isRecording = true;
-      micBtn.classList.add('recording'); micIcon.style.display = 'none';
-      var s = document.createElement('div'); s.className = 'stop-icon'; s.id = 'stopIcon'; micBtn.appendChild(s);
-      voiceLabel.textContent = 'Listening...'; voiceTimer.textContent = '00:00';
-      transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
+      recognition.start();
+      isRecording = true;
+      micBtn.classList.add('recording');
+      micBtn.setAttribute('aria-label', 'Stop voice recording');
+      micIcon.style.display = 'none';
+      var s = document.createElement('div');
+      s.className = 'stop-icon'; s.id = 'stopIcon';
+      micBtn.appendChild(s);
+      voiceLabel.textContent = 'Listening…';
+      voiceTimer.textContent = '00:00';
+      transcriptArea.textContent = '';
+      transcriptArea.classList.remove('has-text');
       recTimer = setInterval(function() {
         seconds++;
-        voiceTimer.textContent = String(Math.floor(seconds/60)).padStart(2,'0') + ':' + String(seconds%60).padStart(2,'0');
+        voiceTimer.textContent = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
       }, 1000);
     } catch(e) { showError('Could not start recording.'); }
   }
@@ -411,77 +502,122 @@ select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csv
     if (recognition) { recognition.stop(); recognition = null; }
     if (recTimer) { clearInterval(recTimer); recTimer = null; }
     micBtn.classList.remove('recording');
-    var si = document.getElementById('stopIcon'); if (si) si.remove();
+    micBtn.setAttribute('aria-label', 'Start voice recording');
+    var si = document.getElementById('stopIcon');
+    if (si) si.remove();
     micIcon.style.display = '';
     voiceLabel.textContent = transcript.trim() ? 'Recording complete' : 'Tap to describe your dream';
-    voiceTimer.textContent = ''; updateTx();
+    voiceTimer.textContent = '';
+    updateTx();
   }
 
   function updateTx() {
     var f = transcript + interim;
-    if (f.trim()) { transcriptArea.textContent = f; transcriptArea.classList.add('has-text'); }
+    if (f.trim()) {
+      transcriptArea.textContent = f;
+      transcriptArea.classList.add('has-text');
+    }
   }
 
   window.submitDream = async function() {
     hideErr();
-
-    // If recording is in progress, stop it first
     if (isRecording) stopRec();
 
-    var dt = mode === 'voice' ? transcript.trim() : dreamInput.value.trim();
-    if (!dt) { showError(mode === 'voice' ? 'Please describe your dream using voice input.' : 'Please write your dream.'); return; }
+    var dt = mode === 'voice' ? transcript.trim() : (dreamInput ? dreamInput.value.trim() : '');
+    if (!dt) {
+      showError(mode === 'voice' ? 'Please describe your dream using voice input.' : 'Please write your dream.');
+      return;
+    }
 
-    var uid = document.getElementById('userId').value.trim() || 'phiyo-web-' + Date.now();
-    var un = document.getElementById('userName').value.trim() || '';
+    var uid = (document.getElementById('userId') || {}).value;
+    uid = (uid || '').trim() || 'phiyo-web-' + Date.now();
+    var un = ((document.getElementById('userName') || {}).value || '').trim();
     var dur = mode === 'voice' ? seconds : 0;
 
-    submitBtn.disabled = true; loadingState.classList.add('visible'); resultSection.classList.remove('visible');
+    submitBtn.disabled = true;
+    loadingState.classList.add('visible');
+    resultSection.classList.remove('visible');
+
     try {
-      var res = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ dream:dt, user_id:uid, user_name:un, session_id:'dream_'+Date.now(), input_type:mode, duration:dur, language:document.getElementById('langSelect').value })
+      var res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dream: dt,
+          user_id: uid,
+          user_name: un,
+          session_id: 'dream_' + Date.now(),
+          input_type: mode,
+          duration: dur,
+          language: (document.getElementById('langSelect') || {}).value || 'en-US'
+        })
       });
       if (!res.ok) throw new Error('Server error: ' + res.status);
       var data = await res.json();
 
-      // Backend may return two different formats — support both
       if (data.success || data.interpretation || data.displayResponse) {
         showResult(data);
         resetInput();
       } else {
         throw new Error(data.error || 'Unknown error');
       }
-    } catch(e) { showError('Connection error: ' + e.message); }
-    finally { submitBtn.disabled = false; loadingState.classList.remove('visible'); }
+    } catch(e) {
+      showError('Connection error: ' + e.message);
+    } finally {
+      submitBtn.disabled = false;
+      loadingState.classList.remove('visible');
+    }
   };
 
   function resetInput() {
-    // Clear input fields after result is received
     if (mode === 'voice') {
       transcript = ''; interim = ''; seconds = 0;
-      transcriptArea.textContent = ''; transcriptArea.classList.remove('has-text');
+      transcriptArea.textContent = '';
+      transcriptArea.classList.remove('has-text');
       voiceLabel.textContent = 'Tap to describe your dream';
     } else {
-      dreamInput.value = '';
+      if (dreamInput) dreamInput.value = '';
     }
   }
 
   function showResult(data) {
-    // Support both backend formats: interpretation or displayResponse
     var text = data.interpretation || data.displayResponse || '';
-    resultText.textContent = text;
-    resultMeta.innerHTML = '';
-    var m = data.metadata || {};
-    (m.symbols||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-symbol')); });
-    (m.emotions||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-emotion')); });
-    (m.themes||[]).forEach(function(s){ resultMeta.appendChild(pill(s,'pill-theme')); });
+    if (resultText) resultText.textContent = text;
+    if (resultMeta) {
+      resultMeta.innerHTML = '';
+      var m = data.metadata || {};
+      (m.symbols  || []).forEach(function(s){ resultMeta.appendChild(pill(s, 'pill-symbol'));  });
+      (m.emotions || []).forEach(function(s){ resultMeta.appendChild(pill(s, 'pill-emotion')); });
+      (m.themes   || []).forEach(function(s){ resultMeta.appendChild(pill(s, 'pill-theme'));   });
+    }
     resultSection.classList.add('visible');
-    setTimeout(function(){ resultSection.scrollIntoView({behavior:'smooth',block:'start'}); },100);
+    setTimeout(function(){
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
-  function pill(t,c){ var e=document.createElement('span'); e.className='pill '+c; e.textContent=t; return e; }
-  var errTimer = null;
-  function showError(m){ errorBar.textContent=m; errorBar.classList.add('visible'); clearTimeout(errTimer); errTimer=setTimeout(hideErr,6000); }
-  function hideErr(){ errorBar.classList.remove('visible'); clearTimeout(errTimer); }
+  function pill(t, c) {
+    var e = document.createElement('span');
+    e.className = 'pill ' + c;
+    e.textContent = t;
+    return e;
+  }
+
+  function showError(m) {
+    if (!errorBar) return;
+    errorBar.textContent = m;
+    errorBar.classList.add('visible');
+    errorBar.focus();
+    clearTimeout(errTimer);
+    errTimer = setTimeout(hideErr, 6000);
+  }
+
+  function hideErr() {
+    if (!errorBar) return;
+    errorBar.classList.remove('visible');
+    clearTimeout(errTimer);
+  }
+
 })();
 </script>
 </body>
