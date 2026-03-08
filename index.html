@@ -677,11 +677,11 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     <textarea class="dream-input" id="dreamInput" placeholder="Describe your dream..." aria-label="Dream text input"></textarea>
   </div>
 
-  <div class="submit-row">
+  <div class="submit-row observe-fade">
     <button class="submit-btn" id="submitBtn">Interpret</button>
   </div>
 
-  <div class="error-bar" id="errorBar" role="alert" aria-live="assertive" tabindex="-1"></div>
+  <div class="error-bar observe-fade" id="errorBar" role="alert" aria-live="assertive" tabindex="-1"></div>
 
   <div class="loading-state" id="loadingState" aria-live="polite" role="status">
     <span class="loading-phi" aria-hidden="true">φ</span>
@@ -694,7 +694,7 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     <div class="result-meta" id="resultMeta"></div>
   </section>
 
-  <footer class="footer">
+  <footer class="footer observe-fade">
     &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>
   </footer>
 </main>
@@ -966,9 +966,17 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 
   /* ── IntersectionObserver for scroll animations ── */
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var observer = null;
+
+  function observeAll() {
+    document.querySelectorAll('.observe-fade:not(.in-view)').forEach(function(el) {
+      if (prefersReduced) { el.classList.add('in-view'); }
+      else if (observer) { observer.observe(el); }
+    });
+  }
 
   if (!prefersReduced) {
-    var observer = new IntersectionObserver(function(entries) {
+    observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
@@ -976,16 +984,8 @@ select option{background:var(--bg-raised);color:var(--text-1)}
         }
       });
     }, { threshold: 0.15 });
-
-    document.querySelectorAll('.observe-fade').forEach(function(el) {
-      observer.observe(el);
-    });
-  } else {
-    /* Reduced motion: show everything immediately */
-    document.querySelectorAll('.observe-fade').forEach(function(el) {
-      el.classList.add('in-view');
-    });
   }
+  observeAll();
 
 })();
 </script>
