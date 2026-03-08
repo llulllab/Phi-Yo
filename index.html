@@ -598,6 +598,120 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 @media(min-width:768px){
   .app{padding:var(--s10) var(--s8) var(--s9)}
 }
+
+/* ═══ INVITE GATE ═══ */
+.gate-view{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(ellipse at 30% 20%,rgba(212,162,76,0.04) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 80%,rgba(138,106,170,0.04) 0%,transparent 50%),
+    var(--bg-abyss);
+  padding:24px;
+}
+.gate-view .gate-ambient{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.gate-view .gate-blob{
+  position:absolute;width:340px;height:340px;
+  border-radius:50%;filter:blur(100px);opacity:0.08;
+  background:radial-gradient(circle,var(--amber),var(--plum));
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:gatePulse 8s ease-in-out infinite alternate;
+}
+@keyframes gatePulse{0%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(1.15)}}
+
+.gate-panel{
+  width:100%;max-width:420px;
+  background:
+    linear-gradient(160deg,rgba(212,162,76,0.03) 0%,transparent 40%),
+    var(--bg-raised);
+  border:1px solid var(--border-hover);
+  border-radius:var(--r3);
+  padding:44px 32px 36px;
+  text-align:center;
+  position:relative;
+  animation:gateIn 0.8s var(--ease-out) both;
+}
+@keyframes gateIn{from{opacity:0;transform:translateY(16px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.gate-phi{
+  font-family:var(--font-display);font-size:3rem;font-weight:300;
+  color:var(--amber);opacity:0.7;margin-bottom:20px;
+  font-style:italic;line-height:1;
+}
+.gate-title{
+  font-family:var(--font-display);font-size:1.4rem;font-weight:400;
+  color:var(--text-hero);margin-bottom:6px;line-height:1.2;
+}
+.gate-sub{
+  font-family:var(--font-body);font-size:0.8rem;
+  color:var(--text-3);margin-bottom:24px;
+}
+.gate-tabs{
+  display:flex;gap:4px;margin-bottom:20px;
+  background:var(--bg-input);border-radius:var(--r2);padding:3px;
+}
+.gate-tab{
+  flex:1;font-family:var(--font-body);font-size:0.72rem;font-weight:500;
+  color:var(--text-3);background:transparent;
+  border:none;border-radius:calc(var(--r2) - 2px);
+  padding:8px 10px;cursor:pointer;
+  transition:color var(--fast) var(--ease),background var(--fast) var(--ease);
+}
+.gate-tab:hover{color:var(--text-2)}
+.gate-tab.active{color:var(--amber);background:var(--bg-raised);box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+
+.gate-tab-panel{display:flex;flex-direction:column;gap:12px}
+
+.gate-input{
+  font-family:var(--font-body);font-size:0.9rem;
+  color:var(--text-1);background:var(--bg-input);
+  border:1px solid var(--border);border-radius:var(--r2);
+  padding:12px 14px;width:100%;text-align:center;
+  transition:border-color var(--fast) var(--ease),box-shadow var(--fast) var(--ease);
+  letter-spacing:0.06em;
+}
+.gate-input:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-ghost);outline:none}
+.gate-input::placeholder{color:var(--text-3);letter-spacing:0.03em}
+
+.gate-btn{
+  font-family:var(--font-display);font-size:0.95rem;font-weight:400;
+  font-style:italic;color:var(--bg-abyss);
+  background:linear-gradient(135deg,var(--amber-dim),var(--amber),var(--amber-bright));
+  background-size:200% 200%;
+  border:none;border-radius:var(--r2);
+  padding:12px 28px;cursor:pointer;min-height:44px;
+  box-shadow:0 4px 20px rgba(212,162,76,0.2),0 1px 3px rgba(0,0,0,0.2);
+  transition:transform var(--med) var(--ease),box-shadow var(--med) var(--ease),background-position 400ms var(--ease),opacity var(--fast) var(--ease);
+  width:100%;
+}
+.gate-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,162,76,0.3);background-position:100% 100%}
+.gate-btn:active:not(:disabled){transform:translateY(0)}
+.gate-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+.gate-error{font-size:0.75rem;color:var(--error);min-height:1.1em}
+.gate-error:empty{opacity:0}
+.gate-success{font-size:0.75rem;color:var(--success);min-height:1.1em;line-height:1.5}
+.gate-success:empty{opacity:0}
+
+.gate-footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--border)}
+.gate-footer p{font-size:0.68rem;color:var(--text-3)}
+.gate-footer a{color:var(--text-3);text-decoration:none;border-bottom:1px solid var(--border);transition:border-color var(--fast) var(--ease)}
+.gate-footer a:hover{border-color:var(--amber)}
+
+/* ═══ QUOTA BADGE ═══ */
+.quota-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-body);font-size:0.65rem;font-weight:500;
+  color:var(--text-3);background:var(--bg-raised);
+  border:1px solid var(--border);border-radius:var(--r2);
+  padding:5px 10px;letter-spacing:0.03em;white-space:nowrap;
+  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease);
+}
+.quota-badge .quota-icon{font-size:0.7rem}
+.quota-badge.low{color:var(--amber);border-color:rgba(212,162,76,0.25)}
+.quota-badge.empty{color:var(--error);border-color:rgba(196,104,104,0.25)}
 </style>
 </head>
 <body>
@@ -608,6 +722,34 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 </div>
 <div class="noise" aria-hidden="true"></div>
 
+<!-- ═══ INVITE GATE ═══ -->
+<div class="gate-view" id="gateView">
+  <div class="gate-ambient" aria-hidden="true"><div class="gate-blob"></div></div>
+  <div class="gate-panel">
+    <div class="gate-phi" aria-hidden="true">φ</div>
+    <h2 class="gate-title">Phi-Yo</h2>
+    <p class="gate-sub">Invitation-only access to dream analysis</p>
+    <div class="gate-tabs" role="tablist">
+      <button class="gate-tab active" id="gateTabCode" role="tab" aria-selected="true" aria-controls="gatePanelCode">I Have a Code</button>
+      <button class="gate-tab" id="gateTabRequest" role="tab" aria-selected="false" aria-controls="gatePanelRequest">Request Access</button>
+    </div>
+    <div class="gate-tab-panel" id="gatePanelCode" role="tabpanel">
+      <input type="text" class="gate-input" id="inviteInput" placeholder="e.g. RJE-2026-XXXX-XX" autocomplete="off" spellcheck="false" aria-label="Invitation code">
+      <div class="gate-error" id="gateError" role="alert"></div>
+      <button class="gate-btn" id="gateBtn">Enter the Dream</button>
+    </div>
+    <div class="gate-tab-panel" id="gatePanelRequest" role="tabpanel" style="display:none">
+      <input type="email" class="gate-input" id="requestEmail" placeholder="your@email.com" autocomplete="email" style="letter-spacing:0.02em" aria-label="Email address">
+      <div class="gate-error" id="requestError" role="alert"></div>
+      <div class="gate-success" id="requestSuccess" role="status"></div>
+      <button class="gate-btn" id="requestBtn">Request Access</button>
+    </div>
+    <div class="gate-footer">
+      <p>&copy; 2026 <a href="https://llulllab.com">Llull Lab</a></p>
+    </div>
+  </div>
+</div>
+
 <header class="header" role="banner">
   <div class="header-brand">
     <img src="logo.jpg" alt="Phi-Yo logo" class="header-logo" width="28" height="28">
@@ -615,6 +757,7 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     <span class="header-name">Phi-Yo</span>
   </div>
   <div class="header-right">
+    <span class="quota-badge" id="quotaBadge" style="display:none" aria-label="Remaining sessions"><span class="quota-icon">φ</span> <span id="quotaText"></span></span>
     <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
       <svg id="themeIcon" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="5"/>
@@ -704,6 +847,11 @@ select option{background:var(--bg-raised);color:var(--text-1)}
   'use strict';
 
   var WEBHOOK_URL = 'https://n8n.tropus.io/webhook/phiyo-dream';
+  var WH_VALIDATE = 'https://n8n.tropus.io/webhook/invite-validate';
+  var WH_REQUEST  = 'https://n8n.tropus.io/webhook/access-request';
+  var sessionToken = null;
+  var remainingUses = null;
+  var maxUsesGlobal = null;
 
   var mode = 'voice', isRecording = false, recognition = null;
   var transcript = '', interim = '', recTimer = null, seconds = 0;
@@ -866,9 +1014,11 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     resultSection.classList.remove('visible');
 
     try {
+      var fetchHeaders = { 'Content-Type': 'application/json' };
+      if (sessionToken) fetchHeaders['X-Session-Token'] = sessionToken;
       var res = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: fetchHeaders,
         body: JSON.stringify({
           dream: dt,
           user_id: uid,
@@ -879,8 +1029,22 @@ select option{background:var(--bg-raised);color:var(--text-1)}
           language: (document.getElementById('langSelect') || {}).value || 'en-US'
         })
       });
-      if (!res.ok) throw new Error('Server error: ' + res.status);
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          try { sessionStorage.removeItem('phiyo-token'); } catch(e2) {}
+          sessionToken = null;
+          showGate();
+          showError('Session expired. Please re-enter your invite code.');
+          return;
+        }
+        if (res.status === 429) {
+          showError('Too many requests. Please wait a moment.');
+          return;
+        }
+        throw new Error('Server error: ' + res.status);
+      }
       var data = await res.json();
+      if (typeof data.remaining_uses === 'number') updateQuota(data.remaining_uses, data.max_uses || maxUsesGlobal);
 
       if (data.success || data.interpretation || data.displayResponse) {
         showResult(data);
@@ -963,6 +1127,149 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     errorBar.classList.remove('visible');
     clearTimeout(errTimer);
   }
+
+  /* ═══ INVITE GATE SYSTEM ═══ */
+
+  function showGate(){
+    var g=document.getElementById('gateView');if(g)g.style.display='';
+    var h=document.querySelector('header.header');if(h)h.style.display='none';
+    var m=document.querySelector('main.app');if(m)m.style.display='none';
+    var f=document.querySelector('footer.footer');if(f)f.style.display='none';
+  }
+
+  function hideGate(){
+    var g=document.getElementById('gateView');if(g)g.style.display='none';
+    var h=document.querySelector('header.header');if(h)h.style.display='';
+    var m=document.querySelector('main.app');if(m)m.style.display='';
+    var f=document.querySelector('footer.footer');if(f)f.style.display='';
+  }
+
+  function updateQuota(remaining,max){
+    remainingUses=remaining;
+    if(typeof max==='number')maxUsesGlobal=max;
+    var badge=document.getElementById('quotaBadge'),text=document.getElementById('quotaText');
+    if(badge&&text){
+      badge.style.display='';
+      text.textContent=remaining+'/'+(max||maxUsesGlobal||'?')+' remaining';
+      badge.classList.remove('low','empty');
+      if(remaining<=0){badge.classList.add('empty')}
+      else if(remaining===1){badge.classList.add('low')}
+    }
+    if(remaining<=0&&submitBtn){
+      submitBtn.disabled=true;
+    }
+  }
+
+  /* ── Gate tabs ── */
+  var gTabCode=document.getElementById('gateTabCode'),gTabReq=document.getElementById('gateTabRequest');
+  var gPanelCode=document.getElementById('gatePanelCode'),gPanelReq=document.getElementById('gatePanelRequest');
+
+  function switchGateTab(tab){
+    if(tab==='code'){
+      if(gTabCode)gTabCode.classList.add('active');
+      if(gTabReq)gTabReq.classList.remove('active');
+      if(gTabCode)gTabCode.setAttribute('aria-selected','true');
+      if(gTabReq)gTabReq.setAttribute('aria-selected','false');
+      if(gPanelCode)gPanelCode.style.display='';
+      if(gPanelReq)gPanelReq.style.display='none';
+    }else{
+      if(gTabReq)gTabReq.classList.add('active');
+      if(gTabCode)gTabCode.classList.remove('active');
+      if(gTabReq)gTabReq.setAttribute('aria-selected','true');
+      if(gTabCode)gTabCode.setAttribute('aria-selected','false');
+      if(gPanelReq)gPanelReq.style.display='';
+      if(gPanelCode)gPanelCode.style.display='none';
+    }
+  }
+  if(gTabCode)gTabCode.addEventListener('click',function(){switchGateTab('code')});
+  if(gTabReq)gTabReq.addEventListener('click',function(){switchGateTab('request')});
+
+  /* ── Invite code validation ── */
+  var gateBtn=document.getElementById('gateBtn'),inviteInput=document.getElementById('inviteInput'),gateError=document.getElementById('gateError');
+
+  async function handleGateSubmit(){
+    var code=inviteInput?inviteInput.value.trim():'';
+    if(!code){if(inviteInput)inviteInput.focus();return}
+    if(gateBtn)gateBtn.disabled=true;
+    if(gateError)gateError.textContent='';
+    try{
+      var res=await fetch(WH_VALIDATE,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({invite_code:code})
+      });
+      var data=await res.json();
+      if(!res.ok)throw new Error(data.message||'Invalid invite code');
+      sessionToken=data.token;
+      try{sessionStorage.setItem('phiyo-token',data.token)}catch(e){}
+      updateQuota(data.remaining_uses,data.max_uses);
+      hideGate();
+    }catch(err){
+      if(gateError)gateError.textContent=err.message||'Invalid invite code';
+    }finally{
+      if(gateBtn)gateBtn.disabled=false;
+    }
+  }
+
+  if(gateBtn)gateBtn.addEventListener('click',handleGateSubmit);
+  if(inviteInput)inviteInput.addEventListener('keydown',function(e){if(e.key==='Enter')handleGateSubmit()});
+
+  /* ── Access request ── */
+  var reqBtn=document.getElementById('requestBtn'),reqEmail=document.getElementById('requestEmail'),reqError=document.getElementById('requestError'),reqSuccess=document.getElementById('requestSuccess');
+
+  async function handleRequest(){
+    var email=reqEmail?reqEmail.value.trim():'';
+    if(!email||email.indexOf('@')===-1){if(reqEmail)reqEmail.focus();return}
+    if(reqBtn)reqBtn.disabled=true;
+    if(reqError)reqError.textContent='';
+    if(reqSuccess)reqSuccess.textContent='';
+    try{
+      var res=await fetch(WH_REQUEST,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:email})
+      });
+      var data=await res.json();
+      if(!res.ok)throw new Error(data.message||'Request failed');
+      if(reqSuccess)reqSuccess.textContent='Your request has been received. If approved, you will receive an invitation code via email.';
+      if(reqEmail)reqEmail.value='';
+      if(reqBtn)reqBtn.disabled=true;
+      setTimeout(function(){if(reqBtn)reqBtn.disabled=false},10000);
+    }catch(err){
+      if(reqError)reqError.textContent=err.message||'Request failed. Please try again.';
+    }finally{
+      if(reqBtn&&!reqSuccess.textContent)reqBtn.disabled=false;
+    }
+  }
+
+  if(reqBtn)reqBtn.addEventListener('click',handleRequest);
+  if(reqEmail)reqEmail.addEventListener('keydown',function(e){if(e.key==='Enter')handleRequest()});
+
+  /* ── Session check on page load ── */
+  (function checkSession(){
+    var saved=null;
+    try{saved=sessionStorage.getItem('phiyo-token')}catch(e){}
+    if(saved){
+      sessionToken=saved;
+      fetch(WH_VALIDATE,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({token:saved})
+      }).then(function(res){
+        if(res.ok)return res.json();
+        throw new Error('expired');
+      }).then(function(data){
+        updateQuota(data.remaining_uses,data.max_uses);
+        hideGate();
+      }).catch(function(){
+        try{sessionStorage.removeItem('phiyo-token')}catch(e){}
+        sessionToken=null;
+        showGate();
+      });
+    }else{
+      showGate();
+    }
+  })();
 
   /* ── IntersectionObserver for scroll animations ── */
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
