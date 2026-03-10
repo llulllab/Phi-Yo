@@ -3,37 +3,19 @@
 <head>
 <!--
   ══════════════════════════════════════════════════════
-  3 KARAR
+  Phi-Yo — Chat Interface v2
   ══════════════════════════════════════════════════════
-
-  1. KİŞİLİK — Viktoryen dönemde bir rüya araştırmacısı:
-     kadife cübbeli, ahşap masasında mum ışığında rüya
-     günlüğü tutan, ama laboratuvarında modern spektrograf
-     kullanan biri. Eski ile yeninin kesişimi.
-     → Fraunces (optik boyutlu, vintage-modern serif) +
-       Instrument Sans (temiz, geometrik ama insancıl)
-     → Patlıcan moru bazlı koyu zemin, amber/kehribar vurgu,
-       soluk lavanta aksesuar. Sıcak, gizemli, bilimsel.
-
-  2. SÜRPRIZ — Dev bir morphing gradient blob (φ sembolü
-     şeklinde mask'lanmış) arka planda yavaşça nefes alıyor.
-     Result bölümü göründüğünde circle clip-path reveal ile
-     açılıyor — sanki bilinçaltının kapısı aralanıyor.
-
-  3. RİTİM — Bölümler arası ince amber gradient çizgi +
-     arka plan tonu hafifçe kayıyor (moru → daha koyu mor →
-     amber tinted). Her geçiş "gece derinleşiyor" hissi.
+  Aynı patlıcan gecesi paleti, aynı ambient blob'lar,
+  aynı tipografi. Tek fark: artık bir sohbet akışı var.
+  user_id localStorage'da kalıcı, session_id sayfa
+  ömrü boyunca sabit.
   ══════════════════════════════════════════════════════
 -->
-  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Phi-Yo — Scientific Dream Analysis powered by Freud for Machines</title>
-<meta name="description" content="Phi-Yo is an AI-powered dream analysis tool grounded in Freud for Machines: A Computational Psychoanalytic Ontology. Describe your dream by voice or text and receive a scientific interpretation.">
-<meta property="og:title" content="Phi-Yo — Scientific Dream Analysis">
-<meta property="og:description" content="AI-powered dream interpretation grounded in computational psychoanalytic ontology.">
-<meta property="og:type" content="website">
-<link rel="canonical" href="">
+<meta name="description" content="Phi-Yo is an AI-powered dream analysis tool grounded in Freud for Machines: A Computational Psychoanalytic Ontology.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>φ</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +24,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  /* Patlıcan Gecesi Paleti */
   --bg-abyss:#0e0a14;
   --bg-deep:#140f1e;
   --bg-raised:#1c1528;
@@ -88,6 +69,9 @@
   --ease:cubic-bezier(0.4,0,0.2,1);
   --ease-out:cubic-bezier(0.0,0,0.2,1);
   --ease-bounce:cubic-bezier(0.34,1.56,0.64,1);
+
+  --header-h:52px;
+  --composer-h:auto;
 }
 
 [data-theme="light"]{
@@ -134,83 +118,54 @@
     transition-duration:0.01ms!important;
   }
   html{scroll-behavior:auto}
-  .phi-blob,.phi-blob-2,.ambient-orb,.ambient-orb-2{animation:none!important}
 }
 
-html{font-size:16px;scroll-behavior:smooth}
+html{font-size:16px;scroll-behavior:smooth;height:100%}
 
 body{
   font-family:var(--font-body);font-weight:400;
   background:var(--bg-abyss);color:var(--text-1);
-  line-height:1.6;min-height:100vh;overflow-x:hidden;
+  line-height:1.6;height:100%;overflow:hidden;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  display:flex;flex-direction:column;
 }
 
 ::selection{background:rgba(212,162,76,0.25);color:var(--text-hero)}
 [data-theme="light"] ::selection{background:rgba(138,94,26,0.20);color:var(--text-hero)}
 
-::-webkit-scrollbar{width:7px}
-::-webkit-scrollbar-track{background:var(--bg-abyss)}
-::-webkit-scrollbar-thumb{background:var(--plum-dim);border-radius:4px;border:1px solid transparent;background-clip:padding-box}
-::-webkit-scrollbar-thumb:hover{background:var(--amber-dim);border-radius:4px;border:1px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--plum-dim);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--amber-dim);border-radius:4px}
 
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 
-/* ═══ SKIP LINK ═══ */
-.skip-link{
-  position:absolute;top:-100%;left:var(--s4);
-  padding:var(--s2) var(--s4);
-  background:var(--amber);color:var(--bg-abyss);
-  font-family:var(--font-body);font-size:13px;font-weight:600;
-  border-radius:0 0 var(--r2) var(--r2);text-decoration:none;
-  z-index:10000;transition:top 0.2s var(--ease-out);
-}
-.skip-link:focus{top:0}
-
-/* ═══ AMBIENT BACKGROUND ═══ */
+/* ═══ AMBIENT ═══ */
 .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-
 .phi-blob{
-  position:absolute;
-  width:700px;height:700px;
-  top:-10%;right:-15%;
+  position:absolute;width:700px;height:700px;top:-10%;right:-15%;
   background:
-    radial-gradient(ellipse at 35% 40%, rgba(138,106,170,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 65% 60%, rgba(212,162,76,0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at 35% 40%,rgba(138,106,170,0.07) 0%,transparent 55%),
+    radial-gradient(ellipse at 65% 60%,rgba(212,162,76,0.05) 0%,transparent 50%);
   border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;
-  animation:blobMorph 25s ease-in-out infinite;
-  will-change:transform,border-radius;
-  filter:blur(40px);
+  animation:blobMorph 25s ease-in-out infinite;filter:blur(40px);
 }
 .phi-blob-2{
-  position:absolute;
-  width:500px;height:500px;
-  bottom:-15%;left:-10%;
+  position:absolute;width:500px;height:500px;bottom:-15%;left:-10%;
   background:
-    radial-gradient(ellipse at 50% 50%, rgba(196,122,122,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 40% 60%, rgba(138,106,170,0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at 50% 50%,rgba(196,122,122,0.04) 0%,transparent 60%),
+    radial-gradient(ellipse at 40% 60%,rgba(138,106,170,0.05) 0%,transparent 50%);
   border-radius:60% 40% 30% 70% / 50% 60% 40% 60%;
-  animation:blobMorph 30s ease-in-out infinite reverse;
-  will-change:transform,border-radius;
-  filter:blur(50px);
+  animation:blobMorph 30s ease-in-out infinite reverse;filter:blur(50px);
 }
-
 @keyframes blobMorph{
-  0%{border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}
-  25%{border-radius:60% 40% 30% 70% / 60% 30% 70% 40%;transform:translate(20px,-15px) rotate(5deg)}
-  50%{border-radius:30% 60% 50% 40% / 50% 60% 30% 60%;transform:translate(-10px,20px) rotate(-3deg)}
-  75%{border-radius:50% 30% 60% 40% / 40% 60% 40% 50%;transform:translate(15px,10px) rotate(4deg)}
-  100%{border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}
+  0%{border-radius:40% 60% 70% 30%/40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}
+  25%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%;transform:translate(20px,-15px) rotate(5deg)}
+  50%{border-radius:30% 60% 50% 40%/50% 60% 30% 60%;transform:translate(-10px,20px) rotate(-3deg)}
+  75%{border-radius:50% 30% 60% 40%/40% 60% 40% 50%;transform:translate(15px,10px) rotate(4deg)}
+  100%{border-radius:40% 60% 70% 30%/40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}
 }
-
-.ambient::after{
-  content:'';position:absolute;inset:0;
-  background-image:radial-gradient(circle,rgba(138,106,170,0.04) 1px,transparent 1px);
-  background-size:32px 32px;
-}
-
-/* ═══ NOISE TEXTURE ═══ */
 .noise{
   position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -219,17 +174,18 @@ body{
 /* ═══ HEADER ═══ */
 .header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  padding:var(--s3) var(--s5);
+  height:var(--header-h);
+  padding:0 var(--s5);
   background:var(--bg-glow);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
 }
 .header::after{
   content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(212,162,76,0.2) 30%,rgba(138,106,170,0.15) 70%,transparent);
 }
-
 .header-brand{display:flex;align-items:center;gap:var(--s3)}
 .header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9}
 .header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.3}
@@ -237,404 +193,309 @@ body{
   font-family:var(--font-body);font-size:12px;font-weight:600;
   letter-spacing:0.14em;text-transform:uppercase;color:var(--text-2)
 }
-
 .header-right{display:flex;align-items:center;gap:var(--s2)}
 
-.theme-toggle{
+.icon-btn{
   width:36px;height:36px;border-radius:50%;
   border:1px solid var(--border);background:transparent;
   color:var(--text-2);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   transition:border-color 0.25s var(--ease),color 0.25s var(--ease),background 0.25s var(--ease);
-  min-width:44px;min-height:44px;flex-shrink:0;
+  min-width:36px;min-height:36px;flex-shrink:0;
 }
-.theme-toggle:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
-.theme-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
+.icon-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
-/* ═══ MAIN APP ═══ */
-.app{
+/* ═══ CHAT AREA ═══ */
+.chat-wrapper{
   position:relative;z-index:1;
-  max-width:680px;
+  flex:1;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding-top:var(--header-h);
+}
+
+.chat-scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:var(--s5) var(--s4) var(--s4);
+  scroll-behavior:smooth;
+}
+
+.chat-inner{
+  max-width:720px;
   margin:0 auto;
-  padding:var(--s10) var(--s5) var(--s9);
+  display:flex;flex-direction:column;
+  gap:var(--s4);
 }
 
-/* ═══ INTRO ═══ */
-.intro{
-  position:relative;
-  text-align:left;
-  margin-bottom:var(--s8);
-  padding-right:100px;
-  opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.15s;
+/* ═══ WELCOME SCREEN ═══ */
+.welcome{
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  padding:var(--s9) 0 var(--s7);
+  animation:fadeUp 0.8s var(--ease-out);
 }
-
-
-
-.intro h1{
-  font-family:var(--font-mystery);
-  font-weight:400;
-  font-size:clamp(3.2rem,9vw,5.2rem);
-  letter-spacing:0.02em;
-  line-height:1.1;
-  margin-bottom:var(--s3);
-  /* Y descender için overflow izni */
-  overflow:visible;
-  padding-bottom:0.2em;
+.welcome.hidden{display:none}
+.welcome h1{
+  font-family:var(--font-mystery);font-weight:400;
+  font-size:clamp(2.8rem,8vw,4.6rem);
+  letter-spacing:0.02em;line-height:1.1;
+  margin-bottom:var(--s3);overflow:visible;padding-bottom:0.15em;
 }
-
-/* Ebruli / değişken renk efekti — Mystery Quest için */
-.intro h1 .phiyo-text {
+.welcome h1 .phiyo-text{
   display:inline-block;
-  background: linear-gradient(
-    115deg,
-    #e2d8f5 0%,
-    #b8a0e0 12%,
-    #9080c8 24%,
-    #c8b0e8 36%,
-    #a090d0 48%,
-    #d8c8f0 60%,
-    #7868b8 72%,
-    #c0b0e0 84%,
-    #e2d8f5 100%
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: phiyoShimmer 6s ease-in-out infinite;
-  filter: drop-shadow(0 0 40px rgba(140,120,210,0.35));
+  background:linear-gradient(115deg,#e2d8f5 0%,#b8a0e0 12%,#9080c8 24%,#c8b0e8 36%,#a090d0 48%,#d8c8f0 60%,#7868b8 72%,#c0b0e0 84%,#e2d8f5 100%);
+  background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:phiyoShimmer 6s ease-in-out infinite;
+  filter:drop-shadow(0 0 40px rgba(140,120,210,0.35));
 }
-
-/* Light theme versiyonu */
-[data-theme="light"] .intro h1 .phiyo-text {
-  background: linear-gradient(
-    115deg,
-    #3d3060 0%,
-    #6050a0 15%,
-    #4a3880 30%,
-    #7060b0 45%,
-    #3a2870 60%,
-    #8070c0 75%,
-    #5040a0 90%,
-    #3d3060 100%
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 8px rgba(80,60,140,0.2));
-  animation: phiyoShimmer 6s ease-in-out infinite;
+[data-theme="light"] .welcome h1 .phiyo-text{
+  background:linear-gradient(115deg,#3d3060 0%,#6050a0 15%,#4a3880 30%,#7060b0 45%,#3a2870 60%,#8070c0 75%,#5040a0 90%,#3d3060 100%);
+  background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 8px rgba(80,60,140,0.2));
+  animation:phiyoShimmer 6s ease-in-out infinite;
 }
-
-@keyframes phiyoShimmer {
-  0%   { background-position: 0% 50%; }
-  33%  { background-position: 100% 30%; }
-  66%  { background-position: 50% 100%; }
-  100% { background-position: 0% 50%; }
-}
-
-.intro-sub{
-  font-family:var(--font-body);
-  font-size:11px;font-weight:600;
-  letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--text-3);
-}
-
-.intro-powered{
-  margin-top:var(--s4);
-  font-family:var(--font-display);font-size:15px;font-weight:300;
-  font-style:italic;color:var(--text-3);
-  letter-spacing:0.02em;line-height:1.6;
-  opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.35s;
-}
-.intro-powered span{
-  background:linear-gradient(135deg,var(--lavender),var(--amber));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;font-weight:400;
-}
-
-/* ═══ SECTION DIVIDER ═══ */
-.section-divider{
-  width:60px;height:1px;
-  background:linear-gradient(90deg,var(--amber-dim),var(--plum-dim),transparent);
-  margin:var(--s7) 0;
-  opacity:0;animation:fadeUp 0.6s var(--ease-out) forwards 0.25s;
-}
-
+@keyframes phiyoShimmer{0%{background-position:0% 50%}33%{background-position:100% 30%}66%{background-position:50% 100%}100%{background-position:0% 50%}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══ USER FIELDS ═══ */
-.user-fields{
-  display:grid;grid-template-columns:1fr;
-  gap:var(--s3);margin-bottom:var(--s6);
-  opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.3s;
-}
-@media(min-width:601px){.user-fields{grid-template-columns:1fr}}
-
-.field-input{
-  background:var(--bg-raised);
-  border:1px solid var(--border);border-radius:var(--r2);
-  padding:var(--s3) var(--s4);
-  font-family:var(--font-body);font-size:14px;font-weight:400;
-  color:var(--text-1);outline:none;
-  transition:border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
-  -webkit-appearance:none;appearance:none;min-height:44px;
-}
-select.field-input{
-  cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%235e5270' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
-}
-.field-input::placeholder{color:var(--text-3);font-style:italic}
-.field-input:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-ghost)}
-select option{background:var(--bg-raised);color:var(--text-1)}
-
-/* ═══ MODE SELECTOR ═══ */
-.mode-selector{
-  display:flex;margin-bottom:var(--s5);
-  border-bottom:1px solid var(--border);
-  opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.4s;
-}
-.mode-tab{
-  flex:1;padding:var(--s4) var(--s4) var(--s3);background:none;border:none;
-  font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.04em;
-  color:var(--text-3);cursor:pointer;position:relative;
-  transition:color 0.25s var(--ease);min-height:44px;
-}
-.mode-tab::after{
-  content:'';position:absolute;bottom:-1px;left:var(--s4);right:var(--s4);
-  height:2px;background:linear-gradient(90deg,var(--amber),var(--plum));
-  transform:scaleX(0);transition:transform 0.35s var(--ease);border-radius:1px;
-}
-.mode-tab.active{color:var(--text-1)}
-.mode-tab.active::after{transform:scaleX(1)}
-.mode-tab:not(.active):hover{color:var(--text-2)}
-.mode-tab:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
-
-/* ═══ VOICE PANEL ═══ */
-.voice-panel{
-  display:none;flex-direction:column;align-items:center;gap:var(--s5);
-  padding:var(--s8) var(--s5);
-  background:var(--bg-raised);
-  border:1px solid var(--border);border-radius:var(--r4);
-  position:relative;overflow:hidden;
-}
-.voice-panel::before{
-  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--amber-dim),transparent);
-}
-.voice-panel.visible{display:flex;animation:panelIn 0.4s var(--ease-out)}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-.voice-status{text-align:center}
-.voice-label{
-  font-family:var(--font-display);font-size:15px;font-style:italic;font-weight:300;color:var(--text-3)
-}
-.voice-timer{
-  display:block;font-family:var(--font-body);font-size:28px;font-weight:400;
-  color:var(--text-2);letter-spacing:0.08em;margin-top:var(--s2);min-height:36px;
-  font-variant-numeric:tabular-nums;
-}
-
-.mic-btn{
-  width:80px;height:80px;border-radius:50%;
-  border:1px solid rgba(212,162,76,0.18);
-  background:rgba(212,162,76,0.04);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  position:relative;
-  transition:background 0.25s var(--ease),border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
-  min-width:44px;min-height:44px;
-}
-.mic-btn:hover{
-  background:rgba(212,162,76,0.08);
-  border-color:rgba(212,162,76,0.35);
-  box-shadow:0 0 30px rgba(212,162,76,0.08);
-}
-.mic-btn:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
-.mic-btn svg{
-  width:24px;height:24px;fill:none;stroke:var(--amber);
-  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
-  transition:stroke 0.25s var(--ease);
-}
-.mic-ring{
-  position:absolute;inset:-8px;border-radius:50%;
-  border:1px solid transparent;pointer-events:none;
-  transition:border-color 0.25s var(--ease);
-}
-
-.mic-btn.recording{border-color:rgba(196,122,90,0.4);background:rgba(196,122,90,0.08)}
-.mic-btn.recording svg{stroke:var(--recording)}
-.mic-btn.recording .mic-ring{
-  border-color:rgba(196,122,90,0.15);
-  animation:micRing 3s linear infinite;
-  border-top-color:var(--recording);
-}
-@keyframes micRing{to{transform:rotate(360deg)}}
-.stop-icon{width:18px;height:18px;background:var(--recording);border-radius:3px}
-
-.transcript-area{
-  width:100%;max-height:160px;overflow-y:auto;padding:var(--s4);
-  background:rgba(0,0,0,0.15);border-radius:var(--r2);
-  font-family:var(--font-display);font-size:15px;font-style:italic;font-weight:300;
-  line-height:1.7;color:var(--text-3);display:none;
-}
-.transcript-area.has-text{display:block}
-
-/* ═══ TEXT PANEL ═══ */
-.text-panel{display:none}
-.text-panel.visible{display:block;animation:panelIn 0.4s var(--ease-out)}
-.dream-input{
-  width:100%;min-height:180px;
-  background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r4);
-  padding:var(--s5);font-family:var(--font-body);font-size:15px;font-weight:400;
-  line-height:1.75;color:var(--text-1);resize:vertical;outline:none;
-  transition:border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
-}
-.dream-input::placeholder{font-family:var(--font-display);font-style:italic;color:var(--text-3)}
-.dream-input:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-ghost)}
-
-/* ═══ SUBMIT ROW ═══ */
-.submit-row{display:flex;justify-content:flex-end;margin-top:var(--s5);margin-bottom:var(--s8)}
-.submit-btn{
-  padding:var(--s3) var(--s7);
-  background:linear-gradient(135deg,var(--amber-dim),var(--amber));
-  color:var(--bg-abyss);
-  border:none;border-radius:var(--r2);
-  font-family:var(--font-display);font-size:15px;font-weight:600;
-  letter-spacing:0.04em;
-  cursor:pointer;min-width:44px;min-height:48px;
-  position:relative;overflow:hidden;
-  transition:transform 0.2s var(--ease),box-shadow 0.25s var(--ease),opacity 0.2s var(--ease);
-}
-.submit-btn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,0.2) 50%,transparent 70%);
-  transform:translateX(-100%);
-  transition:transform 0.5s var(--ease);
-}
-.submit-btn:hover:not(:disabled)::before{transform:translateX(100%)}
-.submit-btn:hover:not(:disabled){
-  transform:translateY(-2px);
-  box-shadow:0 8px 28px rgba(212,162,76,0.3);
-}
-.submit-btn:active:not(:disabled){transform:translateY(0)}
-.submit-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none}
-.submit-btn:focus-visible{outline:2px solid var(--amber-bright);outline-offset:3px}
-
-/* ═══ LOADING STATE ═══ */
-.loading-state{display:none;text-align:center;padding:var(--s8) 0;margin-bottom:var(--s6)}
-.loading-state.visible{display:block}
-.loading-phi{
-  font-family:var(--font-display);font-size:48px;font-style:italic;font-weight:300;
-  background:linear-gradient(135deg,var(--amber),var(--plum));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:breathe 2.5s ease-in-out infinite;
-  margin-bottom:var(--s4);display:block;will-change:opacity;
-}
-@keyframes breathe{0%,100%{opacity:0.3}50%{opacity:1}}
-.loading-text{font-family:var(--font-display);font-size:15px;font-style:italic;font-weight:300;color:var(--text-3)}
-
-/* ═══ ERROR BAR ═══ */
-.error-bar{
-  display:none;padding:var(--s3) var(--s4);
-  background:var(--rose-dim);border:1px solid rgba(196,122,122,0.2);
-  border-radius:var(--r2);font-size:13px;color:var(--error);
-  margin-bottom:var(--s5);
-}
-.error-bar.visible{display:block}
-
-/* ═══ RESULT ═══ */
-.result{
-  display:none;margin-bottom:var(--s8);
-  position:relative;
-  padding:var(--s6);
-  background:
-    linear-gradient(160deg,rgba(138,106,170,0.04) 0%,transparent 40%),
-    linear-gradient(340deg,rgba(212,162,76,0.03) 0%,transparent 40%),
-    var(--bg-raised);
-  border:1px solid var(--border);
-  border-radius:var(--r4);
-  overflow:hidden;
-}
-.result.visible{
-  display:block;
-  animation:resultReveal 0.8s var(--ease-out);
-}
-@keyframes resultReveal{
-  0%{clip-path:circle(0% at 50% 0%);opacity:0}
-  100%{clip-path:circle(150% at 50% 0%);opacity:1}
-}
-
-.result::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--amber),var(--plum),var(--amber));
-  background-size:200% 100%;
-  animation:shimmer 3s ease-in-out infinite;
-}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-.result-label{
-  font-family:var(--font-body);font-size:10px;font-weight:600;
+.welcome-sub{
+  font-family:var(--font-body);font-size:11px;font-weight:600;
   letter-spacing:0.2em;text-transform:uppercase;color:var(--text-3);
-  margin-bottom:var(--s5);padding-bottom:var(--s3);
-  border-bottom:1px solid var(--border);
+  margin-bottom:var(--s4);
 }
-.result-text{
-  font-family:var(--font-display);font-size:18px;font-weight:400;
-  line-height:1.85;color:var(--text-1);max-width:62ch;
-  white-space:pre-wrap;word-wrap:break-word;
+.welcome-powered{
+  font-family:var(--font-display);font-size:15px;font-weight:300;
+  font-style:italic;color:var(--text-3);letter-spacing:0.02em;line-height:1.6;
+}
+.welcome-powered span{
+  background:linear-gradient(135deg,var(--lavender),var(--amber));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:400;
+}
+.welcome-hint{
+  margin-top:var(--s7);padding:var(--s4) var(--s5);
+  background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r3);
+  font-family:var(--font-display);font-size:14px;font-style:italic;font-weight:300;
+  color:var(--text-3);line-height:1.7;max-width:480px;
 }
 
-.result-meta{
-  display:flex;flex-wrap:wrap;gap:var(--s2);
-  margin-top:var(--s6);padding-top:var(--s5);
-  border-top:1px solid var(--border);
+/* ═══ CHAT MESSAGES ═══ */
+.msg{
+  display:flex;flex-direction:column;
+  max-width:88%;
+  animation:msgIn 0.4s var(--ease-out);
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.msg-user{align-self:flex-end;align-items:flex-end}
+.msg-assistant{align-self:flex-start;align-items:flex-start}
+
+.msg-label{
+  font-family:var(--font-body);font-size:10px;font-weight:600;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:var(--s1);
+  padding:0 var(--s3);
+}
+
+.msg-bubble{
+  padding:var(--s4) var(--s5);
+  border-radius:var(--r4);
+  line-height:1.75;
+  word-wrap:break-word;white-space:pre-wrap;
+}
+
+.msg-user .msg-bubble{
+  background:linear-gradient(135deg,rgba(212,162,76,0.10),rgba(212,162,76,0.05));
+  border:1px solid rgba(212,162,76,0.15);
+  font-family:var(--font-body);font-size:14px;color:var(--text-1);
+  border-bottom-right-radius:var(--s1);
+}
+
+.msg-assistant .msg-bubble{
+  background:linear-gradient(160deg,rgba(138,106,170,0.06) 0%,transparent 40%,rgba(212,162,76,0.03) 100%),var(--bg-raised);
+  border:1px solid var(--border);
+  font-family:var(--font-display);font-size:16px;font-weight:400;color:var(--text-1);
+  border-bottom-left-radius:var(--s1);
+  position:relative;overflow:hidden;
+}
+.msg-assistant .msg-bubble::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--amber-dim),var(--plum-dim),transparent);
+}
+
+.msg-pills{
+  display:flex;flex-wrap:wrap;gap:var(--s1);
+  padding:var(--s2) var(--s3) 0;
 }
 .pill{
-  padding:5px 14px;border-radius:20px;
-  font-family:var(--font-body);font-size:11px;font-weight:500;
+  padding:4px 12px;border-radius:20px;
+  font-family:var(--font-body);font-size:10px;font-weight:500;
   letter-spacing:0.03em;
-  transition:transform 0.2s var(--ease),box-shadow 0.2s var(--ease);
+  transition:transform 0.2s var(--ease);
 }
 .pill:hover{transform:translateY(-1px)}
 .pill-symbol{color:var(--amber);border:1px solid rgba(212,162,76,0.25);background:var(--amber-ghost)}
 .pill-emotion{color:var(--plum);border:1px solid rgba(138,106,170,0.25);background:var(--plum-ghost)}
 .pill-theme{color:var(--lavender);border:1px solid rgba(160,140,192,0.25);background:var(--lavender-dim)}
 
-/* ═══ FOOTER ═══ */
-.footer{
-  text-align:center;padding-top:var(--s8);
-  font-family:var(--font-body);font-size:11px;letter-spacing:0.1em;
-  color:var(--text-3);opacity:0.35;
+/* ═══ TYPING INDICATOR ═══ */
+.typing{
+  align-self:flex-start;
+  padding:var(--s4) var(--s5);
+  animation:msgIn 0.3s var(--ease-out);
 }
-.footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,74,112,0.3);transition:border-color 0.25s var(--ease)}
-.footer a:hover{border-color:var(--amber)}
+.typing-dots{display:flex;gap:6px;align-items:center}
+.typing-dots span{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--plum);opacity:0.4;
+  animation:typeDot 1.4s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes typeDot{0%,60%,100%{opacity:0.3;transform:scale(1)}30%{opacity:0.8;transform:scale(1.2)}}
 
-/* ═══ SCROLL ANIMATIONS ═══ */
-.observe-fade{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--ease-out),transform 0.6s var(--ease-out)}
-.observe-fade.in-view{opacity:1;transform:translateY(0)}
+.typing-label{
+  font-family:var(--font-display);font-size:13px;font-style:italic;
+  font-weight:300;color:var(--text-3);margin-top:var(--s2);
+}
 
-.pill-stagger{opacity:0;transform:translateY(8px) scale(0.9);transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-bounce)}
-.pill-stagger.in-view{opacity:1;transform:translateY(0) scale(1)}
+/* ═══ COMPOSER ═══ */
+.composer{
+  position:relative;z-index:10;
+  flex-shrink:0;
+  background:var(--bg-glow);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  padding:var(--s3) var(--s4);
+}
+.composer::before{
+  content:'';position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,162,76,0.15) 30%,rgba(138,106,170,0.1) 70%,transparent);
+}
+
+.composer-inner{
+  max-width:720px;margin:0 auto;
+  display:flex;flex-direction:column;gap:var(--s2);
+}
+
+.composer-row{
+  display:flex;align-items:flex-end;gap:var(--s2);
+}
+
+.composer-input{
+  flex:1;
+  min-height:44px;max-height:160px;
+  background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r3);
+  padding:var(--s3) var(--s4);
+  font-family:var(--font-body);font-size:14px;font-weight:400;
+  line-height:1.6;color:var(--text-1);resize:none;outline:none;
+  transition:border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
+  overflow-y:auto;
+}
+.composer-input::placeholder{font-family:var(--font-display);font-style:italic;color:var(--text-3);font-size:14px}
+.composer-input:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-ghost)}
+
+.composer-actions{display:flex;gap:var(--s2);align-items:flex-end}
+
+.send-btn{
+  width:44px;height:44px;border-radius:var(--r2);
+  border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--amber-dim),var(--amber));
+  color:var(--bg-abyss);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 0.2s var(--ease),box-shadow 0.25s var(--ease),opacity 0.2s var(--ease);
+  flex-shrink:0;
+}
+.send-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(212,162,76,0.3)}
+.send-btn:active:not(:disabled){transform:translateY(0)}
+.send-btn:disabled{opacity:0.25;cursor:not-allowed;transform:none}
+.send-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.mic-btn{
+  width:44px;height:44px;border-radius:var(--r2);
+  border:1px solid var(--border);background:transparent;
+  color:var(--text-2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color 0.25s var(--ease),color 0.25s var(--ease),background 0.25s var(--ease);
+  flex-shrink:0;position:relative;
+}
+.mic-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
+.mic-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mic-btn.recording{border-color:rgba(196,122,90,0.5);background:rgba(196,122,90,0.10);color:var(--recording)}
+.mic-btn.recording::after{
+  content:'';position:absolute;inset:-4px;border-radius:var(--r3);
+  border:1px solid rgba(196,122,90,0.2);
+  animation:micPulse 2s ease-in-out infinite;
+}
+@keyframes micPulse{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
+
+.composer-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s1);
+}
+.composer-meta-left{display:flex;align-items:center;gap:var(--s3)}
+
+.lang-select{
+  background:none;border:none;
+  font-family:var(--font-body);font-size:11px;font-weight:500;
+  color:var(--text-3);cursor:pointer;
+  padding:2px 4px;
+}
+.lang-select option{background:var(--bg-raised);color:var(--text-1)}
+
+.rec-indicator{
+  display:none;align-items:center;gap:var(--s2);
+  font-family:var(--font-body);font-size:11px;font-weight:500;color:var(--recording);
+}
+.rec-indicator.visible{display:flex}
+.rec-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--recording);
+  animation:recBlink 1s ease-in-out infinite;
+}
+@keyframes recBlink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.session-info{
+  font-family:var(--font-body);font-size:10px;color:var(--text-3);opacity:0.5;
+  letter-spacing:0.05em;
+}
+
+/* ═══ ERROR BAR ═══ */
+.error-toast{
+  position:fixed;top:calc(var(--header-h) + var(--s3));
+  left:50%;transform:translateX(-50%);z-index:200;
+  padding:var(--s3) var(--s5);
+  background:var(--rose-dim);border:1px solid rgba(196,122,122,0.25);
+  border-radius:var(--r2);font-size:13px;color:var(--error);
+  backdrop-filter:blur(12px);
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s var(--ease),transform 0.3s var(--ease);
+}
+.error-toast.visible{opacity:1;pointer-events:auto}
+
+/* ═══ FOOTER ═══ */
+.footer-inline{
+  text-align:center;padding:var(--s7) 0 var(--s4);
+  font-family:var(--font-body);font-size:10px;letter-spacing:0.1em;
+  color:var(--text-3);opacity:0.25;
+}
+.footer-inline a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,74,112,0.3)}
+.footer-inline a:hover{border-color:var(--amber)}
 
 /* ═══ RESPONSIVE ═══ */
-@media(min-width:640px){
-  .app{padding:var(--s10) var(--s7) var(--s9)}
-  .intro{padding-right:140px}
+@media(max-width:600px){
+  .welcome h1{font-size:clamp(2.2rem,10vw,3.4rem)}
+  .msg{max-width:92%}
+  .msg-assistant .msg-bubble{font-size:15px}
+  .chat-scroll{padding:var(--s4) var(--s3) var(--s3)}
 }
-
 @media(min-width:768px){
-  .app{padding:var(--s10) var(--s8) var(--s9)}
+  .chat-scroll{padding:var(--s6) var(--s6) var(--s4)}
+  .composer{padding:var(--s4) var(--s6)}
 }
 </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<div class="ambient" aria-hidden="true">
-  <div class="phi-blob"></div>
-  <div class="phi-blob-2"></div>
-</div>
+<div class="ambient" aria-hidden="true"><div class="phi-blob"></div><div class="phi-blob-2"></div></div>
 <div class="noise" aria-hidden="true"></div>
 
 <header class="header" role="banner">
@@ -644,90 +505,76 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     <span class="header-name">Phi-Yo</span>
   </div>
   <div class="header-right">
-    <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
-      <svg id="themeIcon" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    <button class="icon-btn" id="newSessionBtn" aria-label="Start new session" title="New session">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button class="icon-btn" id="themeToggle" aria-label="Switch to light mode">
+      <svg id="themeIcon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
   </div>
 </header>
 
-<main class="app" id="main-content">
-  <section class="intro" aria-labelledby="main-heading">
-    <h1 id="main-heading">
-      <span class="phiyo-text">PHI<br>YO</span>
-    </h1>
-    <p class="intro-sub">Scientific Dream Analysis</p>
-    <p class="intro-powered">powered by <span>Freud for Machines: A Computational Psychoanalytic Ontology</span></p>
-  </section>
+<div class="chat-wrapper">
+  <div class="chat-scroll" id="chatScroll">
+    <div class="chat-inner" id="chatInner">
 
-  <div class="section-divider" aria-hidden="true"></div>
+      <div class="welcome" id="welcomeScreen">
+        <h1><span class="phiyo-text">PHI-YO</span></h1>
+        <p class="welcome-sub">Scientific Dream Analysis</p>
+        <p class="welcome-powered">powered by <span>Freud for Machines: A Computational Psychoanalytic Ontology</span></p>
+        <div class="welcome-hint">
+          Describe your dream by voice or text. You can ask follow-up questions about the interpretation, and I will remember our conversation throughout this session.
+        </div>
+      </div>
 
-  <div class="user-fields">
-    <select class="field-input" id="langSelect" aria-label="Speech language">
-      <option value="fr-FR">Français</option>
-      <option value="en-US">English</option>
-      <option value="tr-TR">Türkçe</option>
-      <option value="de-DE">Deutsch</option>
-      <option value="es-ES">Español</option>
-      <option value="ja-JP">日本語</option>
-      <option value="ru-RU">Русский</option>
-      <option value="ar-SA">العربية</option>
-    </select>
-  </div>
-
-  <div class="mode-selector" role="tablist" aria-label="Input mode">
-    <button class="mode-tab active" role="tab" aria-selected="true" data-mode="voice" id="tabVoice">Voice Input</button>
-    <button class="mode-tab" role="tab" aria-selected="false" data-mode="text" id="tabText">Text Input</button>
-  </div>
-
-  <div class="voice-panel visible" id="voicePanel" role="tabpanel" aria-label="Voice input panel">
-    <div class="voice-status">
-      <span class="voice-label" id="voiceLabel">Select your language and tap to describe your dream.</span>
-        <span class="voice-label" id="voiceLabel">Leaving a short pause between sentences is recommended.</span>    
-      <span class="voice-timer" id="voiceTimer" aria-live="polite" aria-label="Recording duration"></span>
+      <div class="footer-inline" id="footerInline">
+        &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>
+      </div>
     </div>
-    <button class="mic-btn" id="micBtn" aria-label="Start voice recording">
-      <div class="mic-ring" aria-hidden="true"></div>
-      <svg id="micIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-    </button>
-    <div class="transcript-area" id="transcriptArea" aria-live="polite" aria-label="Voice transcript"></div>
   </div>
 
-  <div class="text-panel" id="textPanel" role="tabpanel" aria-label="Text input panel">
-    <label for="dreamInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Describe your dream</label>
-    <textarea class="dream-input" id="dreamInput" placeholder="Describe your dream..." aria-label="Dream text input"></textarea>
+  <div class="composer" id="composer">
+    <div class="composer-inner">
+      <div class="composer-row">
+        <textarea class="composer-input" id="composerInput" placeholder="Describe your dream or ask a question..." rows="1" aria-label="Message input"></textarea>
+        <div class="composer-actions">
+          <button class="mic-btn" id="micBtn" aria-label="Voice input">
+            <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="send-btn" id="sendBtn" disabled aria-label="Send message">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="composer-meta">
+        <div class="composer-meta-left">
+          <select class="lang-select" id="langSelect" aria-label="Speech language">
+            <option value="fr-FR">FR</option>
+            <option value="en-US">EN</option>
+            <option value="tr-TR">TR</option>
+            <option value="de-DE">DE</option>
+            <option value="es-ES">ES</option>
+            <option value="ja-JP">JA</option>
+            <option value="ru-RU">RU</option>
+            <option value="ar-SA">AR</option>
+          </select>
+          <div class="rec-indicator" id="recIndicator">
+            <span class="rec-dot"></span>
+            <span id="recTimer">00:00</span>
+          </div>
+        </div>
+        <span class="session-info" id="sessionInfo"></span>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="submit-row observe-fade">
-    <button class="submit-btn" id="submitBtn">Interpret</button>
-  </div>
-
-  <div class="error-bar observe-fade" id="errorBar" role="alert" aria-live="assertive" tabindex="-1"></div>
-
-  <div class="loading-state" id="loadingState" aria-live="polite" role="status">
-    <span class="loading-phi" aria-hidden="true">φ</span>
-    <p class="loading-text">Phi-Yo is thinking…</p>
-  </div>
-
-  <section class="result" id="resultSection" aria-live="polite" aria-label="Dream interpretation result">
-    <div class="result-label">Interpretation</div>
-    <div class="result-text" id="resultText"></div>
-    <div class="result-meta" id="resultMeta"></div>
-  </section>
-
-  <footer class="footer observe-fade">
-    &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>
-  </footer>
-</main>
+<div class="error-toast" id="errorToast" role="alert" aria-live="assertive"></div>
 
 <script>
 (function(){
@@ -735,286 +582,238 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 
   var WEBHOOK_URL = 'https://n8n.tropus.io/webhook/phiyo-dream';
 
-  var mode = 'voice', isRecording = false, recognition = null;
-  var transcript = '', interim = '', recTimer = null, seconds = 0;
-  var errTimer = null;
-
-  /* ── Theme Toggle ── */
-  var MOON_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-  var SUN_SVG  = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-
-  var themeToggle = document.getElementById('themeToggle');
-  var themeIcon   = document.getElementById('themeIcon');
-  var savedTheme = null;
-  try { savedTheme = localStorage.getItem('phiyo-theme'); } catch(e) {}
-  var currentTheme = savedTheme || 'dark';
-
-  function applyTheme(theme) {
-    currentTheme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    try { localStorage.setItem('phiyo-theme', theme); } catch(e) {}
-    if (theme === 'dark') {
-      themeIcon.innerHTML = MOON_SVG;
-      themeToggle.setAttribute('aria-label', 'Switch to light mode');
-    } else {
-      themeIcon.innerHTML = SUN_SVG;
-      themeToggle.setAttribute('aria-label', 'Switch to dark mode');
-    }
+  /* ══ Identity — kalıcı user_id, sayfa-ömürlü session_id ══ */
+  function generateId(){
+    if(typeof crypto!=='undefined'&&crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxx-xxxx-xxxx'.replace(/x/g,function(){return(Math.random()*16|0).toString(16)});
   }
 
-  themeToggle.addEventListener('click', function() {
-    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-  });
+  var userId;
+  try{
+    userId=localStorage.getItem('phiyo-user-id');
+    if(!userId){userId='phiyo-'+generateId();localStorage.setItem('phiyo-user-id',userId);}
+  }catch(e){userId='phiyo-'+generateId();}
 
+  var sessionId='session-'+generateId();
+  var messageCount=0;
+
+  /* ══ DOM refs ══ */
+  var chatScroll=document.getElementById('chatScroll');
+  var chatInner=document.getElementById('chatInner');
+  var welcomeScreen=document.getElementById('welcomeScreen');
+  var footerInline=document.getElementById('footerInline');
+  var composerInput=document.getElementById('composerInput');
+  var sendBtn=document.getElementById('sendBtn');
+  var micBtn=document.getElementById('micBtn');
+  var errorToast=document.getElementById('errorToast');
+  var sessionInfo=document.getElementById('sessionInfo');
+  var recIndicator=document.getElementById('recIndicator');
+  var recTimerEl=document.getElementById('recTimer');
+
+  sessionInfo.textContent=sessionId.slice(0,20)+'…';
+
+  /* ══ Theme ══ */
+  var MOON='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  var SUN='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  var themeToggle=document.getElementById('themeToggle');
+  var themeIcon=document.getElementById('themeIcon');
+  var currentTheme;
+  try{currentTheme=localStorage.getItem('phiyo-theme')||'dark';}catch(e){currentTheme='dark';}
+
+  function applyTheme(t){
+    currentTheme=t;document.documentElement.setAttribute('data-theme',t);
+    try{localStorage.setItem('phiyo-theme',t);}catch(e){}
+    themeIcon.innerHTML=t==='dark'?MOON:SUN;
+    themeToggle.setAttribute('aria-label','Switch to '+(t==='dark'?'light':'dark')+' mode');
+  }
+  themeToggle.addEventListener('click',function(){applyTheme(currentTheme==='dark'?'light':'dark');});
   applyTheme(currentTheme);
 
-  /* ── DOM refs ── */
-  var voicePanel     = document.getElementById('voicePanel');
-  var textPanel      = document.getElementById('textPanel');
-  var voiceLabel     = document.getElementById('voiceLabel');
-  var voiceTimer     = document.getElementById('voiceTimer');
-  var micBtn         = document.getElementById('micBtn');
-  var micIcon        = document.getElementById('micIcon');
-  var transcriptArea = document.getElementById('transcriptArea');
-  var dreamInput     = document.getElementById('dreamInput');
-  var submitBtn      = document.getElementById('submitBtn');
-  var errorBar       = document.getElementById('errorBar');
-  var loadingState   = document.getElementById('loadingState');
-  var resultSection  = document.getElementById('resultSection');
-  var resultText     = document.getElementById('resultText');
-  var resultMeta     = document.getElementById('resultMeta');
+  /* ══ New session ══ */
+  document.getElementById('newSessionBtn').addEventListener('click',function(){
+    if(messageCount>0&&!confirm('Start a new session? Current conversation will be preserved in your history.')) return;
+    sessionId='session-'+generateId();
+    messageCount=0;
+    sessionInfo.textContent=sessionId.slice(0,20)+'…';
+    // Clear chat but keep welcome
+    var msgs=chatInner.querySelectorAll('.msg,.typing');
+    msgs.forEach(function(m){m.remove();});
+    welcomeScreen.classList.remove('hidden');
+    footerInline.style.display='';
+  });
 
-  /* ── Mode switching ── */
-  function switchMode(m) {
-    mode = m;
-    document.querySelectorAll('.mode-tab').forEach(function(t) {
-      var a = t.dataset.mode === m;
-      t.classList.toggle('active', a);
-      t.setAttribute('aria-selected', String(a));
-    });
-    voicePanel.classList.toggle('visible', m === 'voice');
-    textPanel.classList.toggle('visible', m === 'text');
-  }
+  /* ══ Auto-resize textarea ══ */
+  composerInput.addEventListener('input',function(){
+    this.style.height='auto';
+    this.style.height=Math.min(this.scrollHeight,160)+'px';
+    sendBtn.disabled=!this.value.trim()&&!isRecording;
+  });
 
-  document.getElementById('tabVoice').addEventListener('click', function(){ switchMode('voice'); });
-  document.getElementById('tabText').addEventListener('click', function(){ switchMode('text'); });
+  composerInput.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}
+  });
 
-  /* ── Speech Recognition ── */
-  function createRec() {
-    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { showError('Your browser does not support speech recognition. Please use Chrome or Edge.'); return null; }
-    var r = new SR();
-    r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
-    r.lang = document.getElementById('langSelect').value;
-    r.onresult = function(e) {
-      interim = '';
-      for (var i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) transcript += e.results[i][0].transcript + ' ';
-        else interim += e.results[i][0].transcript;
+  sendBtn.addEventListener('click',doSend);
+
+  /* ══ Voice ══ */
+  var isRecording=false,recognition=null,voiceText='',recSeconds=0,recInterval=null;
+
+  micBtn.addEventListener('click',function(){isRecording?stopRec():startRec();});
+
+  function startRec(){
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){showError('Speech recognition not supported. Use Chrome or Edge.');return;}
+    recognition=new SR();
+    recognition.continuous=true;recognition.interimResults=true;recognition.maxAlternatives=1;
+    recognition.lang=document.getElementById('langSelect').value;
+    voiceText='';var interim='';
+    recognition.onresult=function(e){
+      interim='';
+      for(var i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal) voiceText+=e.results[i][0].transcript+' ';
+        else interim+=e.results[i][0].transcript;
       }
-      updateTx();
+      composerInput.value=voiceText+interim;
+      composerInput.dispatchEvent(new Event('input'));
     };
-    r.onerror = function(e) {
-      if (e.error === 'no-speech') return;
-      if (e.error === 'not-allowed') showError('Microphone access denied.');
-      stopRec();
-    };
-    r.onend = function() { if (isRecording) try { r.start(); } catch(x) {} };
-    return r;
-  }
-
-  function toggleRecording() { isRecording ? stopRec() : startRec(); }
-
-  micBtn.addEventListener('click', toggleRecording);
-
-  function startRec() {
-    transcript = ''; interim = ''; seconds = 0;
-    recognition = createRec();
-    if (!recognition) return;
-    try {
+    recognition.onerror=function(e){if(e.error!=='no-speech')stopRec();};
+    recognition.onend=function(){if(isRecording)try{recognition.start();}catch(x){}};
+    try{
       recognition.start();
-      isRecording = true;
+      isRecording=true;recSeconds=0;
       micBtn.classList.add('recording');
-      micBtn.setAttribute('aria-label', 'Stop voice recording');
-      micIcon.style.display = 'none';
-      var s = document.createElement('div');
-      s.className = 'stop-icon'; s.id = 'stopIcon';
-      micBtn.appendChild(s);
-      voiceLabel.textContent = 'Listening…';
-      voiceTimer.textContent = '00:00';
-      transcriptArea.textContent = '';
-      transcriptArea.classList.remove('has-text');
-      recTimer = setInterval(function() {
-        seconds++;
-        voiceTimer.textContent = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
-      }, 1000);
-    } catch(e) { showError('Could not start recording.'); }
+      recIndicator.classList.add('visible');
+      recTimerEl.textContent='00:00';
+      recInterval=setInterval(function(){
+        recSeconds++;
+        recTimerEl.textContent=String(Math.floor(recSeconds/60)).padStart(2,'0')+':'+String(recSeconds%60).padStart(2,'0');
+      },1000);
+      sendBtn.disabled=false;
+    }catch(e){showError('Could not start recording.');}
   }
 
-  function stopRec() {
-    isRecording = false;
-    if (recognition) { recognition.stop(); recognition = null; }
-    if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  function stopRec(){
+    isRecording=false;
+    if(recognition){recognition.stop();recognition=null;}
+    if(recInterval){clearInterval(recInterval);recInterval=null;}
     micBtn.classList.remove('recording');
-    micBtn.setAttribute('aria-label', 'Start voice recording');
-    var si = document.getElementById('stopIcon');
-    if (si) si.remove();
-    micIcon.style.display = '';
-    voiceLabel.textContent = transcript.trim() ? 'Recording complete' : 'Tap to describe your dream';
-    voiceTimer.textContent = '';
-    updateTx();
+    recIndicator.classList.remove('visible');
   }
 
-  function updateTx() {
-    var f = transcript + interim;
-    if (f.trim()) {
-      transcriptArea.textContent = f;
-      transcriptArea.classList.add('has-text');
-    }
+  /* ══ Send message ══ */
+  var isSending=false;
+
+  function doSend(){
+    if(isSending) return;
+    if(isRecording) stopRec();
+    var text=(composerInput.value||'').trim();
+    if(!text) return;
+
+    // Hide welcome
+    welcomeScreen.classList.add('hidden');
+    footerInline.style.display='none';
+
+    // Add user message
+    addMessage('user',text);
+    composerInput.value='';composerInput.style.height='auto';
+    sendBtn.disabled=true;
+    messageCount++;
+
+    // Show typing
+    var typingEl=addTyping();
+    scrollToBottom();
+
+    isSending=true;
+    var inputType=voiceText?'voice':'text';
+    voiceText='';
+
+    fetch(WEBHOOK_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        dream:text,
+        user_id:userId,
+        session_id:sessionId,
+        input_type:inputType,
+        language:document.getElementById('langSelect').value
+      })
+    })
+    .then(function(r){if(!r.ok)throw new Error('Server error: '+r.status);return r.json();})
+    .then(function(data){
+      removeTyping(typingEl);
+      var reply=data.interpretation||data.displayResponse||'No response received.';
+      var meta=data.metadata||{};
+      addMessage('assistant',reply,meta);
+      scrollToBottom();
+    })
+    .catch(function(e){
+      removeTyping(typingEl);
+      showError('Connection error: '+e.message);
+    })
+    .finally(function(){isSending=false;sendBtn.disabled=!composerInput.value.trim();});
   }
 
-  /* ── Submit dream ── */
-  submitBtn.addEventListener('click', submitDream);
+  /* ══ Chat DOM helpers ══ */
+  function addMessage(role,text,meta){
+    var wrap=document.createElement('div');
+    wrap.className='msg msg-'+role;
 
-  async function submitDream() {
-    hideErr();
-    if (isRecording) stopRec();
+    var label=document.createElement('div');
+    label.className='msg-label';
+    label.textContent=role==='user'?'You':'Phi-Yo';
+    wrap.appendChild(label);
 
-    var dt = mode === 'voice' ? transcript.trim() : (dreamInput ? dreamInput.value.trim() : '');
-    if (!dt) {
-      showError(mode === 'voice' ? 'Please describe your dream using voice input.' : 'Please write your dream.');
-      return;
-    }
+    var bubble=document.createElement('div');
+    bubble.className='msg-bubble';
+    bubble.textContent=text;
+    wrap.appendChild(bubble);
 
-    var uid = (document.getElementById('userId') || {}).value;
-    uid = (uid || '').trim() || 'phiyo-web-' + Date.now();
-    var un = ((document.getElementById('userName') || {}).value || '').trim();
-    var dur = mode === 'voice' ? seconds : 0;
-
-    submitBtn.disabled = true;
-    loadingState.classList.add('visible');
-    resultSection.classList.remove('visible');
-
-    try {
-      var res = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          dream: dt,
-          user_id: uid,
-          user_name: un,
-          session_id: 'dream_' + Date.now(),
-          input_type: mode,
-          duration: dur,
-          language: (document.getElementById('langSelect') || {}).value || 'en-US'
-        })
-      });
-      if (!res.ok) throw new Error('Server error: ' + res.status);
-      var data = await res.json();
-
-      if (data.success || data.interpretation || data.displayResponse) {
-        showResult(data);
-        resetInput();
-      } else {
-        throw new Error(data.error || 'Unknown error');
-      }
-    } catch(e) {
-      showError('Connection error: ' + e.message);
-    } finally {
-      submitBtn.disabled = false;
-      loadingState.classList.remove('visible');
-    }
-  }
-
-  function resetInput() {
-    if (mode === 'voice') {
-      transcript = ''; interim = ''; seconds = 0;
-      transcriptArea.textContent = '';
-      transcriptArea.classList.remove('has-text');
-      voiceLabel.textContent = 'Tap to describe your dream';
-    } else {
-      if (dreamInput) dreamInput.value = '';
-    }
-  }
-
-  function showResult(data) {
-    var text = data.interpretation || data.displayResponse || '';
-    if (resultText) resultText.textContent = text;
-    if (resultMeta) {
-      resultMeta.innerHTML = '';
-      var m = data.metadata || {};
-      var delay = 0;
-      function addPills(arr, cls) {
-        (arr || []).forEach(function(s) {
-          var p = pill(s, cls);
-          p.classList.add('pill-stagger');
-          p.style.transitionDelay = delay + 'ms';
-          resultMeta.appendChild(p);
-          delay += 80;
-        });
-      }
-      addPills(m.symbols, 'pill-symbol');
-      addPills(m.emotions, 'pill-emotion');
-      addPills(m.themes, 'pill-theme');
-
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          resultMeta.querySelectorAll('.pill-stagger').forEach(function(el){
-            el.classList.add('in-view');
-          });
+    if(meta&&role==='assistant'){
+      var pills=document.createElement('div');
+      pills.className='msg-pills';
+      var hasPills=false;
+      ['symbols','emotions','themes'].forEach(function(key){
+        var cls=key==='symbols'?'pill-symbol':key==='emotions'?'pill-emotion':'pill-theme';
+        (meta[key]||[]).forEach(function(s){
+          hasPills=true;
+          var p=document.createElement('span');
+          p.className='pill '+cls;p.textContent=s;
+          pills.appendChild(p);
         });
       });
+      if(hasPills) wrap.appendChild(pills);
     }
-    resultSection.classList.add('visible');
-    setTimeout(function(){
-      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+
+    // Insert before footer
+    chatInner.insertBefore(wrap,footerInline);
+    return wrap;
   }
 
-  function pill(t, c) {
-    var e = document.createElement('span');
-    e.className = 'pill ' + c;
-    e.textContent = t;
-    return e;
+  function addTyping(){
+    var el=document.createElement('div');
+    el.className='typing';
+    el.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div><div class="typing-label">Phi-Yo is thinking\u2026</div>';
+    chatInner.insertBefore(el,footerInline);
+    return el;
   }
 
-  function showError(m) {
-    if (!errorBar) return;
-    errorBar.textContent = m;
-    errorBar.classList.add('visible');
-    errorBar.focus();
-    clearTimeout(errTimer);
-    errTimer = setTimeout(hideErr, 6000);
-  }
+  function removeTyping(el){if(el&&el.parentNode)el.parentNode.removeChild(el);}
 
-  function hideErr() {
-    if (!errorBar) return;
-    errorBar.classList.remove('visible');
-    clearTimeout(errTimer);
-  }
-
-  /* ── IntersectionObserver ── */
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var observer = null;
-
-  function observeAll() {
-    document.querySelectorAll('.observe-fade:not(.in-view)').forEach(function(el) {
-      if (prefersReduced) { el.classList.add('in-view'); }
-      else if (observer) { observer.observe(el); }
+  function scrollToBottom(){
+    requestAnimationFrame(function(){
+      chatScroll.scrollTop=chatScroll.scrollHeight;
     });
   }
 
-  if (!prefersReduced) {
-    observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
+  /* ══ Error toast ══ */
+  var errTimer=null;
+  function showError(m){
+    errorToast.textContent=m;errorToast.classList.add('visible');
+    clearTimeout(errTimer);errTimer=setTimeout(function(){errorToast.classList.remove('visible');},5000);
   }
-  observeAll();
+
+  /* ══ Focus input on load ══ */
+  setTimeout(function(){composerInput.focus();},500);
 
 })();
 </script>
