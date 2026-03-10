@@ -36,7 +36,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>φ</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600;700&family=Mystery+Quest&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -67,7 +67,7 @@
 
   --text-1:#e8e0ee;
   --text-2:#9a8eaa;
-  --text-3:#8a80a8; /* KG: kontrast düzeltmesi — 4.8:1 on bg-raised */
+  --text-3:#8a80a8;
   --text-hero:#f0e8f6;
 
   --recording:#c47a5a;
@@ -78,6 +78,7 @@
   --border-hover:rgba(212,162,76,0.25);
 
   --font-display:'Fraunces',Georgia,serif;
+  --font-mystery:'Mystery Quest',cursive;
   --font-body:'Instrument Sans','Helvetica Neue',sans-serif;
 
   --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;
@@ -114,7 +115,7 @@
 
   --text-1:#1a1020;
   --text-2:#5a4a6a;
-  --text-3:#645878; /* KG: kontrast düzeltmesi — 5.0:1 on bg-raised */
+  --text-3:#645878;
   --text-hero:#0e0a14;
 
   --recording:#7a4a30;
@@ -169,7 +170,6 @@ body{
 /* ═══ AMBIENT BACKGROUND ═══ */
 .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 
-/* Morphing φ blob — SÜRPRIZ */
 .phi-blob{
   position:absolute;
   width:700px;height:700px;
@@ -203,7 +203,6 @@ body{
   100%{border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}
 }
 
-/* Ince dot-grid pattern */
 .ambient::after{
   content:'';position:absolute;inset:0;
   background-image:radial-gradient(circle,rgba(138,106,170,0.04) 1px,transparent 1px);
@@ -259,7 +258,7 @@ body{
   padding:var(--s10) var(--s5) var(--s9);
 }
 
-/* ═══ INTRO — asimetrik layout ═══ */
+/* ═══ INTRO ═══ */
 .intro{
   position:relative;
   text-align:left;
@@ -268,7 +267,6 @@ body{
   opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.15s;
 }
 
-/* Dev dekoratif φ — sağda, düşük opasite */
 .intro::after{
   content:'φ';
   position:absolute;
@@ -284,20 +282,66 @@ body{
 }
 
 .intro h1{
-  font-family:var(--font-display);
-  font-weight:300;
-  font-size:clamp(3rem,8vw,4.5rem);
-  letter-spacing:-0.03em;
-  line-height:1.05;
-  color:var(--text-hero);
-  margin-bottom:var(--s3);
-}
-.intro h1 em{
-  font-style:italic;
+  font-family:var(--font-mystery);
   font-weight:400;
-  background:linear-gradient(135deg,var(--amber),var(--plum));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+  font-size:clamp(3.2rem,9vw,5.2rem);
+  letter-spacing:0.02em;
+  line-height:1.1;
+  margin-bottom:var(--s3);
+  /* Y descender için overflow izni */
+  overflow:visible;
+  padding-bottom:0.2em;
+}
+
+/* Ebruli / değişken renk efekti — Mystery Quest için */
+.intro h1 .phiyo-text {
+  display:inline-block;
+  background: linear-gradient(
+    115deg,
+    #e2d8f5 0%,
+    #b8a0e0 12%,
+    #9080c8 24%,
+    #c8b0e8 36%,
+    #a090d0 48%,
+    #d8c8f0 60%,
+    #7868b8 72%,
+    #c0b0e0 84%,
+    #e2d8f5 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: phiyoShimmer 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(140,120,210,0.35));
+}
+
+/* Light theme versiyonu */
+[data-theme="light"] .intro h1 .phiyo-text {
+  background: linear-gradient(
+    115deg,
+    #3d3060 0%,
+    #6050a0 15%,
+    #4a3880 30%,
+    #7060b0 45%,
+    #3a2870 60%,
+    #8070c0 75%,
+    #5040a0 90%,
+    #3d3060 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(80,60,140,0.2));
+  animation: phiyoShimmer 6s ease-in-out infinite;
+}
+
+@keyframes phiyoShimmer {
+  0%   { background-position: 0% 50%; }
+  33%  { background-position: 100% 30%; }
+  66%  { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
 }
 
 .intro-sub{
@@ -320,7 +364,7 @@ body{
   background-clip:text;font-weight:400;
 }
 
-/* ═══ SECTION DIVIDER — RİTİM ═══ */
+/* ═══ SECTION DIVIDER ═══ */
 .section-divider{
   width:60px;height:1px;
   background:linear-gradient(90deg,var(--amber-dim),var(--plum-dim),transparent);
@@ -386,7 +430,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
   border:1px solid var(--border);border-radius:var(--r4);
   position:relative;overflow:hidden;
 }
-/* Ince amber glow üst kenar */
 .voice-panel::before{
   content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
   background:linear-gradient(90deg,transparent,var(--amber-dim),transparent);
@@ -512,7 +555,7 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 }
 .error-bar.visible{display:block}
 
-/* ═══ RESULT — circle clip-path reveal ═══ */
+/* ═══ RESULT ═══ */
 .result{
   display:none;margin-bottom:var(--s8);
   position:relative;
@@ -534,7 +577,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
   100%{clip-path:circle(150% at 50% 0%);opacity:1}
 }
 
-/* Dekoratif üst kenar */
 .result::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--amber),var(--plum),var(--amber));
@@ -584,7 +626,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 .observe-fade{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--ease-out),transform 0.6s var(--ease-out)}
 .observe-fade.in-view{opacity:1;transform:translateY(0)}
 
-/* pill stagger */
 .pill-stagger{opacity:0;transform:translateY(8px) scale(0.9);transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-bounce)}
 .pill-stagger.in-view{opacity:1;transform:translateY(0) scale(1)}
 
@@ -592,7 +633,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 @media(min-width:640px){
   .app{padding:var(--s10) var(--s7) var(--s9)}
   .intro{padding-right:140px}
-  .intro h1{font-size:clamp(3rem,8vw,4.5rem)}
 }
 
 @media(min-width:768px){
@@ -633,7 +673,9 @@ select option{background:var(--bg-raised);color:var(--text-1)}
 
 <main class="app" id="main-content">
   <section class="intro" aria-labelledby="main-heading">
-    <h1 id="main-heading"><em>Phi-Yo</em></h1>
+    <h1 id="main-heading">
+      <span class="phiyo-text">PHI<br>YO</span>
+    </h1>
     <p class="intro-sub">Scientific Dream Analysis</p>
     <p class="intro-powered">powered by <span>Freud for Machines: A Computational Psychoanalytic Ontology</span></p>
   </section>
@@ -927,7 +969,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
       addPills(m.emotions, 'pill-emotion');
       addPills(m.themes, 'pill-theme');
 
-      /* Trigger stagger after a frame */
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){
           resultMeta.querySelectorAll('.pill-stagger').forEach(function(el){
@@ -964,7 +1005,7 @@ select option{background:var(--bg-raised);color:var(--text-1)}
     clearTimeout(errTimer);
   }
 
-  /* ── IntersectionObserver for scroll animations ── */
+  /* ── IntersectionObserver ── */
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var observer = null;
 
