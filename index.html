@@ -267,19 +267,7 @@ body{
   opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.15s;
 }
 
-.intro::after{
-  content:'φ';
-  position:absolute;
-  right:-30px;top:-40px;
-  font-family:var(--font-display);
-  font-size:clamp(10rem,20vw,16rem);
-  font-weight:300;font-style:italic;
-  color:var(--plum);
-  opacity:0.04;
-  line-height:1;
-  pointer-events:none;
-  user-select:none;
-}
+
 
 .intro h1{
   font-family:var(--font-mystery);
@@ -380,7 +368,7 @@ body{
   gap:var(--s3);margin-bottom:var(--s6);
   opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.3s;
 }
-@media(min-width:601px){.user-fields{grid-template-columns:1fr 1fr 1fr}}
+@media(min-width:601px){.user-fields{grid-template-columns:1fr}}
 
 .field-input{
   background:var(--bg-raised);
@@ -683,8 +671,6 @@ select option{background:var(--bg-raised);color:var(--text-1)}
   <div class="section-divider" aria-hidden="true"></div>
 
   <div class="user-fields">
-    <input class="field-input" type="text" id="userId" placeholder="User ID" aria-label="User ID">
-    <input class="field-input" type="text" id="userName" placeholder="Your Name" aria-label="Your Name">
     <select class="field-input" id="langSelect" aria-label="Speech language">
       <option value="fr-FR">Français</option>
       <option value="en-US">English</option>
