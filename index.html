@@ -3,20 +3,7 @@
 <head>
 <!--
   ══════════════════════════════════════════════════════
-  Phi-Yo — Chat Interface v3
-  ══════════════════════════════════════════════════════
-  Orijinal tasarımın tüm atmosferi korundu:
-  - Dev Mystery Quest başlık (welcome kapısı)
-  - Törensel voice panel (kayıt overlay)
-  - Circle clip-path reveal (her yanıtta)
-  - Amber gradient divider'lar
-  - Staggered pill animasyonları
-  - Patlıcan gecesi paleti, blob'lar, noise
-
-  + Chat akışı eklendi
-  + Kalıcı user_id (localStorage)
-  + Sayfa-ömürlü session_id
-  + Yeni oturum butonu
+  Phi-Yo — Chat Interface v3.1 (Mobile-Fixed)
   ══════════════════════════════════════════════════════
 -->
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
@@ -182,18 +169,18 @@ body{
   content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(212,162,76,0.2) 30%,rgba(138,106,170,0.15) 70%,transparent);
 }
-.header-brand{display:flex;align-items:center;gap:var(--s3)}
-.header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9}
-.header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.3}
-.header-name{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-2)}
-.header-title-block{display:flex;flex-direction:column;gap:2px}
+.header-brand{display:flex;align-items:center;gap:var(--s3);min-width:0}
+.header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9;flex-shrink:0}
+.header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.3;flex-shrink:0}
+.header-name{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-2);white-space:nowrap}
+.header-title-block{display:flex;flex-direction:column;gap:2px;min-width:0}
 .header-sub{font-family:var(--font-display);font-size:10px;font-style:italic;color:var(--text-3);opacity:0.6;letter-spacing:0.02em;line-height:1.3}
-.header-right{display:flex;align-items:center;gap:var(--s2)}
+.header-right{display:flex;align-items:center;gap:var(--s2);flex-shrink:0}
 .icon-btn{
   width:36px;height:36px;border-radius:50%;
   border:1px solid var(--border);background:transparent;
   color:var(--text-2);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:border-color 0.25s var(--ease),color 0.25s var(--ease),background 0.25s var(--ease);
 }
 .icon-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
@@ -208,7 +195,7 @@ body{
 .chat-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0;scroll-behavior:smooth}
 .chat-inner{max-width:680px;margin:0 auto;padding:var(--s4) var(--s5) var(--s6);display:flex;flex-direction:column}
 
-/* ═══ WELCOME — Orijinal haşmetli giriş ═══ */
+/* ═══ WELCOME ═══ */
 .welcome{
   padding:var(--s5) 0 var(--s5);
   opacity:0;animation:fadeUp 0.8s var(--ease-out) forwards 0.15s;
@@ -258,7 +245,7 @@ body{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:400;
 }
 
-/* Section divider — orijinal amber çizgi */
+/* Section divider */
 .section-div{
   width:60px;height:1px;
   background:linear-gradient(90deg,var(--amber-dim),var(--plum-dim),transparent);
@@ -278,7 +265,6 @@ body{
 /* ═══ CHAT MESSAGES ═══ */
 .chat-messages{display:flex;flex-direction:column;gap:var(--s5)}
 
-/* Amber divider between exchanges */
 .exchange-divider{
   width:40px;height:1px;align-self:center;
   background:linear-gradient(90deg,transparent,var(--amber-dim),var(--plum-dim),transparent);
@@ -286,7 +272,6 @@ body{
   opacity:0;animation:fadeUp 0.4s var(--ease-out) forwards;
 }
 
-/* User message */
 .msg-user{
   align-self:flex-end;max-width:82%;
   animation:msgSlideLeft 0.4s var(--ease-out);
@@ -307,7 +292,6 @@ body{
   line-height:1.75;white-space:pre-wrap;word-wrap:break-word;
 }
 
-/* Assistant message — the ceremonial reveal */
 .msg-assistant{
   align-self:stretch;max-width:100%;
   animation:resultReveal 0.8s var(--ease-out);
@@ -326,7 +310,6 @@ body{
   border:1px solid var(--border);border-radius:var(--r4);
   overflow:hidden;
 }
-/* Top shimmer bar */
 .msg-assistant-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--amber),var(--plum),var(--amber));
@@ -346,7 +329,6 @@ body{
   white-space:pre-wrap;word-wrap:break-word;
 }
 
-/* Pills — staggered animation from original */
 .msg-pills{
   display:flex;flex-wrap:wrap;gap:var(--s2);
   margin-top:var(--s5);padding-top:var(--s4);
@@ -365,7 +347,7 @@ body{
 .pill-emotion{color:var(--plum);border:1px solid rgba(138,106,170,0.25);background:var(--plum-ghost)}
 .pill-theme{color:var(--lavender);border:1px solid rgba(160,140,192,0.25);background:var(--lavender-dim)}
 
-/* ═══ TYPING / LOADING — the φ breathe from original ═══ */
+/* ═══ TYPING / LOADING ═══ */
 .thinking-state{
   align-self:stretch;
   text-align:center;padding:var(--s7) 0;
@@ -383,7 +365,7 @@ body{
   font-weight:300;color:var(--text-3);margin-top:var(--s3);
 }
 
-/* ═══ VOICE OVERLAY — törensel kayıt deneyimi ═══ */
+/* ═══ VOICE OVERLAY ═══ */
 .voice-overlay{
   position:fixed;inset:0;z-index:200;
   background:rgba(14,10,20,0.88);
@@ -408,7 +390,6 @@ body{
   font-variant-numeric:tabular-nums;
 }
 
-/* Dev mikrofon — orijinal törensel boyut */
 .mic-orb{
   width:100px;height:100px;border-radius:50%;
   border:1px solid rgba(212,162,76,0.18);background:rgba(212,162,76,0.04);
@@ -469,14 +450,11 @@ body{
   background:linear-gradient(90deg,transparent,rgba(212,162,76,0.15) 30%,rgba(138,106,170,0.1) 70%,transparent);
 }
 .composer-inner{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:var(--s1)}
-.composer-row{display:flex;flex-direction:row;gap:var(--s2);align-items:stretch}
-.composer-btn-row{display:flex;flex-direction:column;gap:var(--s1);align-items:stretch;justify-content:flex-end;flex-shrink:0}
-
-.mic-row{display:flex;align-items:center;gap:var(--s2)}
-.mic-hint{font-family:var(--font-body);font-size:10px;color:var(--text-3);opacity:0.6;line-height:1.4}
+.composer-row{display:flex;flex-direction:column;gap:var(--s2)}
+.composer-actions{display:flex;align-items:center;gap:var(--s2);justify-content:space-between}
 
 .composer-input{
-  flex:1;min-height:72px;max-height:200px;
+  width:100%;min-height:72px;max-height:200px;
   background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r3);
   padding:var(--s3) var(--s4);
   font-family:var(--font-body);font-size:15px;font-weight:400;
@@ -487,7 +465,7 @@ body{
 .composer-input:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-ghost)}
 
 .composer-btn{
-  width:46px;height:46px;border-radius:var(--r2);
+  border-radius:var(--r2);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;flex-shrink:0;
   transition:transform 0.2s var(--ease),box-shadow 0.25s var(--ease),opacity 0.2s var(--ease);
@@ -495,19 +473,23 @@ body{
 .composer-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
 .btn-mic{
+  width:44px;height:44px;
   border:1px solid var(--border);background:transparent;color:var(--text-2);
 }
 .btn-mic:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
 
+.mic-hint{font-family:var(--font-body);font-size:10px;color:var(--text-3);opacity:0.6;line-height:1.4}
+
 .btn-send{
-  width:auto;height:37px;padding:0 20px;border:none;
+  height:44px;padding:0 20px;border:none;
   background:linear-gradient(135deg,var(--amber-dim),var(--amber));color:var(--bg-abyss);
   font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.08em;white-space:nowrap;
+  margin-left:auto;
 }
 .btn-send:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(212,162,76,0.3)}
 .btn-send:disabled{opacity:0.2;cursor:not-allowed;transform:none}
 
-.composer-meta{display:flex;align-items:center;justify-content:space-between;padding:0 var(--s1)}
+.composer-meta{display:flex;align-items:center;justify-content:center;padding:0 var(--s1)}
 .lang-select{
   background:none;border:none;font-family:var(--font-body);font-size:11px;font-weight:500;
   color:var(--text-3);cursor:pointer;padding:2px 4px;
@@ -524,6 +506,7 @@ body{
   padding:var(--s3) var(--s5);background:var(--rose-dim);border:1px solid rgba(196,122,122,0.25);
   border-radius:var(--r2);font-size:13px;color:var(--error);backdrop-filter:blur(12px);
   opacity:0;pointer-events:none;transition:opacity 0.3s var(--ease);
+  max-width:90vw;text-align:center;
 }
 .error-toast.visible{opacity:1;pointer-events:auto}
 
@@ -531,23 +514,59 @@ body{
 .footer-line{
   text-align:center;padding:0;
   font-family:var(--font-body);font-size:10px;letter-spacing:0.1em;
-  color:var(--text-3);opacity:0.25;
+  color:var(--text-3);opacity:0.25;line-height:1.6;
 }
 .footer-line a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(90,74,112,0.3)}
 .footer-line a:hover{border-color:var(--amber)}
 
-/* ═══ RESPONSIVE ═══ */
+/* ═══ RESPONSIVE — MOBILE ═══ */
 @media(max-width:600px){
-  .welcome h1{font-size:clamp(2.6rem,10vw,4rem)}
-  .msg-user{max-width:90%}
-  .msg-assistant-text{font-size:16px}
-  .chat-inner{padding:var(--s4) var(--s3) var(--s5)}
+  :root{--header-h:44px}
+
+  /* Header: hide subtitle, compact */
+  .header{padding:0 var(--s3)}
+  .header-sub{display:none}
+  .header-logo{height:24px}
+  .icon-btn{width:32px;height:32px}
+  .icon-btn svg{width:14px;height:14px}
+
+  /* Welcome: tighter spacing */
+  .welcome{padding:var(--s4) 0 var(--s3)}
+  .welcome h1{font-size:clamp(2.2rem,9vw,3.4rem);margin-bottom:var(--s1)}
+  .section-div{margin:var(--s3) 0}
+  .welcome-lang-block{margin-top:var(--s2)}
+  .welcome-lang-block .lang-select{min-width:180px;padding:6px 12px;font-size:12px}
+
+  /* Chat */
+  .chat-inner{padding:var(--s3) var(--s3) var(--s5)}
+  .msg-user{max-width:88%}
+  .msg-assistant-card{padding:var(--s4)}
+  .msg-assistant-text{font-size:16px;line-height:1.75}
+
+  /* Composer: stack vertically, full-width textarea */
+  .composer{padding:var(--s2) var(--s3)}
+  .composer-input{min-height:60px;font-size:14px;padding:var(--s2) var(--s3)}
+  .mic-hint{display:none}
+  .btn-send{height:40px;padding:0 16px;font-size:11px}
+  .btn-mic{width:40px;height:40px}
+
+  /* Footer */
+  .footer-line{font-size:9px;letter-spacing:0.06em}
+
+  /* Voice overlay */
   .mic-orb{width:80px;height:80px}
   .mic-orb svg{width:24px;height:24px}
+  .voice-overlay-inner{padding:var(--s5)}
 }
+
+/* ═══ DESKTOP ═══ */
 @media(min-width:768px){
   .chat-inner{padding:var(--s6) var(--s6) var(--s7)}
   .composer{padding:var(--s4) var(--s6)}
+  .composer-row{flex-direction:row;align-items:stretch}
+  .composer-input{min-height:72px}
+  .composer-actions{flex-direction:column;gap:var(--s1);width:auto;justify-content:flex-end}
+  .btn-send{margin-left:0}
 }
 </style>
 </head>
@@ -561,7 +580,7 @@ body{
     <span class="header-sep" aria-hidden="true"></span>
     <div class="header-title-block">
       <span class="header-name">Phi-Yo</span>
-      <span class="header-sub">Scientific Dream Analysis &mdash; <em>powered by Freud for Machines: A Computational Psychoanalytic Ontology</em></span>
+      <span class="header-sub">Scientific Dream Analysis &mdash; <em>powered by Freud for Machines</em></span>
     </div>
   </div>
   <div class="header-right">
@@ -597,7 +616,7 @@ body{
   <div class="chat-scroll" id="chatScroll">
     <div class="chat-inner" id="chatInner">
 
-      <!-- Welcome — haşmetli orijinal giriş -->
+      <!-- Welcome -->
       <div class="welcome" id="welcomeScreen">
         <h1><span class="phiyo-text">PHI<br>YO</span></h1>
         <div class="section-div" aria-hidden="true"></div>
@@ -615,7 +634,7 @@ body{
         </div>
       </div>
 
-      <!-- Messages go here -->
+      <!-- Messages -->
       <div class="chat-messages" id="chatMessages"></div>
 
     </div>
@@ -624,21 +643,19 @@ body{
   <div class="composer" id="composer">
     <div class="composer-inner">
       <div class="composer-row">
-        <textarea class="composer-input" id="composerInput" placeholder="First, please tell me if it is a dream or an experience in reality. I will remember everything within this session." rows="4" aria-label="Message"></textarea>
-        <div class="composer-btn-row">
-          <div class="mic-row">
-            <button class="composer-btn btn-mic" id="micBtn" aria-label="Voice input">
-              <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-            </button>
-            <span class="mic-hint">Leave a short pause between sentences while speaking.</span>
-          </div>
+        <textarea class="composer-input" id="composerInput" placeholder="First, please tell me if it is a dream or an experience in reality. I will remember everything within this session." rows="3" aria-label="Message"></textarea>
+        <div class="composer-actions">
+          <button class="composer-btn btn-mic" id="micBtn" aria-label="Voice input">
+            <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <span class="mic-hint">Leave a short pause between sentences while speaking.</span>
           <button class="composer-btn btn-send" id="sendBtn" disabled aria-label="Send">
             Send for interpretation
           </button>
         </div>
       </div>
       <div class="composer-meta">
-        <div class="footer-line" id="footerLine">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &nbsp;·&nbsp; <a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> &nbsp;·&nbsp; <a href="https://llulllab.com/mentions-legales.html" target="_blank" rel="noopener">Mentions Légales</a> &nbsp;·&nbsp; Conçu et développé en France</div>
+        <div class="footer-line" id="footerLine">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; <a href="https://llulllab.com/mentions-legales.html" target="_blank" rel="noopener">Mentions L&eacute;gales</a> &middot; France</div>
       </div>
     </div>
   </div>
@@ -671,7 +688,6 @@ body{
   var micBtn=document.getElementById('micBtn');
   var errorToast=document.getElementById('errorToast');
 
-  // Voice overlay
   var voiceOverlay=document.getElementById('voiceOverlay');
   var micOrb=document.getElementById('micOrb');
   var micOrbIcon=document.getElementById('micOrbIcon');
@@ -712,7 +728,7 @@ body{
   });
   sendBtn.addEventListener('click',doSend);
 
-  /* ══ Voice — full overlay experience ══ */
+  /* ══ Voice ══ */
   var isRec=false,recog=null,vText='',vInterim='',recSec=0,recInt=null;
 
   micBtn.addEventListener('click',openVoiceOverlay);
@@ -787,24 +803,20 @@ body{
     var text=(composerInput.value||'').trim();
     if(!text)return;
 
-    // Collapse welcome with animation
     if(!welcomeScreen.classList.contains('collapsed')){
       welcomeScreen.classList.add('collapsed');
     }
 
-    // Add divider between exchanges (except first)
     if(msgCount>0){
       var div=document.createElement('div');
       div.className='exchange-divider';
       chatMessages.appendChild(div);
     }
 
-    // User message
     addUserMsg(text);
     composerInput.value='';composerInput.style.height='auto';sendBtn.disabled=true;
     msgCount++;
 
-    // Thinking indicator
     var thinkEl=addThinking();
     scrollBottom();
 
@@ -854,7 +866,6 @@ body{
     var body=document.createElement('div');body.className='msg-assistant-text';body.textContent=text;
     card.appendChild(label);card.appendChild(body);
 
-    // Pills
     var pills=[];var delay=0;
     ['symbols','emotions','themes'].forEach(function(key){
       var cls=key==='symbols'?'pill-symbol':key==='emotions'?'pill-emotion':'pill-theme';
@@ -869,7 +880,6 @@ body{
       var pillWrap=document.createElement('div');pillWrap.className='msg-pills';
       pills.forEach(function(p){pillWrap.appendChild(p);});
       card.appendChild(pillWrap);
-      // Staggered reveal
       requestAnimationFrame(function(){requestAnimationFrame(function(){
         pills.forEach(function(p){p.classList.add('revealed');});
       });});
