@@ -169,7 +169,7 @@ body{
   content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(212,162,76,0.2) 30%,rgba(138,106,170,0.15) 70%,transparent);
 }
-.header-brand{display:flex;align-items:center;gap:var(--s3);min-width:0}
+.header-brand{display:flex;align-items:center;gap:var(--s3);min-width:0;overflow:hidden}
 .header-logo{height:28px;width:auto;object-fit:contain;opacity:0.9;flex-shrink:0}
 .header-sep{width:1px;height:16px;background:var(--text-3);opacity:0.3;flex-shrink:0}
 .header-name{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-2);white-space:nowrap}
@@ -523,9 +523,12 @@ body{
 @media(max-width:600px){
   :root{--header-h:44px}
 
-  /* Header: hide subtitle, compact */
+  /* Header: compact, subtitle truncated to one line */
   .header{padding:0 var(--s3)}
-  .header-sub{display:none}
+  .header-sub{
+    display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    font-size:9px;max-width:calc(100vw - 160px);
+  }
   .header-logo{height:24px}
   .icon-btn{width:32px;height:32px}
   .icon-btn svg{width:14px;height:14px}
@@ -546,7 +549,7 @@ body{
   /* Composer: stack vertically, full-width textarea */
   .composer{padding:var(--s2) var(--s3)}
   .composer-input{min-height:60px;font-size:14px;padding:var(--s2) var(--s3)}
-  .mic-hint{display:none}
+  .mic-hint{font-size:9px;opacity:0.5}
   .btn-send{height:40px;padding:0 16px;font-size:11px}
   .btn-mic{width:40px;height:40px}
 
