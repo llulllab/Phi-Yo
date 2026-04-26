@@ -276,6 +276,9 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
       <span class="header-name">Phi-Yo</span>
     </div>
     <div class="header-right">
+      <button class="icon-btn" id="logoutBtnMode" aria-label="Sign out" title="Sign out">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
       <button class="icon-btn" id="themeToggleMode" aria-label="Switch theme">
         <svg id="themeIconMode" viewBox="0 0 24 24"></svg>
       </button>
@@ -332,6 +335,9 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
     <div class="header-right">
       <button class="icon-btn" id="newSessionBtn" aria-label="New session" title="New session">
         <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button class="icon-btn" id="logoutBtnChat" aria-label="Sign out" title="Sign out">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
       <button class="icon-btn" id="themeToggleChat" aria-label="Switch theme">
         <svg id="themeIconChat" viewBox="0 0 24 24"></svg>
@@ -554,6 +560,14 @@ function setTheme(t) {
 $('themeToggleMode').addEventListener('click', function(){ setTheme(curTheme === 'dark' ? 'light' : 'dark'); });
 $('themeToggleChat').addEventListener('click', function(){ setTheme(curTheme === 'dark' ? 'light' : 'dark'); });
 setTheme(curTheme);
+
+function logout() {
+  try { localStorage.removeItem('phiyo-jwt'); } catch(e) {}
+  state.jwt = null; state.userId = null; state.email = null;
+  showScreen('auth');
+}
+$('logoutBtnMode').addEventListener('click', logout);
+$('logoutBtnChat').addEventListener('click', logout);
 
 /* ══ Error toast ══ */
 var toastTimer;
