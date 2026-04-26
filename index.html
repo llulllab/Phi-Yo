@@ -441,7 +441,7 @@ var MODES_CONFIG = {
     welcomeMode: 'DREAM ANALYSIS',
     welcomeText: 'Share your dream. Tell me first whether it is a dream or an experience from waking life.',
     placeholder: 'Describe your dream...',
-    useJwt: false,
+    useJwt: true,
     multiTurn: true,
     showLang: true
   },
@@ -715,7 +715,6 @@ function requestMorningBrief() {
   var agenda = ($('morningAgendaInput') || {}).value || '';
   $('morningAgendaWrap').classList.add('hidden');
   $('chatWelcome').classList.add('collapsed');
-  $('composer').style.display = '';
 
   var loadId = addMessage('assistant', 'Preparing your morning brief...', 'loading');
   apiCall(URLS.morning, { agenda_input: agenda, language: 'auto' }, true, function(err, res) {
