@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
@@ -119,6 +119,13 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 .email-sent-email{color:var(--amber);font-style:normal;font-weight:400}
 .email-sent-resend{font-size:13px;color:var(--text-3)}
 .email-sent-resend button{background:none;border:none;color:var(--amber);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:2px;padding:0}
+.otp-form{margin:var(--s5) 0 var(--s4);display:flex;flex-direction:column;gap:var(--s3);align-items:center}
+.otp-input{width:200px;text-align:center;padding:14px var(--s4);background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-body);font-size:28px;font-weight:600;letter-spacing:0.3em;outline:none;transition:border-color .25s var(--ease)}
+.otp-input:focus{border-color:var(--amber)}
+.otp-input::placeholder{color:var(--text-3);font-size:14px;letter-spacing:0.05em;font-weight:400}
+.otp-verify-btn{width:200px;padding:12px var(--s4);background:var(--amber);border:none;border-radius:var(--r3);color:#0e0a14;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s var(--ease)}
+.otp-verify-btn:hover{opacity:.9}
+.otp-verify-btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* ═══ SCREEN: MODE SELECTOR ═══ */
 #screen-modes{position:relative;z-index:1;display:flex;flex-direction:column;overflow:hidden;height:100%}
@@ -274,7 +281,11 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
       <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
     </div>
     <h2 class="email-sent-title" id="emailSentTitle">Check your inbox.</h2>
-    <p class="email-sent-sub" id="emailSentSub">We sent a sign-in link to<br><span class="email-sent-email" id="sentEmailDisplay"></span></p>
+    <p class="email-sent-sub" id="emailSentSub">We sent a 6-digit code to<br><span class="email-sent-email" id="sentEmailDisplay"></span></p>
+    <div class="otp-form">
+      <input type="text" class="otp-input" id="otpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" spellcheck="false">
+      <button class="otp-verify-btn" id="otpVerifyBtn" disabled>Verify</button>
+    </div>
     <p class="email-sent-resend"><span id="resendTextSpan">Didn't receive it?</span> <button id="resendBtn">Send again</button></p>
   </div>
 </div>
@@ -466,9 +477,10 @@ var MODES_CONFIG = {
 var STRINGS = {
 en:{
   tagline:'Computational dream analysis and wellbeing.\nGrounded in Freud for Machines.',
-  emailPlaceholder:'Your email address',authBtnText:'Send me a sign-in link',authBtnSending:'Sending...',
+  emailPlaceholder:'Your email address',authBtnText:'Send me a sign-in code',authBtnSending:'Sending...',
   authNote:'Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.',
-  emailSentTitle:'Check your inbox.',emailSentSub:'We sent a sign-in link to',
+  emailSentTitle:'Check your inbox.',emailSentSub:'We sent a 6-digit sign-in code to',
+  otpPlaceholder:'6-digit code',otpVerifyBtn:'Verify',otpVerifying:'Verifying...',
   resendText:"Didn't receive it?",resendBtn:'Send again',
   greetingMorning:'Good morning.',greetingAfternoon:'Good afternoon.',greetingEvening:'Good evening.',
   modesSub:'What would you like to explore today?',
@@ -483,16 +495,17 @@ en:{
   checkinWelcomeMode:'DAILY CHECK-IN',checkinWelcomeText:'How was your day?',checkinPlaceholder:'Tell me about today...',
   voiceTap:'Tap to speak',voiceListening:'Listening…',voiceCancel:'Cancel',voiceSend:'Send',
   youLabel:'You',thinkingText:'Thinking...',newSessionConfirm:'Start a new session?',
-  errorInvalidEmail:'Please enter a valid email address.',errorSendLink:'Could not send the sign-in link. Please try again.',
-  errorInvalidLink:'This sign-in link is invalid or has expired.',errorSessionExpired:'Your session has expired. Please sign in again.',
+  errorInvalidEmail:'Please enter a valid email address.',errorSendLink:'Could not send the sign-in code. Please try again.',
+  errorInvalidLink:'Invalid or expired code. Please try again.',errorSessionExpired:'Your session has expired. Please sign in again.',
   errorBrief:'Could not generate your brief. Please try again.',errorGeneral:'Something went wrong. Please try again.',
   errorEmpty:'Received an empty response.',errorSpeech:'Speech recognition is not supported in this browser.',errorMic:'Could not start recording.'
 },
 fr:{
   tagline:'Analyse computationnelle des rêves et bien-être.\nFondé sur Freud for Machines.',
-  emailPlaceholder:'Votre adresse email',authBtnText:'Envoyer un lien de connexion',authBtnSending:'Envoi…',
+  emailPlaceholder:'Votre adresse email',authBtnText:'Envoyer un code de connexion',authBtnSending:'Envoi…',
   authNote:'Phi-Yo est un outil de réflexion et de soutien au bien-être, non un substitut à un accompagnement professionnel.',
-  emailSentTitle:'Vérifiez votre boîte mail.',emailSentSub:'Nous avons envoyé un lien de connexion à',
+  emailSentTitle:'Vérifiez votre boîte mail.',emailSentSub:'Nous avons envoyé un code à 6 chiffres à',
+  otpPlaceholder:'Code à 6 chiffres',otpVerifyBtn:'Vérifier',otpVerifying:'Vérification…',
   resendText:"Vous ne l'avez pas reçu ?",resendBtn:'Renvoyer',
   greetingMorning:'Bonjour.',greetingAfternoon:'Bon après-midi.',greetingEvening:'Bonsoir.',
   modesSub:"Qu'aimeriez-vous explorer aujourd'hui ?",
@@ -507,16 +520,17 @@ fr:{
   checkinWelcomeMode:'BILAN DU SOIR',checkinWelcomeText:'Comment s\'est passée votre journée ?',checkinPlaceholder:"Parlez-moi d'aujourd'hui…",
   voiceTap:'Appuyez pour parler',voiceListening:'Écoute…',voiceCancel:'Annuler',voiceSend:'Envoyer',
   youLabel:'Vous',thinkingText:'Réflexion…',newSessionConfirm:'Démarrer une nouvelle session ?',
-  errorInvalidEmail:'Veuillez saisir une adresse email valide.',errorSendLink:"Impossible d'envoyer le lien. Veuillez réessayer.",
-  errorInvalidLink:'Ce lien de connexion est invalide ou a expiré.',errorSessionExpired:'Votre session a expiré. Veuillez vous reconnecter.',
+  errorInvalidEmail:'Veuillez saisir une adresse email valide.',errorSendLink:"Impossible d'envoyer le code. Veuillez réessayer.",
+  errorInvalidLink:'Code invalide ou expiré. Veuillez réessayer.',errorSessionExpired:'Votre session a expiré. Veuillez vous reconnecter.',
   errorBrief:'Impossible de générer votre bilan. Veuillez réessayer.',errorGeneral:'Une erreur est survenue. Veuillez réessayer.',
   errorEmpty:'Réponse vide reçue.',errorSpeech:"La reconnaissance vocale n'est pas prise en charge par ce navigateur.",errorMic:"Impossible de démarrer l'enregistrement."
 },
 tr:{
   tagline:'Hesaplamalı rüya analizi ve esenlik.\nFreud for Machines temelinde.',
-  emailPlaceholder:'E-posta adresiniz',authBtnText:'Giriş bağlantısı gönder',authBtnSending:'Gönderiliyor…',
+  emailPlaceholder:'E-posta adresiniz',authBtnText:'Giriş kodu gönder',authBtnSending:'Gönderiliyor…',
   authNote:'Phi-Yo bir öz-yansıma ve esenlik destek aracıdır; profesyonel bakımın yerini tutmaz.',
-  emailSentTitle:'Gelen kutunuzu kontrol edin.',emailSentSub:'Giriş bağlantısını şu adrese gönderdik:',
+  emailSentTitle:'Gelen kutunuzu kontrol edin.',emailSentSub:'6 haneli giriş kodunu şu adrese gönderdik:',
+  otpPlaceholder:'6 haneli kod',otpVerifyBtn:'Doğrula',otpVerifying:'Doğrulanıyor…',
   resendText:'Almadınız mı?',resendBtn:'Tekrar gönder',
   greetingMorning:'Günaydın.',greetingAfternoon:'İyi günler.',greetingEvening:'İyi akşamlar.',
   modesSub:'Bugün ne keşfetmek istersiniz?',
@@ -531,16 +545,17 @@ tr:{
   checkinWelcomeMode:'GÜNLÜK DEĞERLENDİRME',checkinWelcomeText:'Gününüz nasıl geçti?',checkinPlaceholder:'Bugünü anlatın…',
   voiceTap:'Konuşmak için dokunun',voiceListening:'Dinleniyor…',voiceCancel:'İptal',voiceSend:'Gönder',
   youLabel:'Siz',thinkingText:'Düşünüyor…',newSessionConfirm:'Yeni bir seans başlatılsın mı?',
-  errorInvalidEmail:'Lütfen geçerli bir e-posta adresi girin.',errorSendLink:'Giriş bağlantısı gönderilemedi. Lütfen tekrar deneyin.',
-  errorInvalidLink:'Bu giriş bağlantısı geçersiz veya süresi dolmuş.',errorSessionExpired:'Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.',
+  errorInvalidEmail:'Lütfen geçerli bir e-posta adresi girin.',errorSendLink:'Giriş kodu gönderilemedi. Lütfen tekrar deneyin.',
+  errorInvalidLink:'Geçersiz veya süresi dolmuş kod. Lütfen tekrar deneyin.',errorSessionExpired:'Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.',
   errorBrief:'Brifing oluşturulamadı. Lütfen tekrar deneyin.',errorGeneral:'Bir hata oluştu. Lütfen tekrar deneyin.',
   errorEmpty:'Boş yanıt alındı.',errorSpeech:'Bu tarayıcıda ses tanıma desteklenmiyor.',errorMic:'Kayıt başlatılamadı.'
 },
 de:{
   tagline:'Computationale Traumanalyse und Wohlbefinden.\nBasierend auf Freud for Machines.',
-  emailPlaceholder:'Ihre E-Mail-Adresse',authBtnText:'Anmeldelink senden',authBtnSending:'Wird gesendet…',
+  emailPlaceholder:'Ihre E-Mail-Adresse',authBtnText:'Anmeldecode senden',authBtnSending:'Wird gesendet…',
   authNote:'Phi-Yo ist ein Werkzeug zur Selbstreflexion und Wohlbefindensunterstützung, kein Ersatz für professionelle Betreuung.',
-  emailSentTitle:'Prüfen Sie Ihren Posteingang.',emailSentSub:'Wir haben einen Anmeldelink gesendet an',
+  emailSentTitle:'Prüfen Sie Ihren Posteingang.',emailSentSub:'Wir haben einen 6-stelligen Code gesendet an',
+  otpPlaceholder:'6-stelliger Code',otpVerifyBtn:'Bestätigen',otpVerifying:'Prüfung…',
   resendText:'Nicht erhalten?',resendBtn:'Erneut senden',
   greetingMorning:'Guten Morgen.',greetingAfternoon:'Guten Tag.',greetingEvening:'Guten Abend.',
   modesSub:'Was möchten Sie heute erkunden?',
@@ -556,15 +571,16 @@ de:{
   voiceTap:'Zum Sprechen tippen',voiceListening:'Hört zu…',voiceCancel:'Abbrechen',voiceSend:'Senden',
   youLabel:'Sie',thinkingText:'Denkt…',newSessionConfirm:'Neue Sitzung starten?',
   errorInvalidEmail:'Bitte geben Sie eine gültige E-Mail-Adresse ein.',errorSendLink:'Der Anmeldelink konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
-  errorInvalidLink:'Dieser Anmeldelink ist ungültig oder abgelaufen.',errorSessionExpired:'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.',
+  errorInvalidLink:'Ungültiger oder abgelaufener Code. Bitte versuchen Sie es erneut.',errorSessionExpired:'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.',
   errorBrief:'Das Briefing konnte nicht erstellt werden. Bitte versuchen Sie es erneut.',errorGeneral:'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
   errorEmpty:'Leere Antwort erhalten.',errorSpeech:'Spracherkennung wird in diesem Browser nicht unterstützt.',errorMic:'Die Aufnahme konnte nicht gestartet werden.'
 },
 es:{
   tagline:'Análisis computacional de sueños y bienestar.\nBasado en Freud for Machines.',
-  emailPlaceholder:'Tu dirección de correo',authBtnText:'Enviarme un enlace de acceso',authBtnSending:'Enviando…',
+  emailPlaceholder:'Tu dirección de correo',authBtnText:'Enviarme un código de acceso',authBtnSending:'Enviando…',
   authNote:'Phi-Yo es una herramienta de autorreflexión y apoyo al bienestar, no un sustituto de la atención profesional.',
-  emailSentTitle:'Revisa tu bandeja de entrada.',emailSentSub:'Enviamos un enlace de acceso a',
+  emailSentTitle:'Revisa tu bandeja de entrada.',emailSentSub:'Enviamos un código de 6 dígitos a',
+  otpPlaceholder:'Código de 6 dígitos',otpVerifyBtn:'Verificar',otpVerifying:'Verificando…',
   resendText:'¿No lo recibiste?',resendBtn:'Enviar de nuevo',
   greetingMorning:'Buenos días.',greetingAfternoon:'Buenas tardes.',greetingEvening:'Buenas noches.',
   modesSub:'¿Qué te gustaría explorar hoy?',
@@ -579,16 +595,17 @@ es:{
   checkinWelcomeMode:'REVISIÓN DIARIA',checkinWelcomeText:'¿Cómo fue tu día?',checkinPlaceholder:'Cuéntame sobre hoy…',
   voiceTap:'Toca para hablar',voiceListening:'Escuchando…',voiceCancel:'Cancelar',voiceSend:'Enviar',
   youLabel:'Tú',thinkingText:'Pensando…',newSessionConfirm:'¿Iniciar una nueva sesión?',
-  errorInvalidEmail:'Por favor ingresa una dirección de correo válida.',errorSendLink:'No se pudo enviar el enlace. Por favor inténtalo de nuevo.',
-  errorInvalidLink:'Este enlace de acceso no es válido o ha expirado.',errorSessionExpired:'Tu sesión ha expirado. Por favor inicia sesión de nuevo.',
+  errorInvalidEmail:'Por favor ingresa una dirección de correo válida.',errorSendLink:'No se pudo enviar el código. Por favor inténtalo de nuevo.',
+  errorInvalidLink:'Código inválido o expirado. Por favor inténtalo de nuevo.',errorSessionExpired:'Tu sesión ha expirado. Por favor inicia sesión de nuevo.',
   errorBrief:'No se pudo generar el informe. Por favor inténtalo de nuevo.',errorGeneral:'Algo salió mal. Por favor inténtalo de nuevo.',
   errorEmpty:'Se recibió una respuesta vacía.',errorSpeech:'El reconocimiento de voz no está disponible en este navegador.',errorMic:'No se pudo iniciar la grabación.'
 },
 ja:{
   tagline:'計算論的夢分析とウェルビーイング。\nFreud for Machines に基づく。',
-  emailPlaceholder:'メールアドレス',authBtnText:'サインインリンクを送る',authBtnSending:'送信中…',
+  emailPlaceholder:'メールアドレス',authBtnText:'サインインコードを送る',authBtnSending:'送信中…',
   authNote:'Phi-Yoは自己省察とウェルビーイングのサポートツールであり、専門的なケアの代替ではありません。',
-  emailSentTitle:'受信トレイをご確認ください。',emailSentSub:'サインインリンクを送信しました：',
+  emailSentTitle:'受信トレイをご確認ください。',emailSentSub:'6桁のサインインコードを送信しました：',
+  otpPlaceholder:'6桁のコード',otpVerifyBtn:'確認',otpVerifying:'確認中…',
   resendText:'届きませんでしたか？',resendBtn:'再送信',
   greetingMorning:'おはようございます。',greetingAfternoon:'こんにちは。',greetingEvening:'こんばんは。',
   modesSub:'今日は何を探求しますか？',
@@ -603,16 +620,17 @@ ja:{
   checkinWelcomeMode:'デイリーチェックイン',checkinWelcomeText:'今日はどうでしたか？',checkinPlaceholder:'今日について教えてください…',
   voiceTap:'タップして話す',voiceListening:'聴いています…',voiceCancel:'キャンセル',voiceSend:'送信',
   youLabel:'あなた',thinkingText:'考え中…',newSessionConfirm:'新しいセッションを開始しますか？',
-  errorInvalidEmail:'有効なメールアドレスを入力してください。',errorSendLink:'サインインリンクを送信できませんでした。もう一度お試しください。',
-  errorInvalidLink:'このサインインリンクは無効または期限切れです。',errorSessionExpired:'セッションの有効期限が切れました。再度サインインしてください。',
+  errorInvalidEmail:'有効なメールアドレスを入力してください。',errorSendLink:'サインインコードを送信できませんでした。もう一度お試しください。',
+  errorInvalidLink:'コードが無効または期限切れです。もう一度お試しください。',errorSessionExpired:'セッションの有効期限が切れました。再度サインインしてください。',
   errorBrief:'ブリーフィングを生成できませんでした。もう一度お試しください。',errorGeneral:'エラーが発生しました。もう一度お試しください。',
   errorEmpty:'空のレスポンスが返されました。',errorSpeech:'このブラウザでは音声認識がサポートされていません。',errorMic:'録音を開始できませんでした。'
 },
 ru:{
   tagline:'Вычислительный анализ снов и благополучие.\nОснован на Freud for Machines.',
-  emailPlaceholder:'Ваш адрес электронной почты',authBtnText:'Отправить ссылку для входа',authBtnSending:'Отправка…',
+  emailPlaceholder:'Ваш адрес электронной почты',authBtnText:'Отправить код для входа',authBtnSending:'Отправка…',
   authNote:'Phi-Yo — инструмент для саморефлексии и поддержки благополучия, а не замена профессиональной помощи.',
-  emailSentTitle:'Проверьте свой почтовый ящик.',emailSentSub:'Мы отправили ссылку для входа на адрес',
+  emailSentTitle:'Проверьте свой почтовый ящик.',emailSentSub:'Мы отправили 6-значный код на адрес',
+  otpPlaceholder:'6-значный код',otpVerifyBtn:'Подтвердить',otpVerifying:'Проверка…',
   resendText:'Не получили?',resendBtn:'Отправить снова',
   greetingMorning:'Доброе утро.',greetingAfternoon:'Добрый день.',greetingEvening:'Добрый вечер.',
   modesSub:'Что вы хотите исследовать сегодня?',
@@ -627,8 +645,8 @@ ru:{
   checkinWelcomeMode:'ЕЖЕДНЕВНЫЙ ЧЕК-ИН',checkinWelcomeText:'Как прошёл ваш день?',checkinPlaceholder:'Расскажите о сегодняшнем дне…',
   voiceTap:'Нажмите, чтобы говорить',voiceListening:'Слушаю…',voiceCancel:'Отмена',voiceSend:'Отправить',
   youLabel:'Вы',thinkingText:'Думаю…',newSessionConfirm:'Начать новый сеанс?',
-  errorInvalidEmail:'Пожалуйста, введите действительный адрес электронной почты.',errorSendLink:'Не удалось отправить ссылку для входа. Пожалуйста, попробуйте снова.',
-  errorInvalidLink:'Эта ссылка для входа недействительна или устарела.',errorSessionExpired:'Ваша сессия истекла. Пожалуйста, войдите снова.',
+  errorInvalidEmail:'Пожалуйста, введите действительный адрес электронной почты.',errorSendLink:'Не удалось отправить код для входа. Пожалуйста, попробуйте снова.',
+  errorInvalidLink:'Неверный или просроченный код. Пожалуйста, попробуйте снова.',errorSessionExpired:'Ваша сессия истекла. Пожалуйста, войдите снова.',
   errorBrief:'Не удалось создать брифинг. Пожалуйста, попробуйте снова.',errorGeneral:'Что-то пошло не так. Пожалуйста, попробуйте снова.',
   errorEmpty:'Получен пустой ответ.',errorSpeech:'Распознавание речи не поддерживается в этом браузере.',errorMic:'Не удалось начать запись.'
 },
@@ -636,7 +654,8 @@ ar:{
   tagline:'تحليل الأحلام الحوسبي والعافية.\nمبني على Freud for Machines.',
   emailPlaceholder:'عنوان بريدك الإلكتروني',authBtnText:'أرسل لي رابط الدخول',authBtnSending:'جارٍ الإرسال…',
   authNote:'Phi-Yo أداة للتأمل الذاتي ودعم العافية، وليست بديلاً عن الرعاية المهنية.',
-  emailSentTitle:'تحقق من صندوق الوارد.',emailSentSub:'أرسلنا رابط الدخول إلى',
+  emailSentTitle:'تحقق من صندوق الوارد.',emailSentSub:'أرسلنا رمزًا مكونًا من 6 أرقام إلى',
+  otpPlaceholder:'رمز مكون من 6 أرقام',otpVerifyBtn:'تحقق',otpVerifying:'جارٍ التحقق…',
   resendText:'لم تستلمه؟',resendBtn:'إعادة الإرسال',
   greetingMorning:'صباح الخير.',greetingAfternoon:'مساء الخير.',greetingEvening:'مساء النور.',
   modesSub:'ماذا تريد أن تستكشف اليوم؟',
@@ -651,16 +670,17 @@ ar:{
   checkinWelcomeMode:'المراجعة اليومية',checkinWelcomeText:'كيف كان يومك؟',checkinPlaceholder:'حدثني عن اليوم…',
   voiceTap:'اضغط للكلام',voiceListening:'أستمع…',voiceCancel:'إلغاء',voiceSend:'إرسال',
   youLabel:'أنت',thinkingText:'أفكر…',newSessionConfirm:'بدء جلسة جديدة؟',
-  errorInvalidEmail:'يرجى إدخال عنوان بريد إلكتروني صالح.',errorSendLink:'تعذّر إرسال رابط الدخول. يرجى المحاولة مرة أخرى.',
-  errorInvalidLink:'رابط الدخول غير صالح أو منتهي الصلاحية.',errorSessionExpired:'انتهت جلستك. يرجى تسجيل الدخول مجدداً.',
+  errorInvalidEmail:'يرجى إدخال عنوان بريد إلكتروني صالح.',errorSendLink:'تعذّر إرسال رمز الدخول. يرجى المحاولة مرة أخرى.',
+  errorInvalidLink:'الرمز غير صالح أو منتهي الصلاحية. يرجى المحاولة مرة أخرى.',errorSessionExpired:'انتهت جلستك. يرجى تسجيل الدخول مجدداً.',
   errorBrief:'تعذّر إنشاء الإحاطة. يرجى المحاولة مرة أخرى.',errorGeneral:'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
   errorEmpty:'تم استلام استجابة فارغة.',errorSpeech:'التعرف على الكلام غير مدعوم في هذا المتصفح.',errorMic:'تعذّر بدء التسجيل.'
 },
 zh:{
   tagline:'计算梦境分析与身心健康。\n基于《Freud for Machines》。',
-  emailPlaceholder:'您的电子邮箱地址',authBtnText:'发送登录链接',authBtnSending:'发送中…',
+  emailPlaceholder:'您的电子邮箱地址',authBtnText:'发送登录验证码',authBtnSending:'发送中…',
   authNote:'Phi-Yo 是一款自我反思和健康支持工具，不能替代专业护理。',
-  emailSentTitle:'请检查您的收件箱。',emailSentSub:'我们已将登录链接发送至',
+  emailSentTitle:'请检查您的收件箱。',emailSentSub:'我们已向以下地址发送了6位验证码：',
+  otpPlaceholder:'6位验证码',otpVerifyBtn:'验证',otpVerifying:'验证中…',
   resendText:'没有收到？',resendBtn:'重新发送',
   greetingMorning:'早上好。',greetingAfternoon:'下午好。',greetingEvening:'晚上好。',
   modesSub:'您今天想探索什么？',
@@ -675,8 +695,8 @@ zh:{
   checkinWelcomeMode:'每日记录',checkinWelcomeText:'您今天过得怎么样？',checkinPlaceholder:'告诉我今天的事…',
   voiceTap:'点击说话',voiceListening:'正在聆听…',voiceCancel:'取消',voiceSend:'发送',
   youLabel:'您',thinkingText:'思考中…',newSessionConfirm:'开始新会话？',
-  errorInvalidEmail:'请输入有效的电子邮箱地址。',errorSendLink:'无法发送登录链接。请重试。',
-  errorInvalidLink:'此登录链接无效或已过期。',errorSessionExpired:'您的会话已过期。请重新登录。',
+  errorInvalidEmail:'请输入有效的电子邮箱地址。',errorSendLink:'无法发送登录验证码。请重试。',
+  errorInvalidLink:'验证码无效或已过期。请重试。',errorSessionExpired:'您的会话已过期。请重新登录。',
   errorBrief:'无法生成简报。请重试。',errorGeneral:'出现错误。请重试。',
   errorEmpty:'收到空响应。',errorSpeech:'此浏览器不支持语音识别。',errorMic:'无法开始录音。'
 }
@@ -705,6 +725,8 @@ function setLocale(lang) {
   $('emailSentTitle').textContent = s('emailSentTitle');
   var savedEmail = ($('sentEmailDisplay') || {}).textContent || '';
   $('emailSentSub').innerHTML = s('emailSentSub') + '<br><span class="email-sent-email" id="sentEmailDisplay">' + escHtml(savedEmail) + '</span>';
+  $('otpInput').placeholder = s('otpPlaceholder');
+  $('otpVerifyBtn').textContent = s('otpVerifyBtn');
   $('resendTextSpan').textContent = s('resendText') + ' ';
   $('resendBtn').textContent = s('resendBtn');
   $('modesSub').textContent = s('modesSub');
@@ -876,15 +898,20 @@ function requestMagicLink(email) {
   });
 }
 
-function verifyToken(token) {
-  apiCall(URLS.authVerify, { token: token }, false, function(err, res) {
+function verifyOTP() {
+  var code = $('otpInput').value.replace(/\s/g, '');
+  if (!/^\d{6}$/.test(code)) { showError(s('errorInvalidLink')); return; }
+  var btn = $('otpVerifyBtn');
+  btn.disabled = true;
+  btn.textContent = s('otpVerifying');
+  apiCall(URLS.authVerify, { token: code, email: state.pendingEmail }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = s('otpVerifyBtn');
     if (err || !res || !res.success || !res.jwt) {
-      showScreen('auth');
       showError(s('errorInvalidLink'));
       return;
     }
     storeJWT(res.jwt, res.user_id, res.email);
-    window.history.replaceState({}, document.title, window.location.pathname);
     showModesScreen();
   });
 }
@@ -904,9 +931,21 @@ $('emailInput').addEventListener('keydown', function(e) {
 });
 
 $('resendBtn').addEventListener('click', function() {
+  $('otpInput').value = '';
+  $('otpVerifyBtn').disabled = true;
   if (state.pendingEmail) requestMagicLink(state.pendingEmail);
   else showScreen('auth');
 });
+
+$('otpInput').addEventListener('input', function() {
+  $('otpVerifyBtn').disabled = !/^\d{6}$/.test(this.value.replace(/\s/g, ''));
+});
+
+$('otpInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); if (!$('otpVerifyBtn').disabled) verifyOTP(); }
+});
+
+$('otpVerifyBtn').addEventListener('click', verifyOTP);
 
 /* ══ Mode selector ══ */
 function showModesScreen() {
@@ -1154,6 +1193,8 @@ $('voiceSend').addEventListener('click', function() {
 $('micOrb').addEventListener('click', function(){ isRec ? stopVoiceRec() : startVoiceRec(); });
 
 function startVoiceRec() {
+  var cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition;
+  if (cap) { startNativeVoiceRec(cap); return; }
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { showError(s('errorSpeech')); return; }
   recog = new SR();
@@ -1182,10 +1223,34 @@ function startVoiceRec() {
     $('voiceTimer').textContent = '00:00';
     recInt = setInterval(function() {
       recSec++;
-      var m = Math.floor(recSec / 60), s = recSec % 60;
-      $('voiceTimer').textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      var m = Math.floor(recSec / 60), ss = recSec % 60;
+      $('voiceTimer').textContent = (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
     }, 1000);
   } catch(e) { showError(s('errorMic')); }
+}
+
+function startNativeVoiceRec(cap) {
+  cap.requestPermissions().then(function() {
+    vText = ''; vInterim = ''; recSec = 0;
+    isRec = true;
+    $('micOrb').classList.add('recording');
+    $('voiceLabel').textContent = s('voiceListening');
+    $('voiceTimer').textContent = '00:00';
+    recInt = setInterval(function() {
+      recSec++;
+      var m = Math.floor(recSec / 60), ss = recSec % 60;
+      $('voiceTimer').textContent = (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
+    }, 1000);
+    cap.addListener('partialResults', function(data) {
+      if (data.matches && data.matches.length > 0) {
+        vText = data.matches[0];
+        $('voiceTranscript').textContent = vText;
+        $('voiceSend').disabled = !vText.trim();
+      }
+    });
+    cap.start({ language: LANG_LOCALE[curLang] || 'en-US', maxResults: 1, partialResults: true, popup: false })
+      .catch(function() { stopVoiceRec(); showError(s('errorMic')); });
+  }).catch(function() { showError(s('errorMic')); });
 }
 
 function stopVoiceRec() {
@@ -1194,28 +1259,20 @@ function stopVoiceRec() {
   $('micOrb').classList.remove('recording');
   $('voiceLabel').textContent = s('voiceTap');
   $('voiceTimer').textContent = '';
-  try { if (recog) recog.stop(); } catch(e) {}
+  var cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition;
+  if (cap) {
+    try { cap.stop(); cap.removeAllListeners(); } catch(e) {}
+  } else {
+    try { if (recog) recog.stop(); } catch(e) {}
+  }
 }
 
 /* ══ Init ══ */
 function init() {
-  // Check URL for magic link token
-  var urlParams = new URLSearchParams(window.location.search);
-  var token = urlParams.get('token');
-
-  if (token) {
-    showScreen('loading');
-    verifyToken(token);
-    return;
-  }
-
-  // Check stored JWT
   if (loadStoredJWT()) {
     showModesScreen();
     return;
   }
-
-  // No valid auth
   showScreen('auth');
 }
 
