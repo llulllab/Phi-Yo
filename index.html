@@ -975,7 +975,7 @@ function requestMorningBrief() {
   $('chatWelcome').classList.add('collapsed');
 
   var loadId = addMessage('assistant', s('morningLoading'), 'loading');
-  apiCall(URLS.morning, { agenda_input: agenda, language: 'auto' }, true, function(err, res) {
+  apiCall(URLS.morning, { agenda_input: agenda, language: curLang }, true, function(err, res) {
     removeMessage(loadId);
     if (err || !res || !res.success) {
       showError(s('errorBrief'));
@@ -1019,16 +1019,16 @@ function doSend() {
   var url = '';
 
   if (state.mode === 'dream') {
-    payload = { dream: text, text: text, message: text, user_id: state.userId || ('phiyo-legacy-' + genId()), session_id: state.sessionId, input_type: lastInputType, language: 'auto' };
+    payload = { dream: text, text: text, message: text, user_id: state.userId || ('phiyo-legacy-' + genId()), session_id: state.sessionId, input_type: lastInputType, language: curLang };
     url = URLS.dream;
   } else if (state.mode === 'wellbeing') {
-    payload = { message: text, session_id: state.sessionId, language: 'auto' };
+    payload = { message: text, session_id: state.sessionId, language: curLang };
     url = URLS.wellbeing;
   } else if (state.mode === 'morning') {
-    payload = { message: text, agenda_input: text, language: 'auto' };
+    payload = { message: text, agenda_input: text, language: curLang };
     url = URLS.morning;
   } else if (state.mode === 'checkin') {
-    payload = { message: text, language: 'auto' };
+    payload = { message: text, language: curLang };
     url = URLS.checkin;
   }
 
