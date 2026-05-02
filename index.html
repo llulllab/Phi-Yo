@@ -233,6 +233,48 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 /* ═══ ERROR TOAST ═══ */
 .error-toast{position:fixed;bottom:var(--s6);left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-surface);border:1px solid var(--error);border-radius:var(--r3);padding:var(--s3) var(--s5);font-size:13px;color:var(--error);opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);z-index:300;white-space:nowrap;max-width:calc(100vw - 48px);text-align:center}
 .error-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ SCREEN: PAYWALL ═══ */
+#screen-paywall{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:var(--s5);overflow-y:auto}
+.paywall-card{width:100%;max-width:620px;text-align:center;animation:fadeUp .8s var(--ease-out) forwards}
+.paywall-logo{font-family:var(--font-mystery);font-size:clamp(2rem,8vw,3.5rem);font-weight:400;line-height:1;margin-bottom:var(--s2);overflow:visible;padding-bottom:.1em}
+.paywall-tagline{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--text-2);margin-bottom:var(--s5)}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s5)}
+@media(max-width:540px){.plan-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r4);padding:var(--s5);text-align:left;position:relative}
+.plan-card-pro{border-color:var(--amber-dim);background:linear-gradient(135deg,var(--bg-raised) 0%,var(--bg-deep) 100%)}
+.plan-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:var(--bg-abyss);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.plan-name{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--text-1);margin-bottom:var(--s2)}
+.plan-price{font-size:22px;font-weight:700;color:var(--amber);margin-bottom:var(--s3)}
+.plan-price-free{font-size:16px;color:var(--text-3);margin-bottom:var(--s3)}
+.plan-interval-group{display:flex;gap:var(--s2);margin-bottom:var(--s3)}
+.plan-interval{flex:1;padding:7px 0;border:1px solid var(--border);border-radius:var(--r2);background:transparent;color:var(--text-2);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s var(--ease)}
+.plan-interval.active,.plan-interval:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
+.plan-features{list-style:none;margin-bottom:var(--s5);font-size:13px;line-height:2.1}
+.plan-features li{color:var(--text-2)}
+.plan-features li.feat-on{color:var(--text-1)}
+.plan-features li.feat-off{color:var(--text-3);opacity:.45}
+.plan-btn{width:100%;padding:12px;border-radius:var(--r3);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s var(--ease);border:1px solid var(--border)}
+.plan-btn-free{background:transparent;color:var(--text-2)}
+.plan-btn-free:hover{border-color:var(--border-hover);color:var(--text-1)}
+.plan-btn-pro{background:var(--amber);border-color:var(--amber);color:var(--bg-abyss)}
+.plan-btn-pro:hover:not(:disabled){opacity:.9}
+.plan-btn-pro:disabled{opacity:.5;cursor:not-allowed}
+.plan-note{font-size:11px;color:var(--text-3);margin-top:var(--s2);text-align:center}
+.paywall-footer{font-size:11px;color:var(--text-3);margin-top:var(--s3)}
+.paywall-footer a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.paywall-loading{text-align:center;padding:var(--s7);font-family:var(--font-mystery);font-size:32px;color:var(--plum);animation:pulse 2s ease-in-out infinite}
+
+/* ═══ FREE TIER + SUBSCRIPTION UI ═══ */
+.mode-card.locked{opacity:.65;cursor:pointer}
+.mode-card.locked::after{content:'Pro';position:absolute;top:var(--s2);right:var(--s2);background:var(--plum);color:#fff;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+.mode-card{position:relative}
+.trial-notice{background:var(--amber-ghost);border:1px solid var(--amber-dim);border-radius:var(--r3);padding:10px 16px;font-size:12px;color:var(--amber-bright);text-align:center;margin-bottom:var(--s4)}
+.manage-sub-btn{font-size:12px;color:var(--text-3);cursor:pointer;text-decoration:underline;text-underline-offset:2px;background:none;border:none;padding:0;font-family:var(--font-body);display:block;margin:var(--s3) auto 0}
+.manage-sub-btn:hover{color:var(--text-2)}
+.free-usage-wrap{margin-bottom:var(--s4);font-size:12px;color:var(--text-2)}
+.free-usage-bar-bg{height:4px;background:var(--bg-surface);border-radius:2px;margin-top:6px}
+.free-usage-bar-fill{height:4px;background:var(--plum);border-radius:2px;transition:width .4s var(--ease)}
 </style>
 </head>
 <body>
@@ -255,7 +297,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
     <p class="auth-tagline" id="authTagline">Computational dream analysis and wellbeing.<br>Grounded in <em>Freud for Machines</em>.</p>
     <div class="auth-form" id="authForm">
       <input type="email" class="auth-input" id="emailInput" placeholder="Your email address" autocomplete="email" spellcheck="false">
-      <button class="auth-btn" id="authBtn">Send me a sign-in link</button>
+      <button class="auth-btn" id="authBtn">Send me a sign-in code</button>
     </div>
     <p class="auth-note" id="authNote">Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.<br><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a></p>
     <div class="auth-lang-row">
@@ -322,6 +364,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
     <div class="modes-inner">
       <h2 class="modes-greeting" id="modesGreeting">Good morning.</h2>
       <p class="modes-sub" id="modesSub">What would you like to explore today?</p>
+      <div id="modesTrialNotice" class="trial-notice hidden"></div>
       <div class="modes-grid">
         <button class="mode-card" data-mode="dream">
           <div class="mode-icon">
@@ -449,6 +492,48 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
   </div>
 </div>
 
+<!-- Subscription paywall -->
+<div id="screen-paywall" class="hidden">
+  <div class="paywall-card">
+    <h1 class="paywall-logo"><span class="phi-text">PHI&#8209;YO</span></h1>
+    <p class="paywall-tagline">Choose how you'd like to use Phi-Yo.</p>
+    <div id="paywallLoading" class="paywall-loading hidden">φ</div>
+    <div id="paywallPlans">
+      <div class="plan-grid">
+        <div class="plan-card" id="planCardFree">
+          <div class="plan-name">Free</div>
+          <div class="plan-price-free">€0 forever</div>
+          <ul class="plan-features">
+            <li class="feat-on">&#10003; Dream Interpreter</li>
+            <li class="feat-on">&#10003; 3 analyses / month</li>
+            <li class="feat-off">Wellbeing Conversations</li>
+            <li class="feat-off">Morning Brief</li>
+            <li class="feat-off">Daily Check-in</li>
+          </ul>
+          <button class="plan-btn plan-btn-free" id="btnContinueFree">Continue free</button>
+        </div>
+        <div class="plan-card plan-card-pro">
+          <div class="plan-badge">7 days free</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-interval-group">
+            <button class="plan-interval active" id="btnIntervalMonthly" data-plan="pro_monthly">&#8364;5 / month</button>
+            <button class="plan-interval" id="btnIntervalAnnual" data-plan="pro_annual">&#8364;45 / year</button>
+          </div>
+          <ul class="plan-features">
+            <li class="feat-on">&#10003; Dream Interpreter &mdash; unlimited</li>
+            <li class="feat-on">&#10003; Wellbeing Conversations</li>
+            <li class="feat-on">&#10003; Morning Brief</li>
+            <li class="feat-on">&#10003; Daily Check-in</li>
+          </ul>
+          <button class="plan-btn plan-btn-pro" id="btnStartTrial">Start 7-day free trial</button>
+          <p class="plan-note">No charge for 7 days. Cancel any time.</p>
+        </div>
+      </div>
+    </div>
+    <p class="paywall-footer"><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a></p>
+  </div>
+</div>
+
 <div class="error-toast" id="errorToast" role="alert" aria-live="assertive"></div>
 
 <script>
@@ -458,12 +543,15 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 /* ══ Config ══ */
 var N8N = 'https://n8n.tropus.io/webhook/';
 var URLS = {
-  authRequest: N8N + 'phiyo-auth-request',
-  authVerify:  N8N + 'phiyo-auth-verify',
-  dream:       N8N + 'phiyo-dream',
-  wellbeing:   N8N + 'phiyo-wellbeing',
-  morning:     N8N + 'phiyo-morning',
-  checkin:     N8N + 'phiyo-checkin'
+  authRequest:       N8N + 'phiyo-auth-request',
+  authVerify:        N8N + 'phiyo-auth-verify',
+  dream:             N8N + 'phiyo-dream',
+  wellbeing:         N8N + 'phiyo-wellbeing',
+  morning:           N8N + 'phiyo-morning',
+  checkin:           N8N + 'phiyo-checkin',
+  subscribeValidate: N8N + 'phiyo-subscribe-validate',
+  stripeCheckout:    N8N + 'stripe-checkout',
+  stripePortal:      N8N + 'stripe-portal'
 };
 
 var MODES_CONFIG = {
@@ -652,7 +740,7 @@ ru:{
 },
 ar:{
   tagline:'تحليل الأحلام الحوسبي والعافية.\nمبني على Freud for Machines.',
-  emailPlaceholder:'عنوان بريدك الإلكتروني',authBtnText:'أرسل لي رابط الدخول',authBtnSending:'جارٍ الإرسال…',
+  emailPlaceholder:'عنوان بريدك الإلكتروني',authBtnText:'أرسل لي رمز الدخول',authBtnSending:'جارٍ الإرسال…',
   authNote:'Phi-Yo أداة للتأمل الذاتي ودعم العافية، وليست بديلاً عن الرعاية المهنية.',
   emailSentTitle:'تحقق من صندوق الوارد.',emailSentSub:'أرسلنا رمزًا مكونًا من 6 أرقام إلى',
   otpPlaceholder:'رمز مكون من 6 أرقام',otpVerifyBtn:'تحقق',otpVerifying:'جارٍ التحقق…',
@@ -762,7 +850,9 @@ var state = {
   sessionId: null,
   msgCount: 0,
   pendingEmail: null,
-  briefRequested: false
+  briefRequested: false,
+  subStatus: null,
+  selectedPlan: 'pro_monthly'
 };
 
 /* ══ DOM refs ══ */
@@ -771,6 +861,7 @@ var screens = {
   loading:   $('screen-loading'),
   auth:      $('screen-auth'),
   emailSent: $('screen-email-sent'),
+  paywall:   $('screen-paywall'),
   modes:     $('screen-modes'),
   chat:      $('screen-chat')
 };
@@ -912,7 +1003,7 @@ function verifyOTP() {
       return;
     }
     storeJWT(res.jwt, res.user_id, res.email);
-    showModesScreen();
+    checkSubscriptionAndRoute();
   });
 }
 
@@ -947,11 +1038,114 @@ $('otpInput').addEventListener('keydown', function(e) {
 
 $('otpVerifyBtn').addEventListener('click', verifyOTP);
 
+/* ══ Subscription ══ */
+function checkSubscriptionAndRoute() {
+  apiCall(URLS.subscribeValidate, { email: state.email }, false, function(err, res) {
+    if (err || !res) {
+      // Network error: default to paywall
+      showScreen('paywall');
+      return;
+    }
+    state.subStatus = res;
+    if (res.status === 'none' || res.status === 'expired' || res.status === 'inactive') {
+      showScreen('paywall');
+    } else {
+      showModesScreen();
+    }
+  });
+}
+
+function getFreeUsageKey() {
+  var d = new Date();
+  return 'phiyo-dreams-' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function getFreeUsageCount() {
+  try { return parseInt(localStorage.getItem(getFreeUsageKey()) || '0', 10); } catch(e) { return 0; }
+}
+function incrementFreeUsage() {
+  try { localStorage.setItem(getFreeUsageKey(), String(getFreeUsageCount() + 1)); } catch(e) {}
+}
+
+function startStripeCheckout() {
+  var btn = $('btnStartTrial');
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+  var plan = state.selectedPlan || 'pro_monthly';
+  apiCall(URLS.stripeCheckout, { product: 'phiyo', plan: plan, email: state.email }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = 'Start 7-day free trial';
+    if (err || !res || !res.checkout_url) {
+      showError(res && res.error ? res.error : 'Could not start checkout. Please try again.');
+      return;
+    }
+    window.location.href = res.checkout_url;
+  });
+}
+
+function setFreeTierUI() {
+  var sub = state.subStatus;
+  if (!sub) return;
+
+  // Show trial notice if trialing
+  var notice = $('modesTrialNotice');
+  if (notice) {
+    if (sub.status === 'trialing' && sub.trial_ends_at) {
+      var d = new Date(sub.trial_ends_at);
+      notice.textContent = 'Free trial active until ' + d.toLocaleDateString();
+      notice.classList.remove('hidden');
+    } else if (sub.status === 'free') {
+      var used = getFreeUsageCount();
+      var remaining = Math.max(0, 3 - used);
+      notice.innerHTML = 'Free plan: <strong>' + remaining + ' of 3 dreams</strong> remaining this month. <button class="manage-sub-btn" id="upgradeFromModes" style="display:inline;margin:0 0 0 6px">Upgrade to Pro</button>';
+      notice.classList.remove('hidden');
+    }
+  }
+
+  // Lock non-dream mode cards for free users
+  if (sub.status === 'free' || sub.plan === 'free') {
+    ['wellbeing', 'morning', 'checkin'].forEach(function(m) {
+      var card = document.querySelector('.mode-card[data-mode="' + m + '"]');
+      if (card) card.classList.add('locked');
+    });
+  }
+
+  // Manage subscription button
+  var manageBtns = document.querySelectorAll('.manage-sub-btn');
+  manageBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      openStripePortal();
+    });
+  });
+
+  // Upgrade from locked card click
+  document.querySelectorAll('.mode-card.locked').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      e.stopImmediatePropagation();
+      showScreen('paywall');
+    }, true);
+  });
+
+  // Upgrade link from modes
+  var upgradeBtn = $('upgradeFromModes');
+  if (upgradeBtn) upgradeBtn.addEventListener('click', function() { showScreen('paywall'); });
+}
+
+function openStripePortal() {
+  apiCall(URLS.stripePortal, { email: state.email, product: 'phiyo' }, false, function(err, res) {
+    if (err || !res || !res.portal_url) {
+      showError('Could not open subscription portal. Please try again.');
+      return;
+    }
+    window.open(res.portal_url, '_blank');
+  });
+}
+
 /* ══ Mode selector ══ */
 function showModesScreen() {
   var h = new Date().getHours();
   $('modesGreeting').textContent = h < 12 ? s('greetingMorning') : h < 18 ? s('greetingAfternoon') : s('greetingEvening');
   showScreen('modes');
+  setFreeTierUI();
 }
 
 document.querySelectorAll('.mode-card').forEach(function(card) {
@@ -969,6 +1163,20 @@ function genId() {
 function enterMode(modeName) {
   var cfg = MODES_CONFIG[modeName];
   if (!cfg) return;
+
+  // Free tier: block non-dream modes
+  var sub = state.subStatus;
+  var isFree = sub && (sub.status === 'free' || sub.plan === 'free');
+  if (isFree && modeName !== 'dream') {
+    showScreen('paywall');
+    return;
+  }
+
+  // Free tier dream limit check
+  if (isFree && modeName === 'dream' && getFreeUsageCount() >= 3) {
+    showScreen('paywall');
+    return;
+  }
   state.mode = modeName;
   state.sessionId = (modeName === 'dream' ? 'ses' : 'ws') + '-' + genId();
   state.msgCount = 0;
@@ -1083,6 +1291,9 @@ function doSend() {
     if (!responseText) { showError(s('errorEmpty')); return; }
     var msgType = state.mode === 'morning' ? 'brief' : 'normal';
     addMessage('assistant', responseText, msgType);
+    if (state.mode === 'dream' && state.subStatus && (state.subStatus.status === 'free' || state.subStatus.plan === 'free')) {
+      incrementFreeUsage();
+    }
   });
 }
 
@@ -1267,12 +1478,54 @@ function stopVoiceRec() {
   }
 }
 
+/* ══ Paywall buttons ══ */
+$('btnContinueFree').addEventListener('click', function() {
+  // Create free subscription record then enter app
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'Setting up...';
+  apiCall(URLS.stripeCheckout.replace('stripe-checkout', 'phiyo-set-free'), { email: state.email }, false, function(err, res) {
+    // If endpoint doesn't exist yet, just set free state locally
+    btn.disabled = false;
+    btn.textContent = 'Continue free';
+    state.subStatus = { status: 'free', plan: 'free', features: ['dream'], dream_limit: 3 };
+    showModesScreen();
+  });
+});
+
+$('btnStartTrial').addEventListener('click', startStripeCheckout);
+
+$('btnIntervalMonthly').addEventListener('click', function() {
+  state.selectedPlan = 'pro_monthly';
+  $('btnIntervalMonthly').classList.add('active');
+  $('btnIntervalAnnual').classList.remove('active');
+});
+$('btnIntervalAnnual').addEventListener('click', function() {
+  state.selectedPlan = 'pro_annual';
+  $('btnIntervalAnnual').classList.add('active');
+  $('btnIntervalMonthly').classList.remove('active');
+});
+
 /* ══ Init ══ */
 function init() {
+  // Detect return from Stripe Checkout
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('sub') === 'activated') {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
   if (loadStoredJWT()) {
-    showModesScreen();
+    checkSubscriptionAndRoute();
     return;
   }
+
+  // Show success message if returning from Stripe without JWT
+  if (params.get('sub') === 'activated') {
+    showScreen('auth');
+    showError('Payment successful! Please sign in to access your account.');
+    return;
+  }
+
   showScreen('auth');
 }
 
