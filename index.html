@@ -1515,7 +1515,12 @@ function init() {
   }
 
   if (loadStoredJWT()) {
-    checkSubscriptionAndRoute();
+    if (params.get('sub') === 'activated') {
+      // Webhook may not have fired yet — wait before validating
+      setTimeout(checkSubscriptionAndRoute, 3000);
+    } else {
+      checkSubscriptionAndRoute();
+    }
     return;
   }
 
