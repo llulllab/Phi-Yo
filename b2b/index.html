@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phi-Yo for Partners — Computational Psychoanalytic Wellbeing Companion | Studio Llull</title>
+<meta name="description" content="Phi-Yo is a computational psychoanalytic wellbeing companion built on Freud for Machines. Integration-ready backend for humanoid robots, wellness platforms, and companion devices.">
+<link rel="canonical" href="https://phi-yo.app/b2b/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phi-yo.app/b2b/">
+<meta property="og:title" content="Phi-Yo for Partners — Built on Freud for Machines">
+<meta property="og:description" content="An interior-state architecture for humanoid robots, wellness platforms, and companion devices. Built on an original computational psychoanalytic ontology.">
+<meta property="og:image" content="https://phi-yo.app/logo.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Phi-Yo for Partners">
+<meta name="twitter:description" content="An interior-state architecture for humanoid robots, wellness platforms, and companion devices.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>φ</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+:root {
+  --bg-abyss:#0e0a14;
+  --bg-deep:#140f1e;
+  --bg-raised:#1c1528;
+  --bg-surface:#241c32;
+  --bg-glow:rgba(30,20,44,0.92);
+  --amber:#d4a24c;
+  --amber-bright:#e8be6a;
+  --amber-dim:#8a6a2e;
+  --amber-glow:rgba(212,162,76,0.12);
+  --amber-ghost:rgba(212,162,76,0.06);
+  --plum:#8a6aaa;
+  --plum-dim:rgba(138,106,170,0.12);
+  --lavender:#a08cc0;
+  --rose:#c47a7a;
+  --text-1:#e8e0ee;
+  --text-2:#9a8eaa;
+  --text-3:#7a7090;
+  --text-hero:#f0e8f6;
+  --border:rgba(138,106,170,0.14);
+  --border-hover:rgba(212,162,76,0.30);
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'Instrument Sans','Helvetica Neue',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --ease-out:cubic-bezier(0.0,0,0.2,1);
+}
+
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family:var(--font-body);
+  background:var(--bg-abyss);
+  color:var(--text-1);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection { background:rgba(212,162,76,0.25); color:var(--text-hero); }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg-abyss); }
+::-webkit-scrollbar-thumb { background:var(--plum-dim); border-radius:3px; }
+:focus-visible { outline:2px solid var(--amber); outline-offset:3px; }
+
+a { color:var(--amber); text-decoration:none; transition:color .2s var(--ease); }
+a:hover { color:var(--amber-bright); }
+
+/* ===== AMBIENT ===== */
+.ambient { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.blob {
+  position:absolute; border-radius:50%; filter:blur(80px);
+  animation: blobMorph 30s ease-in-out infinite;
+  will-change: transform, border-radius;
+}
+.blob-1 { width:700px; height:700px; top:-15%; right:-10%; background:radial-gradient(circle, rgba(138,106,170,0.10), transparent 65%); }
+.blob-2 { width:520px; height:520px; bottom:-12%; left:-8%; background:radial-gradient(circle, rgba(212,162,76,0.06), transparent 65%); animation-direction: reverse; animation-duration: 38s; }
+.blob-3 { width:340px; height:340px; top:38%; left:30%; background:radial-gradient(circle, rgba(196,122,122,0.04), transparent 70%); animation-duration: 44s; }
+@keyframes blobMorph {
+  0%,100% { transform:translate(0,0) rotate(0deg); border-radius:50%; }
+  33%     { transform:translate(22px,-16px) rotate(5deg); border-radius:60% 40% 55% 45%/50% 60% 40% 50%; }
+  66%     { transform:translate(-14px,20px) rotate(-3deg); border-radius:45% 55% 40% 60%/55% 45% 60% 40%; }
+}
+.ambient::after {
+  content:''; position:absolute; inset:0; opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: reduce) { .blob { animation: none; } }
+
+main, header, section, footer { position:relative; z-index:1; }
+
+.wrap { max-width:980px; margin:0 auto; padding:0 32px; }
+@media (max-width:600px) { .wrap { padding:0 22px; } }
+
+/* ===== HEADER ===== */
+.site-header {
+  position:sticky; top:0; z-index:50;
+  background:var(--bg-glow);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  border-bottom:1px solid var(--border);
+  padding:14px 0;
+}
+.site-header::after {
+  content:''; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,162,76,0.30) 30%, rgba(138,106,170,0.20) 70%, transparent);
+}
+.header-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-body); font-size:13px; font-weight:600;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--text-2);
+}
+.brand-phi { font-family:var(--font-display); font-size:22px; font-weight:400; color:var(--amber); line-height:1; letter-spacing:0; text-transform:none; }
+.brand-sep { color:var(--text-3); opacity:0.5; }
+.brand-tag { font-size:11px; color:var(--text-3); letter-spacing:0.18em; }
+.header-actions { display:flex; gap:10px; align-items:center; }
+.header-link {
+  font-size:13px; font-weight:500; color:var(--text-2);
+  padding:8px 14px; border-radius:8px;
+  transition:color .2s var(--ease), background .2s var(--ease);
+}
+.header-link:hover { color:var(--text-1); background:var(--amber-ghost); }
+.header-cta {
+  font-size:13px; font-weight:600; color:#0e0a14;
+  background:var(--amber); padding:8px 16px; border-radius:8px;
+  transition:opacity .2s var(--ease);
+}
+.header-cta:hover { opacity:.9; color:#0e0a14; }
+@media (max-width:600px) { .brand-tag, .header-link.app { display:none; } }
+
+/* ===== HERO ===== */
+.hero { padding:96px 0 80px; }
+.hero-label {
+  font-family:var(--font-body); font-size:11px; font-weight:600;
+  letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:20px;
+}
+.hero h1 {
+  font-family:var(--font-display);
+  font-weight:300; font-size:clamp(2.4rem, 5.5vw, 4rem);
+  line-height:1.08; letter-spacing:-0.6px;
+  color:var(--text-hero); margin-bottom:22px;
+  max-width:18ch;
+}
+.hero h1 em { font-style:italic; color:var(--plum); font-weight:400; }
+.hero-sub {
+  font-family:var(--font-display); font-style:italic; font-weight:300;
+  font-size:1.3rem; color:var(--text-2); line-height:1.55;
+  max-width:38ch; margin-bottom:42px;
+}
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-primary {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--font-body); font-size:14px; font-weight:600;
+  background:var(--amber); color:#0e0a14;
+  padding:14px 24px; border-radius:10px;
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn-primary:hover { color:#0e0a14; transform:translateY(-1px); box-shadow:0 12px 32px var(--amber-glow); }
+.btn-outline {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  background:transparent; color:var(--text-1);
+  padding:13px 22px; border-radius:10px;
+  border:1px solid var(--border);
+  transition:border-color .2s var(--ease), color .2s var(--ease);
+}
+.btn-outline:hover { color:var(--amber); border-color:var(--border-hover); }
+.btn-arrow { font-size:16px; transition:transform .2s var(--ease); }
+.btn-primary:hover .btn-arrow, .btn-outline:hover .btn-arrow { transform:translateX(3px); }
+
+/* ===== SECTION ===== */
+section.block { padding:72px 0; border-top:1px solid var(--border); }
+section.block:first-of-type { border-top:none; }
+.eyebrow {
+  font-family:var(--font-body); font-size:11px; font-weight:600;
+  letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:14px;
+}
+h2 {
+  font-family:var(--font-display); font-weight:400;
+  font-size:clamp(1.7rem, 3.5vw, 2.4rem);
+  line-height:1.2; letter-spacing:-0.3px;
+  color:var(--text-hero); margin-bottom:24px;
+  max-width:24ch;
+}
+h2 em { font-style:italic; color:var(--plum); }
+.block p { color:var(--text-2); font-size:1.04rem; line-height:1.78; margin-bottom:14px; max-width:65ch; }
+.block p strong { color:var(--text-1); font-weight:600; }
+.block p em { color:var(--text-1); font-style:italic; }
+.lead { font-family:var(--font-display); font-style:italic; font-weight:300; font-size:1.25rem; color:var(--text-1); line-height:1.55; max-width:42ch; }
+
+/* ===== MODES GRID ===== */
+.modes-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:28px; }
+@media (max-width:680px) { .modes-grid { grid-template-columns:1fr; } }
+.mode-card {
+  background:var(--bg-raised);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:24px 26px;
+  transition:border-color .25s var(--ease), background .25s var(--ease);
+  position:relative; overflow:hidden;
+}
+.mode-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, var(--amber-ghost), transparent 55%);
+  opacity:0; transition:opacity .25s var(--ease);
+  pointer-events:none;
+}
+.mode-card:hover { border-color:var(--border-hover); background:var(--bg-surface); }
+.mode-card:hover::before { opacity:1; }
+.mode-icon {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--bg-surface); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:14px;
+  font-family:var(--font-display); font-style:italic; font-weight:400;
+  font-size:18px; color:var(--plum);
+  position:relative; z-index:1;
+}
+.mode-card:hover .mode-icon { color:var(--amber); border-color:var(--amber-dim); }
+.mode-name { font-family:var(--font-body); font-weight:600; font-size:1rem; color:var(--text-1); margin-bottom:6px; position:relative; z-index:1; }
+.mode-desc { font-family:var(--font-display); font-style:italic; font-size:0.96rem; font-weight:300; color:var(--text-2); line-height:1.6; position:relative; z-index:1; }
+
+/* ===== INTEGRATION TABLE ===== */
+.spec-list { margin-top:24px; display:grid; gap:14px; }
+.spec-row {
+  display:grid; grid-template-columns:160px 1fr; gap:24px;
+  padding:14px 0; border-bottom:1px solid var(--border);
+}
+.spec-row:last-child { border-bottom:none; }
+.spec-key {
+  font-family:var(--font-body); font-size:11px; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--amber);
+  padding-top:3px;
+}
+.spec-val { color:var(--text-2); font-size:1rem; line-height:1.65; }
+.spec-val strong { color:var(--text-1); }
+@media (max-width:600px) { .spec-row { grid-template-columns:1fr; gap:6px; } }
+
+/* ===== SCENARIOS ===== */
+.scenario-list { display:grid; gap:18px; margin-top:24px; }
+.scenario {
+  background:var(--bg-raised);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:24px 26px;
+  border-left:3px solid var(--plum);
+}
+.scenario h3 { font-family:var(--font-body); font-weight:600; font-size:1.05rem; color:var(--text-1); margin-bottom:8px; }
+.scenario p { color:var(--text-2); font-size:0.98rem; line-height:1.7; margin:0; max-width:none; }
+
+/* ===== RESEARCH LIST ===== */
+.refs { margin-top:24px; display:grid; gap:16px; }
+.ref {
+  padding-left:20px; border-left:2px solid var(--plum-dim);
+}
+.ref-title { font-family:var(--font-display); font-style:italic; color:var(--text-1); font-size:1rem; margin-bottom:4px; }
+.ref-meta { font-size:0.9rem; color:var(--text-3); line-height:1.6; }
+
+/* ===== DOWNLOADS ===== */
+.downloads { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; }
+@media (max-width:600px) { .downloads { grid-template-columns:1fr; } }
+.download-card {
+  display:flex; flex-direction:column; gap:6px;
+  background:var(--bg-raised);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px 24px;
+  transition:border-color .25s var(--ease), background .25s var(--ease), transform .2s var(--ease);
+  color:var(--text-1);
+}
+.download-card:hover { border-color:var(--border-hover); background:var(--bg-surface); transform:translateY(-2px); color:var(--text-1); }
+.dl-label { font-family:var(--font-body); font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); }
+.dl-title { font-family:var(--font-display); font-weight:500; font-size:1.15rem; color:var(--text-1); margin-top:4px; }
+.dl-meta { font-size:0.85rem; color:var(--text-3); margin-top:4px; }
+
+/* ===== FINAL CTA ===== */
+.cta-block {
+  margin-top:60px;
+  padding:48px 36px;
+  border-radius:18px;
+  background:linear-gradient(135deg, var(--bg-raised), var(--bg-surface));
+  border:1px solid var(--border-hover);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.cta-block::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 400px 200px at 50% 0%, var(--amber-glow), transparent 60%);
+  pointer-events:none;
+}
+.cta-block > * { position:relative; z-index:1; }
+.cta-block .lead { margin:0 auto 24px; }
+.cta-block .btn-primary { font-size:15px; padding:15px 28px; }
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top:60px;
+  padding:36px 0 56px;
+  border-top:1px solid var(--border);
+}
+.footer-inner {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  flex-wrap:wrap; gap:24px;
+}
+.footer-left { font-size:0.88rem; color:var(--text-2); line-height:1.85; }
+.footer-left strong { color:var(--text-1); font-weight:600; }
+.cofounders { display:flex; flex-wrap:wrap; gap:36px; margin-bottom:14px; }
+.cofounder { line-height:1.7; }
+.footer-contact { font-size:0.85rem; color:var(--text-3); }
+.footer-contact a { color:var(--text-2); }
+.footer-contact a:hover { color:var(--amber); }
+.footer-right {
+  font-family:var(--font-body); font-size:10.5px; font-weight:500;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--text-3);
+  text-align:right; line-height:1.9;
+}
+.footer-right a { color:var(--text-3); }
+.footer-right a:hover { color:var(--amber); }
+.disclaimer {
+  margin-top:32px;
+  padding-top:20px;
+  border-top:1px solid var(--border);
+  font-size:0.82rem;
+  color:var(--text-3);
+  line-height:1.7;
+  font-style:italic;
+  font-family:var(--font-display);
+  max-width:70ch;
+}
+
+@media (max-width:600px) {
+  .hero { padding:60px 0 56px; }
+  section.block { padding:54px 0; }
+  .cta-block { padding:36px 22px; }
+  .footer-inner { flex-direction:column; }
+  .footer-right { text-align:left; }
+}
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/b2b/" class="brand">
+      <span class="brand-phi">φ</span>
+      <span>Phi-Yo</span>
+      <span class="brand-sep">·</span>
+      <span class="brand-tag">For Partners</span>
+    </a>
+    <div class="header-actions">
+      <a href="https://phi-yo.app" class="header-link app">Open the app</a>
+      <a href="#engagement" class="header-cta">Talk to us</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-label">Phi-Yo · Built on Freud for Machines</div>
+      <h1>An <em>interior-state architecture</em> for the products you build.</h1>
+      <p class="hero-sub">A computational psychoanalytic wellbeing companion, integration-ready for humanoid robots, wellness platforms, and companion devices.</p>
+      <div class="hero-actions">
+        <a href="#engagement" class="btn-primary">Talk to the co-founders <span class="btn-arrow">→</span></a>
+        <a href="#downloads" class="btn-outline">Read the whitepaper <span class="btn-arrow">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">The missing layer</div>
+      <h2>Coherent inner life is not a longer context window.</h2>
+      <p>A robot, a companion device, a wellness platform, a conversational product, each of these increasingly needs a coherent inner life. Today, builders reach for the closest available substitute: prompt scaffolding, short-term memory buffers, sentiment classifiers stacked together. The result is plausible turn-to-turn behaviour with structural inconsistencies at scale. The fiftieth conversation is not informed by the forty-nine that came before it.</p>
+      <p>The missing layer is not a model. It is a theory. <em>Freud for Machines</em> is that theory, returned to Freud directly, recovered from a secondary literature that had mystified it, and rendered as a computational ontology. <strong>Phi-Yo is the first product that resolution made possible.</strong></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">What Phi-Yo is</div>
+      <h2>The product, and the foundation underneath.</h2>
+      <p><strong>Phi-Yo</strong> is a computational psychoanalytic wellbeing companion. It runs as a live consumer product at phi-yo.app and as an integration-ready backend for third-party platforms. Phi-Yo v2 has been in production since 26 April 2026, with a native mobile release (iOS and Android) following in May 2026.</p>
+      <p><strong>Freud for Machines</strong> is the formal ontology beneath the product: concepts, premises, propositions, and transpositions that constrain every interpretation Phi-Yo produces. The framework is what makes outputs structurally consistent across modes, across users, and across time. It is not separately licensable; it is available exclusively through Phi-Yo integration.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">Four temporal modes</div>
+      <h2>Each mode addresses a distinct moment in the user's day.</h2>
+      <p>Each mode is exposed as an integration endpoint, and each draws from a single shared profile rather than building its own.</p>
+      <div class="modes-grid">
+        <div class="mode-card">
+          <div class="mode-icon">α</div>
+          <div class="mode-name">Wellbeing</div>
+          <div class="mode-desc">Multi-turn psychoanalytic conversation on everyday inner life. The mode for present-moment reflection.</div>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon">β</div>
+          <div class="mode-name">Morning Teller</div>
+          <div class="mode-desc">A forward-looking morning brief, drawn from the user's recent psychological history and the day's planned context.</div>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon">γ</div>
+          <div class="mode-name">Daily Check-in</div>
+          <div class="mode-desc">A backward-looking reflection at the end of the day. One prompt, capturing what occupied the user's mind.</div>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon">δ</div>
+          <div class="mode-name">Dreams</div>
+          <div class="mode-desc">Theory-grounded dream interpretation, accumulated across the user's full dream history.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">Persistent profile</div>
+      <h2>The continuity layer no host could practically build alone.</h2>
+      <p>A single per-user profile underwrites every mode. Four components, all longitudinal:</p>
+      <p><strong>Context</strong> (life situation, current concerns), <strong>affective history</strong> (recurring emotional patterns and their evolution), <strong>personal symbol map</strong> (a user-specific map of recurring images with their frequency, contexts, and evolving meaning), and a <strong>monthly pattern report</strong> synthesizing all four modes.</p>
+      <p>This is the integration's most valuable asset. Any host platform that integrates Phi-Yo inherits a continuity layer that cannot be replicated through longer context windows or ad-hoc memory buffers. Phi-Yo also generates natively in <strong>nine languages</strong> (English, French, German, Spanish, Japanese, Russian, Arabic, Chinese, Turkish), with automatic detection.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">Integration model</div>
+      <h2>A small public surface, by design.</h2>
+      <p>Partners receive four endpoints, a memory layer, and the framework that makes both consistent. The integration packet is delivered at the NDA stage; what follows is the public summary.</p>
+      <div class="spec-list">
+        <div class="spec-row">
+          <div class="spec-key">Endpoints</div>
+          <div class="spec-val">One per mode. Each accepts user identifier, interaction content (text or transcribed speech), and optional session context. Each returns theory-grounded interpretive text, structured metadata (symbols, affects, themes), and the updated profile state.</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Memory</div>
+          <div class="spec-val">Persistent per-user, shared across all four endpoints, <strong>held server-side</strong>. The host does not manage memory.</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Latency</div>
+          <div class="spec-val">Typical response in <strong>single-digit seconds</strong> per call.</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Data residency</div>
+          <div class="spec-val">EU-resident, GDPR-aligned.</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Ethical bounds</div>
+          <div class="spec-val">Probabilistic language, no diagnosis, professional referral when patterns are concerning. These constraints apply at every endpoint, for B2C and B2B traffic alike.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">Three deployment scenarios</div>
+      <h2>The same backend, three classes of host.</h2>
+      <div class="scenario-list">
+        <div class="scenario">
+          <h3>Humanoid and companion robots</h3>
+          <p>The four modes map onto the robot's daily relationship cycle. Morning Teller orients the user to the day. Wellbeing carries the exchanges throughout it. Daily Check-in closes it. Dreams handles the morning conversation about the night before. The robot's voice, body, and persona remain the manufacturer's. The interior-state layer is Phi-Yo.</p>
+        </div>
+        <div class="scenario">
+          <h3>Wellness platforms</h3>
+          <p>Consumer wellness products typically operate stateless from session to session. Phi-Yo supplies the longitudinal interior layer that enriches each surface the host already operates. The host retains its brand and interface; Phi-Yo supplies the interpretive engine and the continuity.</p>
+        </div>
+        <div class="scenario">
+          <h3>Hardware and companion devices</h3>
+          <p>Embedded companion devices, from desktop companions to home-resident agents, can integrate Phi-Yo as the depth layer that distinguishes a sustained user relationship from a recurring novelty. The four modes scale to the device's interaction footprint without losing the longitudinal benefit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">Research provenance</div>
+      <h2>Published and reviewable work.</h2>
+      <div class="refs">
+        <div class="ref">
+          <div class="ref-title">Artificial Intelligence and the Problem of Representation: From Ontologies to Psychotherapy</div>
+          <div class="ref-meta">Yesilkanat, Erdogan, Kocak, Kosucu, Ilim · January 2026 · DOI 10.5281/zenodo.18109687</div>
+        </div>
+        <div class="ref">
+          <div class="ref-title">The Little Book on Sigmund Freud</div>
+          <div class="ref-meta">Fırat Ilim · Available in English through Fnac and other booksellers</div>
+        </div>
+        <div class="ref">
+          <div class="ref-title">Doctoral research on Freudian dream theory</div>
+          <div class="ref-meta">Dr Isis Castañeda Capriroli, member of the lab · Published work on Freud's <em>Beyond the Pleasure Principle</em> and dream theory's intersection with the analysis of violence</div>
+        </div>
+      </div>
+      <p style="margin-top:24px;">The continuing machine-to-machine psychoanalysis experiment runs publicly this May 2026, with findings to be published openly afterward.</p>
+    </div>
+  </section>
+
+  <section class="block" id="downloads">
+    <div class="wrap">
+      <div class="eyebrow">Materials</div>
+      <h2>Read before the call.</h2>
+      <p>Two documents cover the framework, the product, and the integration model in full.</p>
+      <div class="downloads">
+        <a href="Phi-Yo_Technical_Whitepaper.pdf" class="download-card" download>
+          <div class="dl-label">Whitepaper</div>
+          <div class="dl-title">Phi-Yo: A Computational Psychoanalytic Wellbeing Companion</div>
+          <div class="dl-meta">PDF · 7 pages · Built on Freud for Machines</div>
+        </a>
+        <a href="Phi-Yo_Technical_Overview.pdf" class="download-card" download>
+          <div class="dl-label">Brief</div>
+          <div class="dl-title">Freud for Machines and Phi-Yo</div>
+          <div class="dl-meta">PDF · 4 pages · Technical Overview</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="engagement">
+    <div class="wrap">
+      <div class="eyebrow">Engagement</div>
+      <h2>It begins with a technical conversation.</h2>
+      <p>From the conversation the engagement moves to a scoped pilot under NDA, during which the integration packet is delivered in full and a bounded deployment is run on the partner's platform. The pilot precedes any production licensing.</p>
+      <p>Studio Llull is presently engaged with humanoid robot manufacturers, companion device platforms, and wellness platforms seeking an interior-state layer that holds the user in continuity.</p>
+      <div class="cta-block">
+        <p class="lead">Tell us what you are building. We will reply.</p>
+        <a href="mailto:growth.business@llulllab.com?subject=Phi-Yo%20integration%20inquiry" class="btn-primary">Email Studio Llull <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="cofounders">
+          <div class="cofounder">
+            <strong>Dr Fırat Ilim</strong><br>
+            Co-founder, Studio Llull
+          </div>
+          <div class="cofounder">
+            <strong>Xu Geng</strong><br>
+            Co-founder, Studio Llull
+          </div>
+        </div>
+        <div class="footer-contact">
+          <a href="mailto:growth.business@llulllab.com">growth.business@llulllab.com</a> &middot; <a href="https://llulllab.com">llulllab.com</a>
+        </div>
+      </div>
+      <div class="footer-right">
+        Studio Llull<br>
+        Paris · France<br>
+        May 2026
+      </div>
+    </div>
+    <div class="disclaimer">
+      Studio Llull is a Paris-based production studio. Phi-Yo is built on <em>Freud for Machines</em>, an original computational psychoanalytic ontology developed at Llull Lab, a Paris-based research laboratory. Phi-Yo is a self-reflection and wellbeing support tool. It is not therapy, diagnosis, or clinical treatment. The framework's adaptation for robot and platform integration is positioned as an interior-state architecture for the host product, not as a clinical instrument.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

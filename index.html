@@ -1,0 +1,1891 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Phi-Yo: Dream Analysis &amp; Wellbeing</title>
+<meta name="description" content="Phi-Yo is a computational dream analysis and wellbeing companion grounded in Freud for Machines: A Computational Psychoanalytic Ontology.">
+<link rel="canonical" href="https://phi-yo.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phi-yo.app/">
+<meta property="og:title" content="Phi-Yo: Dream Analysis &amp; Wellbeing">
+<meta property="og:description" content="Computational psychoanalytic analysis grounded in Freud for Machines. Dream analysis, wellbeing conversations, and daily reflection.">
+<meta property="og:image" content="https://phi-yo.app/logo.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Phi-Yo">
+<meta name="twitter:description" content="Computational psychoanalytic analysis grounded in Freud for Machines.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>φ</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600;700&family=Mystery+Quest&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-abyss:#0e0a14;--bg-deep:#140f1e;--bg-raised:#1c1528;--bg-surface:#241c32;
+  --bg-input:#2a2038;--bg-glow:rgba(30,20,44,0.92);
+  --amber:#d4a24c;--amber-bright:#e8be6a;--amber-dim:#8a6a2e;
+  --amber-glow:rgba(212,162,76,0.12);--amber-ghost:rgba(212,162,76,0.06);
+  --plum:#8a6aaa;--plum-dim:rgba(138,106,170,0.12);--plum-ghost:rgba(138,106,170,0.06);
+  --lavender:#a08cc0;--lavender-dim:rgba(160,140,192,0.10);
+  --rose:#c47a7a;--rose-dim:rgba(196,122,122,0.10);
+  --text-1:#ede6f2;--text-2:#c0b4d4;--text-3:#a99ec4;--text-hero:#f4eefa;
+  --error:#e08a8a;--success:#7ec08e;
+  --border:rgba(138,106,170,0.12);--border-hover:rgba(212,162,76,0.25);
+  --font-display:'Fraunces',Georgia,serif;
+  --font-mystery:'Mystery Quest',cursive;
+  --font-body:'Instrument Sans','Helvetica Neue',sans-serif;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;
+  --r2:8px;--r3:12px;--r4:16px;
+  --ease:cubic-bezier(0.4,0,0.2,1);--ease-out:cubic-bezier(0.0,0,0.2,1);
+  --ease-bounce:cubic-bezier(0.34,1.56,0.64,1);
+  --header-h:52px;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px);
+}
+[data-theme="light"]{
+  --bg-abyss:#eef3f7;--bg-deep:#e3ebf2;--bg-raised:#d6e1eb;--bg-surface:#c4d5e3;
+  --bg-input:#b0c6d9;--bg-glow:rgba(238,243,247,0.92);
+  --amber:#8a5e1a;--amber-bright:#6a4a10;--amber-dim:#c4982e;
+  --amber-glow:rgba(138,94,26,0.08);--amber-ghost:rgba(138,94,26,0.04);
+  --plum:#6a4a8a;--plum-dim:rgba(106,74,138,0.08);--plum-ghost:rgba(106,74,138,0.04);
+  --lavender:#5a4a7a;--lavender-dim:rgba(90,74,122,0.08);
+  --rose:#8a4a4a;--rose-dim:rgba(138,74,74,0.08);
+  --text-1:#160d1c;--text-2:#473459;--text-3:#4e4267;--text-hero:#0e0a14;
+  --error:#8a4040;--success:#3a7a4a;
+  --border:rgba(106,74,138,0.14);--border-hover:rgba(138,94,26,0.30);
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+html{font-size:16px;height:100%}
+body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1);line-height:1.6;height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+::selection{background:rgba(212,162,76,0.25);color:var(--text-hero)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-abyss)}::-webkit-scrollbar-thumb{background:var(--plum-dim);border-radius:3px}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+/* ═══ AMBIENT ═══ */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.phi-blob{position:absolute;width:700px;height:700px;top:-10%;right:-15%;background:radial-gradient(ellipse at 35% 40%,rgba(138,106,170,0.07) 0%,transparent 55%),radial-gradient(ellipse at 65% 60%,rgba(212,162,76,0.05) 0%,transparent 50%);border-radius:40% 60% 70% 30%/40% 50% 60% 50%;animation:blobMorph 25s ease-in-out infinite;filter:blur(40px)}
+.phi-blob-2{position:absolute;width:500px;height:500px;bottom:-15%;left:-10%;background:radial-gradient(ellipse at 50% 50%,rgba(196,122,122,0.04) 0%,transparent 60%);border-radius:60% 40% 30% 70%/50% 60% 40% 60%;animation:blobMorph 30s ease-in-out infinite reverse;filter:blur(50px)}
+@keyframes blobMorph{0%{border-radius:40% 60% 70% 30%/40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}25%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%;transform:translate(20px,-15px) rotate(5deg)}50%{border-radius:30% 60% 50% 40%/50% 60% 30% 60%;transform:translate(-10px,20px) rotate(-3deg)}75%{border-radius:50% 30% 60% 40%/40% 60% 40% 50%;transform:translate(15px,10px) rotate(4deg)}100%{border-radius:40% 60% 70% 30%/40% 50% 60% 50%;transform:translate(0,0) rotate(0deg)}}
+.ambient::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(138,106,170,0.04) 1px,transparent 1px);background-size:32px 32px}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ═══ SHARED HEADER ═══ */
+.app-header{position:fixed;top:0;left:0;right:0;z-index:100;height:calc(var(--header-h) + var(--safe-top));padding:var(--safe-top) calc(var(--s5) + var(--safe-right)) 0 calc(var(--s5) + var(--safe-left));background:var(--bg-glow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.app-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,162,76,0.2) 30%,rgba(138,106,170,0.15) 70%,transparent)}
+.header-brand{display:flex;align-items:center;gap:var(--s3);min-width:0}
+.header-logo{height:26px;width:auto;object-fit:contain;opacity:.9}
+.header-sep{width:1px;height:14px;background:var(--text-3);opacity:.3}
+.header-name{font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--text-2)}
+.header-right{display:flex;align-items:center;gap:var(--s2)}
+.header-mode-name{font-family:var(--font-display);font-size:13px;font-style:italic;color:var(--text-3);opacity:.8}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+.icon-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
+.icon-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-back svg{stroke-width:2}
+
+/* ═══ UTILITIES ═══ */
+.hidden{display:none!important}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ═══ SCREEN: LOADING ═══ */
+#screen-loading{position:fixed;inset:0;z-index:200;background:var(--bg-abyss);display:flex;align-items:center;justify-content:center}
+.loading-phi{font-family:var(--font-mystery);font-size:48px;color:var(--plum);animation:pulse 2s ease-in-out infinite}
+
+/* ═══ SCREEN: AUTH ═══ */
+#screen-auth{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:var(--s5);overflow-y:auto}
+.auth-card{width:100%;max-width:400px;text-align:center;animation:fadeUp .8s var(--ease-out) forwards}
+.auth-logo{font-family:var(--font-mystery);font-size:clamp(3rem,10vw,5rem);font-weight:400;line-height:1;margin-bottom:var(--s3);overflow:visible;padding-bottom:.1em}
+.auth-logo .phi-text{background:linear-gradient(115deg,#e2d8f5 0%,#b8a0e0 15%,#9080c8 30%,#c8b0e8 45%,#d4a24c 65%,#e8be6a 80%,#d4a24c 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:phiyoShimmer 6s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(140,120,210,0.3))}
+@keyframes phiyoShimmer{0%{background-position:0% 50%}33%{background-position:100% 30%}66%{background-position:50% 100%}100%{background-position:0% 50%}}
+.auth-tagline{font-family:var(--font-display);font-size:14px;font-style:italic;font-weight:300;color:var(--text-3);line-height:1.6;margin-bottom:var(--s3)}
+.auth-tagline-sub{font-family:var(--font-body);font-size:12px;color:var(--text-3);line-height:1.6;margin:0 auto var(--s7);max-width:320px}
+.auth-tagline-sub:empty{display:none}
+.auth-form{display:flex;flex-direction:column;gap:var(--s3);margin-bottom:var(--s5)}
+.auth-input{width:100%;padding:12px var(--s4);background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-body);font-size:15px;outline:none;transition:border-color .25s var(--ease)}
+.auth-input::placeholder{color:var(--text-3)}
+.auth-input:focus{border-color:var(--amber)}
+.auth-btn{width:100%;padding:13px var(--s4);background:var(--amber);border:none;border-radius:var(--r3);color:#0e0a14;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s var(--ease)}
+.auth-btn:hover{opacity:.9}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-note{font-size:12px;color:var(--text-3);line-height:1.6}
+.auth-note a{color:var(--text-3);text-decoration:underline;text-underline-offset:2px}
+
+/* ═══ SCREEN: EMAIL SENT ═══ */
+#screen-email-sent{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:var(--s5)}
+.email-sent-card{width:100%;max-width:400px;text-align:center;animation:fadeUp .8s var(--ease-out) forwards}
+.email-sent-icon{width:56px;height:56px;margin:0 auto var(--s5);border-radius:50%;border:1px solid var(--amber-dim);display:flex;align-items:center;justify-content:center}
+.email-sent-icon svg{width:24px;height:24px;stroke:var(--amber);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.email-sent-title{font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--text-hero);margin-bottom:var(--s3);line-height:1.3}
+.email-sent-sub{font-family:var(--font-display);font-size:14px;font-style:italic;font-weight:300;color:var(--text-3);line-height:1.7;margin-bottom:var(--s5)}
+.email-sent-email{color:var(--amber);font-style:normal;font-weight:400}
+.email-sent-resend{font-size:13px;color:var(--text-3)}
+.email-sent-resend button{background:none;border:none;color:var(--amber);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:2px;padding:0}
+.otp-form{margin:var(--s5) 0 var(--s4);display:flex;flex-direction:column;gap:var(--s3);align-items:center}
+.otp-input{width:200px;text-align:center;padding:14px var(--s4);background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-body);font-size:28px;font-weight:600;letter-spacing:0.3em;outline:none;transition:border-color .25s var(--ease)}
+.otp-input:focus{border-color:var(--amber)}
+.otp-input::placeholder{color:var(--text-3);font-size:14px;letter-spacing:0.05em;font-weight:400}
+.otp-verify-btn{width:200px;padding:12px var(--s4);background:var(--amber);border:none;border-radius:var(--r3);color:#0e0a14;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s var(--ease)}
+.otp-verify-btn:hover{opacity:.9}
+.otp-verify-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ═══ SCREEN: MODE SELECTOR ═══ */
+#screen-modes{position:relative;z-index:1;display:flex;flex-direction:column;overflow:hidden;height:100%}
+.modes-header{padding-top:calc(var(--header-h) + var(--safe-top));flex-shrink:0}
+.modes-scroll{flex:1;overflow-y:auto;padding:calc(var(--header-h) + var(--safe-top) + var(--s4)) calc(var(--s5) + var(--safe-right)) calc(var(--s8) + var(--safe-bottom)) calc(var(--s5) + var(--safe-left))}
+.modes-inner{max-width:640px;margin:0 auto}
+.modes-greeting{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);font-weight:300;color:var(--text-hero);margin-bottom:var(--s2);animation:fadeUp .7s var(--ease-out) forwards}
+.modes-sub{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--text-3);margin-bottom:var(--s7);animation:fadeUp .7s var(--ease-out) .1s forwards;opacity:0}
+.modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);animation:fadeUp .7s var(--ease-out) .2s forwards;opacity:0}
+@media(max-width:480px){.modes-grid{grid-template-columns:1fr}}
+.mode-card{background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r4);padding:var(--s5);cursor:pointer;transition:border-color .25s var(--ease),background .25s var(--ease),transform .2s var(--ease-bounce);position:relative;overflow:hidden;text-align:left}
+.mode-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--amber-ghost),transparent 60%);opacity:0;transition:opacity .25s var(--ease)}
+.mode-card:hover{border-color:var(--border-hover);background:var(--bg-surface);transform:translateY(-2px)}
+.mode-card:hover::before{opacity:1}
+.mode-card:active{transform:translateY(0)}
+.mode-icon{width:36px;height:36px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:var(--s4);transition:border-color .25s var(--ease)}
+.mode-card:hover .mode-icon{border-color:var(--amber-dim)}
+.mode-icon svg{width:18px;height:18px;fill:none;stroke:var(--plum);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mode-card:hover .mode-icon svg{stroke:var(--amber)}
+.mode-name{font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:var(--s2);letter-spacing:.01em}
+.mode-desc{font-family:var(--font-display);font-size:13px;font-style:italic;font-weight:300;color:var(--text-3);line-height:1.6}
+
+/* ═══ SCREEN: CHAT ═══ */
+#screen-chat{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;overflow:hidden;height:100%}
+.chat-wrapper{padding-top:calc(var(--header-h) + var(--safe-top));flex:1;display:flex;flex-direction:column;overflow:hidden}
+.chat-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.chat-inner{max-width:680px;margin:0 auto;padding:var(--s5) var(--s5) var(--s6);display:flex;flex-direction:column}
+
+/* ═══ WELCOME (chat mode) ═══ */
+.chat-welcome{padding:var(--s5) 0;opacity:0;animation:fadeUp .7s var(--ease-out) forwards .1s;transition:opacity .4s var(--ease),max-height .5s var(--ease),padding .5s var(--ease);overflow:hidden}
+.chat-welcome.collapsed{opacity:0;max-height:0!important;padding:0;pointer-events:none;margin:0}
+.chat-welcome-mode{font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:var(--s3)}
+.chat-welcome-text{font-family:var(--font-display);font-size:clamp(1rem,3vw,1.2rem);font-weight:300;font-style:italic;color:var(--text-2);line-height:1.7;max-width:460px}
+.chat-welcome-example{margin-top:var(--s4);padding:var(--s3) var(--s4);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r3);font-family:var(--font-body);font-size:13px;color:var(--text-2);line-height:1.6;max-width:460px}
+.chat-welcome-example:empty{display:none}
+
+/* Morning Teller special welcome */
+.morning-agenda-wrap{margin-top:var(--s5);display:flex;flex-direction:column;gap:var(--s3)}
+.morning-agenda-label{font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+.morning-agenda-input{width:100%;padding:10px var(--s4);background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-display);font-size:14px;font-style:italic;resize:none;outline:none;transition:border-color .25s var(--ease);line-height:1.6}
+.morning-agenda-input::placeholder{color:var(--text-3)}
+.morning-agenda-input:focus{border-color:var(--amber)}
+.morning-brief-btn{align-self:flex-start;padding:10px var(--s5);background:transparent;border:1px solid var(--border-hover);border-radius:var(--r3);color:var(--amber);font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s var(--ease),border-color .2s var(--ease)}
+.morning-brief-btn:hover{background:var(--amber-glow)}
+
+/* ═══ MESSAGES ═══ */
+.chat-messages{display:flex;flex-direction:column;gap:var(--s4)}
+.msg-assistant,.msg-user{max-width:86%;animation:fadeUp .4s var(--ease-out) forwards;opacity:0}
+.msg-user{align-self:flex-end}
+.msg-assistant{align-self:flex-start}
+.msg-user-label,.msg-assistant-label{font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:var(--s2)}
+.msg-user-label{text-align:right}
+.msg-user-bubble{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r4) var(--r4) 4px var(--r4);padding:var(--s3) var(--s4);font-size:15px;color:var(--text-1);line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg-assistant-bubble{font-size:15px;color:var(--text-1);line-height:1.75;white-space:pre-wrap;word-break:break-word;padding:0}
+.msg-assistant-bubble p{margin-bottom:.75em}
+.msg-assistant-bubble p:last-child{margin-bottom:0}
+
+/* Morning brief special */
+.msg-brief .msg-assistant-bubble{background:var(--bg-raised);border:1px solid var(--amber-dim);border-left:3px solid var(--amber);border-radius:var(--r4);padding:var(--s5);font-family:var(--font-display);font-size:15px;font-weight:300;font-style:normal;color:var(--text-1);line-height:1.85}
+.msg-loading .msg-assistant-bubble{color:var(--text-3);font-style:italic;animation:pulse 1.5s ease-in-out infinite}
+.msg-session-info{font-size:10px;color:var(--text-3);opacity:.4;letter-spacing:.05em;text-align:center;margin:var(--s3) 0}
+
+/* ═══ COMPOSER ═══ */
+.composer{background:var(--bg-glow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:var(--s3) calc(var(--s4) + var(--safe-right)) calc(var(--s4) + var(--safe-bottom)) calc(var(--s4) + var(--safe-left));flex-shrink:0}
+.composer-inner{max-width:680px;margin:0 auto}
+.composer-row{display:flex;gap:var(--s2);align-items:flex-end}
+.composer-input{flex:1;resize:none;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-body);font-size:15px;padding:10px var(--s3);outline:none;line-height:1.5;min-height:42px;max-height:200px;overflow-y:auto;transition:border-color .25s var(--ease)}
+.composer-input::placeholder{color:var(--text-3)}
+.composer-input:focus{border-color:var(--border-hover)}
+.composer-actions{display:flex;flex-direction:column;align-items:flex-end;gap:var(--s2);flex-shrink:0}
+.composer-btn{width:40px;height:40px;border-radius:var(--r2);border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s,background .2s;flex-shrink:0}
+.composer-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-mic:hover{border-color:var(--plum);color:var(--plum)}
+.btn-send{border-color:var(--amber-dim);color:var(--amber)}
+.btn-send:hover{background:var(--amber-glow)}
+.btn-send:disabled{opacity:.35;cursor:not-allowed}
+.composer-meta{margin-top:var(--s2);font-size:11px;color:var(--text-3);opacity:.6}
+.composer-meta a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* ═══ VOICE OVERLAY ═══ */
+.voice-overlay{position:fixed;inset:0;z-index:150;background:rgba(14,10,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.voice-overlay.active{opacity:1;pointer-events:all}
+.voice-overlay-inner{width:100%;max-width:360px;padding:var(--s7) var(--s5);text-align:center}
+.voice-status{margin-bottom:var(--s6)}
+.voice-label{display:block;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);margin-bottom:var(--s2)}
+.voice-timer{display:block;font-family:var(--font-body);font-size:14px;color:var(--text-3);min-height:20px}
+.mic-orb{width:80px;height:80px;border-radius:50%;border:1px solid var(--plum-dim);background:var(--bg-raised);cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto var(--s5);position:relative;transition:border-color .25s}
+.mic-orb-ring{position:absolute;inset:-8px;border-radius:50%;border:1px solid var(--plum-dim);animation:none}
+.mic-orb.recording{border-color:var(--plum)}
+.mic-orb.recording .mic-orb-ring{animation:ringPulse 1.5s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.15);opacity:.8}}
+.mic-orb svg{width:28px;height:28px;fill:none;stroke:var(--plum);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.voice-transcript{font-family:var(--font-display);font-size:15px;font-style:italic;color:var(--text-3);line-height:1.6;min-height:48px;margin-bottom:var(--s5)}
+.voice-actions{display:flex;gap:var(--s3);justify-content:center}
+.voice-action-btn{padding:10px var(--s5);border-radius:var(--r3);font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
+.voice-cancel{background:transparent;border:1px solid var(--border);color:var(--text-3)}
+.voice-cancel:hover{border-color:var(--border-hover)}
+.voice-send{background:var(--amber);border:1px solid var(--amber);color:#0e0a14}
+.voice-send:disabled{opacity:.4;cursor:not-allowed}
+.voice-send:not(:disabled):hover{opacity:.9}
+
+/* ═══ PROFILE ═══ */
+#screen-profile{position:relative;z-index:1;flex:1;display:flex;overflow:hidden}
+.profile-scroll{flex:1;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--s7) + var(--safe-top)) calc(var(--s5) + var(--safe-right)) calc(var(--s7) + var(--safe-bottom)) calc(var(--s5) + var(--safe-left))}
+.profile-card{width:100%;max-width:440px;animation:fadeUp .7s var(--ease-out) forwards}
+.profile-title{font-family:var(--font-display);font-size:clamp(1.4rem,5vw,1.8rem);font-weight:300;color:var(--text-hero);margin-bottom:var(--s3)}
+.profile-intro{font-family:var(--font-body);font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:var(--s6)}
+.profile-q{margin-bottom:var(--s5)}
+.profile-q-label{display:block;font-family:var(--font-body);font-size:14px;color:var(--text-1);line-height:1.5;margin-bottom:var(--s2)}
+.profile-q-input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r3);color:var(--text-1);font-family:var(--font-body);font-size:15px;padding:10px var(--s3);outline:none;line-height:1.5;resize:vertical;min-height:44px;transition:border-color .25s var(--ease)}
+.profile-q-input:focus{border-color:var(--border-hover)}
+.profile-save-btn{width:100%;padding:13px var(--s4);background:var(--amber);border:none;border-radius:var(--r3);color:#0e0a14;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s var(--ease);margin-top:var(--s2)}
+.profile-save-btn:disabled{opacity:.6;cursor:default}
+.profile-skip-btn{width:100%;background:none;border:none;color:var(--text-3);font-family:var(--font-body);font-size:13px;cursor:pointer;padding:var(--s4) 0 0;text-decoration:underline;text-underline-offset:2px}
+
+/* ═══ HISTORY PANEL ═══ */
+.history-panel{position:fixed;inset:0;z-index:160;background:var(--bg-glow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .28s var(--ease),transform .28s var(--ease)}
+.history-panel.show{opacity:1;pointer-events:auto;transform:none}
+.history-panel-inner{flex:1;display:flex;flex-direction:column;max-width:680px;width:100%;margin:0 auto;padding:calc(var(--header-h) + var(--safe-top) + var(--s2)) calc(var(--s5) + var(--safe-right)) calc(var(--s5) + var(--safe-bottom)) calc(var(--s5) + var(--safe-left));overflow:hidden}
+.history-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);flex-shrink:0}
+.history-title{font-family:var(--font-display);font-size:18px;color:var(--text-hero)}
+.history-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:var(--s3)}
+.history-item{text-align:left;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r3);padding:var(--s4);cursor:pointer;transition:border-color .2s,background .2s;width:100%;font-family:inherit}
+.history-item:hover{border-color:var(--border-hover);background:var(--bg-raised)}
+.history-item-date{font-size:11px;color:var(--text-3);letter-spacing:.04em;margin-bottom:6px}
+.history-item-text{font-size:14px;color:var(--text-1);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.history-empty,.history-loading{color:var(--text-2);font-size:14px;text-align:center;padding:var(--s7) var(--s4);line-height:1.6}
+.history-resume-note{font-size:12px;color:var(--text-3);font-style:italic;text-align:center;padding:var(--s2) 0 var(--s4)}
+
+/* ═══ UI LANG SELECT ═══ */
+.ui-lang-select{background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r2);color:var(--text-2);font-family:var(--font-body);font-size:12px;padding:4px 6px;outline:none;cursor:pointer;transition:border-color .2s}
+.ui-lang-select:focus{border-color:var(--amber)}
+.auth-lang-row{margin-top:var(--s4);display:flex;justify-content:center}
+
+/* ═══ ERROR TOAST ═══ */
+.error-toast{position:fixed;bottom:var(--s6);left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-surface);border:1px solid var(--error);border-radius:var(--r3);padding:var(--s3) var(--s5);font-size:13px;color:var(--error);opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);z-index:300;white-space:nowrap;max-width:calc(100vw - 48px);text-align:center}
+.error-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ SCREEN: PAYWALL ═══ */
+#screen-paywall{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:var(--s5);overflow-y:auto}
+.paywall-card{width:100%;max-width:620px;text-align:center;animation:fadeUp .8s var(--ease-out) forwards}
+.paywall-logo{font-family:var(--font-mystery);font-size:clamp(2rem,8vw,3.5rem);font-weight:400;line-height:1;margin-bottom:var(--s2);overflow:visible;padding-bottom:.1em}
+.paywall-tagline{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--text-2);margin-bottom:var(--s5)}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s5)}
+@media(max-width:540px){.plan-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r4);padding:var(--s5);text-align:left;position:relative}
+.plan-card-pro{border-color:var(--amber-dim);background:linear-gradient(135deg,var(--bg-raised) 0%,var(--bg-deep) 100%)}
+.plan-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:var(--bg-abyss);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.plan-name{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--text-1);margin-bottom:var(--s2)}
+.plan-price{font-size:22px;font-weight:700;color:var(--amber);margin-bottom:var(--s3)}
+.plan-price-free{font-size:16px;color:var(--text-3);margin-bottom:var(--s3)}
+.plan-interval-group{display:flex;gap:var(--s2);margin-bottom:var(--s3)}
+.plan-interval{flex:1;padding:7px 0;border:1px solid var(--border);border-radius:var(--r2);background:transparent;color:var(--text-2);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s var(--ease)}
+.plan-interval.active,.plan-interval:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-ghost)}
+.plan-features{list-style:none;margin-bottom:var(--s5);font-size:13px;line-height:2.1}
+.plan-features li{color:var(--text-2)}
+.plan-features li.feat-on{color:var(--text-1)}
+.plan-features li.feat-off{color:var(--text-3);opacity:.45}
+.plan-btn{width:100%;padding:12px;border-radius:var(--r3);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s var(--ease);border:1px solid var(--border)}
+.plan-btn-free{background:transparent;color:var(--text-2)}
+.plan-btn-free:hover{border-color:var(--border-hover);color:var(--text-1)}
+.plan-btn-pro{background:var(--amber);border-color:var(--amber);color:var(--bg-abyss)}
+.plan-btn-pro:hover:not(:disabled){opacity:.9}
+.plan-btn-pro:disabled{opacity:.5;cursor:not-allowed}
+.plan-note{font-size:11px;color:var(--text-3);margin-top:var(--s2);text-align:center}
+.paywall-footer{font-size:11px;color:var(--text-3);margin-top:var(--s3)}
+.paywall-footer a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.paywall-loading{text-align:center;padding:var(--s7);font-family:var(--font-mystery);font-size:32px;color:var(--plum);animation:pulse 2s ease-in-out infinite}
+
+/* ═══ FREE TIER + SUBSCRIPTION UI ═══ */
+.mode-card.locked{opacity:.65;cursor:pointer}
+.mode-card.locked::after{content:'Pro';position:absolute;top:var(--s2);right:var(--s2);background:var(--plum);color:#fff;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+.mode-card{position:relative}
+.trial-notice{background:var(--amber-ghost);border:1px solid var(--amber-dim);border-radius:var(--r3);padding:10px 16px;font-size:12px;color:var(--amber-bright);text-align:center;margin-bottom:var(--s4)}
+.manage-sub-btn{font-size:12px;color:var(--text-3);cursor:pointer;text-decoration:underline;text-underline-offset:2px;background:none;border:none;padding:0;font-family:var(--font-body);display:block;margin:var(--s3) auto 0}
+.manage-sub-btn:hover{color:var(--text-2)}
+.free-usage-wrap{margin-bottom:var(--s4);font-size:12px;color:var(--text-2)}
+.free-usage-bar-bg{height:4px;background:var(--bg-surface);border-radius:2px;margin-top:6px}
+.free-usage-bar-fill{height:4px;background:var(--plum);border-radius:2px;transition:width .4s var(--ease)}
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="phi-blob"></div>
+  <div class="phi-blob-2"></div>
+</div>
+<div class="noise" aria-hidden="true"></div>
+
+<!-- Loading -->
+<div id="screen-loading">
+  <div class="loading-phi">φ</div>
+</div>
+
+<!-- Auth screen -->
+<div id="screen-auth" class="hidden">
+  <div class="auth-card">
+    <h1 class="auth-logo"><span class="phi-text">PHI&#8209;YO</span></h1>
+    <p class="auth-tagline" id="authTagline">Computational dream analysis and wellbeing.<br>Grounded in <em>Freud for Machines</em>.</p>
+    <p class="auth-tagline-sub" id="authTaglineSub"></p>
+    <div class="auth-form" id="authForm">
+      <input type="email" class="auth-input" id="emailInput" placeholder="Your email address" autocomplete="email" spellcheck="false">
+      <button class="auth-btn" id="authBtn">Send me a sign-in code</button>
+      <p style="text-align:center;margin:12px 0 0;font-size:13px;color:var(--text-3)"><a href="#" id="haveCodeLink" style="color:var(--amber);text-decoration:none">I already have a code</a></p>
+    </div>
+    <p class="auth-note" id="authNote">Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.<br><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a></p>
+    <div class="auth-lang-row">
+      <select class="ui-lang-select" aria-label="Interface language">
+        <option value="en">English</option>
+        <option value="fr">Fran&ccedil;ais</option>
+        <option value="zh">&#20013;&#25991;</option>
+        <option value="tr">T&uuml;rk&ccedil;e</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Espa&ntilde;ol</option>
+        <option value="ja">&#26085;&#26412;&#35486;</option>
+        <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+        <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Email sent screen -->
+<div id="screen-email-sent" class="hidden">
+  <div class="email-sent-card">
+    <div class="email-sent-icon">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </div>
+    <h2 class="email-sent-title" id="emailSentTitle">Check your inbox.</h2>
+    <p class="email-sent-sub" id="emailSentSub">We sent a 6-digit code to<br><span class="email-sent-email" id="sentEmailDisplay"></span></p>
+    <div class="otp-form">
+      <input type="text" class="otp-input" id="otpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" spellcheck="false">
+      <button class="otp-verify-btn" id="otpVerifyBtn" disabled>Verify</button>
+    </div>
+    <p class="email-sent-resend"><span id="resendTextSpan">Didn't receive it?</span> <button id="resendBtn">Send again</button></p>
+  </div>
+</div>
+
+<!-- Profile (Psychological Anchoring) -->
+<div id="screen-profile" class="hidden">
+  <div class="profile-scroll">
+    <div class="profile-card">
+      <h2 class="profile-title" id="profileTitle">Before we begin</h2>
+      <p class="profile-intro" id="profileIntro"></p>
+      <div class="profile-q">
+        <label class="profile-q-label" id="profileQ1Label" for="profileQ1"></label>
+        <textarea class="profile-q-input" id="profileQ1" rows="2" spellcheck="false"></textarea>
+      </div>
+      <div class="profile-q">
+        <label class="profile-q-label" id="profileQ2Label" for="profileQ2"></label>
+        <textarea class="profile-q-input" id="profileQ2" rows="2" spellcheck="false"></textarea>
+      </div>
+      <div class="profile-q">
+        <label class="profile-q-label" id="profileQ3Label" for="profileQ3"></label>
+        <textarea class="profile-q-input" id="profileQ3" rows="2" spellcheck="false"></textarea>
+      </div>
+      <button class="profile-save-btn" id="profileSaveBtn">Save and continue</button>
+      <button class="profile-skip-btn" id="profileSkipBtn">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mode selector -->
+<div id="screen-modes" class="hidden">
+  <header class="app-header">
+    <div class="header-brand">
+      <img src="/logo.jpg" alt="Phi-Yo" class="header-logo">
+      <div class="header-sep"></div>
+      <span class="header-name">Phi-Yo</span>
+    </div>
+    <div class="header-right">
+      <select class="ui-lang-select" aria-label="Interface language">
+        <option value="en">English</option>
+        <option value="fr">Fran&ccedil;ais</option>
+        <option value="zh">&#20013;&#25991;</option>
+        <option value="tr">T&uuml;rk&ccedil;e</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Espa&ntilde;ol</option>
+        <option value="ja">&#26085;&#26412;&#35486;</option>
+        <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+        <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+      </select>
+      <button class="icon-btn" id="logoutBtnMode" aria-label="Sign out" title="Sign out">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggleMode" aria-label="Switch theme">
+        <svg id="themeIconMode" viewBox="0 0 24 24"></svg>
+      </button>
+    </div>
+  </header>
+  <div class="modes-scroll">
+    <div class="modes-inner">
+      <h2 class="modes-greeting" id="modesGreeting">Good morning.</h2>
+      <p class="modes-sub" id="modesSub">What would you like to explore today?</p>
+      <div id="modesTrialNotice" class="trial-notice hidden"></div>
+      <div class="modes-grid">
+        <button class="mode-card" data-mode="morning">
+          <div class="mode-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <div class="mode-name">Morning Teller</div>
+          <div class="mode-desc">Start your day prepared. A brief drawn from your recent inner life and today's context.</div>
+        </button>
+        <button class="mode-card" data-mode="checkin">
+          <div class="mode-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="mode-name">Daily Check-in</div>
+          <div class="mode-desc">A brief moment of reflection at the end of your day. What happened, what mattered.</div>
+        </button>
+        <button class="mode-card" data-mode="wellbeing">
+          <div class="mode-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <div class="mode-name">Wellbeing</div>
+          <div class="mode-desc">A psychoanalytic space for your everyday inner life. Relationships, emotions, questions.</div>
+        </button>
+        <button class="mode-card" data-mode="dream">
+          <div class="mode-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+          <div class="mode-name">Dream Analysis</div>
+          <div class="mode-desc">Record and analyze your dreams. A personal symbol map evolves with every session.</div>
+        </button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chat screen (all modes) -->
+<div id="screen-chat" class="hidden">
+  <header class="app-header">
+    <div class="header-brand">
+      <button class="icon-btn btn-back" id="backBtn" aria-label="Back to modes">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="header-sep"></div>
+      <span class="header-mode-name" id="chatModeLabel"></span>
+    </div>
+    <div class="header-right">
+      <select class="ui-lang-select" aria-label="Interface language">
+        <option value="en">English</option>
+        <option value="fr">Fran&ccedil;ais</option>
+        <option value="zh">&#20013;&#25991;</option>
+        <option value="tr">T&uuml;rk&ccedil;e</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Espa&ntilde;ol</option>
+        <option value="ja">&#26085;&#26412;&#35486;</option>
+        <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+        <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+      </select>
+      <button class="icon-btn" id="historyBtn" aria-label="History" title="History">
+        <svg viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l3 2"/></svg>
+      </button>
+      <button class="icon-btn" id="newSessionBtn" aria-label="New session" title="New session">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button class="icon-btn" id="logoutBtnChat" aria-label="Sign out" title="Sign out">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggleChat" aria-label="Switch theme">
+        <svg id="themeIconChat" viewBox="0 0 24 24"></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="chat-wrapper">
+    <div class="chat-scroll" id="chatScroll">
+      <div class="chat-inner" id="chatInner">
+
+        <div class="chat-welcome" id="chatWelcome">
+          <div class="chat-welcome-mode" id="chatWelcomeMode"></div>
+          <div class="chat-welcome-text" id="chatWelcomeText"></div>
+          <div class="chat-welcome-example" id="chatWelcomeExample"></div>
+          <!-- Morning Teller: agenda input -->
+          <div class="morning-agenda-wrap hidden" id="morningAgendaWrap">
+            <label class="morning-agenda-label" id="morningAgendaLabel" for="morningAgendaInput">Today's agenda (optional)</label>
+            <textarea class="morning-agenda-input" id="morningAgendaInput" rows="3" placeholder="Meetings, tasks, events... or leave empty."></textarea>
+            <button class="morning-brief-btn" id="morningBriefBtn">Get my morning brief</button>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+      </div>
+    </div>
+
+    <div class="composer" id="composer">
+      <div class="composer-inner">
+        <div class="composer-row">
+          <textarea class="composer-input" id="composerInput" rows="1" aria-label="Message"></textarea>
+          <div class="composer-actions">
+            <button class="composer-btn btn-mic" id="micBtn" aria-label="Voice input">
+              <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+            </button>
+            <button class="composer-btn btn-send" id="sendBtn" disabled aria-label="Send">
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="composer-meta">
+          <div id="composerMeta">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; France</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Voice overlay -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-overlay-inner">
+    <div class="voice-status">
+      <span class="voice-label" id="voiceLabel">Tap to speak</span>
+      <span class="voice-timer" id="voiceTimer" aria-live="polite"></span>
+    </div>
+    <button class="mic-orb" id="micOrb" aria-label="Toggle recording">
+      <div class="mic-orb-ring" aria-hidden="true"></div>
+      <svg id="micOrbIcon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+    </button>
+    <div class="voice-transcript" id="voiceTranscript" aria-live="polite"></div>
+    <div class="voice-actions">
+      <button class="voice-action-btn voice-cancel" id="voiceCancel">Cancel</button>
+      <button class="voice-action-btn voice-send" id="voiceSend" disabled>Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- History panel -->
+<div class="history-panel" id="historyPanel" aria-hidden="true">
+  <div class="history-panel-inner">
+    <div class="history-head">
+      <span class="history-title" id="historyTitleEl">Your history</span>
+      <button class="icon-btn" id="historyCloseBtn" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="history-body" id="historyBody"></div>
+  </div>
+</div>
+
+<!-- Subscription paywall -->
+<div id="screen-paywall" class="hidden">
+  <div class="paywall-card">
+    <h1 class="paywall-logo"><span class="phi-text">PHI&#8209;YO</span></h1>
+    <p class="paywall-tagline">Choose how you'd like to use Phi-Yo.</p>
+    <div id="paywallLoading" class="paywall-loading hidden">φ</div>
+    <div id="paywallPlans">
+      <div class="plan-grid">
+        <div class="plan-card" id="planCardFree">
+          <div class="plan-name">Free</div>
+          <div class="plan-price-free">€0 forever</div>
+          <ul class="plan-features">
+            <li class="feat-on">&#10003; Dream Interpreter</li>
+            <li class="feat-on">&#10003; 3 analyses / month</li>
+            <li class="feat-off">Wellbeing Conversations</li>
+            <li class="feat-off">Morning Brief</li>
+            <li class="feat-off">Daily Check-in</li>
+          </ul>
+          <button class="plan-btn plan-btn-free" id="btnContinueFree">Continue free</button>
+        </div>
+        <div class="plan-card plan-card-pro">
+          <div class="plan-badge">7 days free</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-interval-group">
+            <button class="plan-interval active" id="btnIntervalMonthly" data-plan="pro_monthly">&#8364;5 / month</button>
+            <button class="plan-interval" id="btnIntervalAnnual" data-plan="pro_annual">&#8364;45 / year</button>
+          </div>
+          <ul class="plan-features">
+            <li class="feat-on">&#10003; Dream Interpreter, unlimited</li>
+            <li class="feat-on">&#10003; Wellbeing Conversations</li>
+            <li class="feat-on">&#10003; Morning Brief</li>
+            <li class="feat-on">&#10003; Daily Check-in</li>
+          </ul>
+          <button class="plan-btn plan-btn-pro" id="btnStartTrial">Start 7-day free trial</button>
+          <p class="plan-note">No charge for 7 days. Cancel any time.</p>
+        </div>
+      </div>
+    </div>
+    <p class="paywall-footer"><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://feix.app" target="_blank" rel="noopener">Created by Feix</a></p>
+  </div>
+</div>
+
+<div class="error-toast" id="errorToast" role="alert" aria-live="assertive"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ══ Config ══ */
+var API_BASE = 'https://api.llulllab.com/';
+var URLS = {
+  authRequest:       API_BASE + 'phiyo-auth-request',
+  authVerify:        API_BASE + 'phiyo-auth-verify',
+  dream:             API_BASE + 'phiyo-dream',
+  wellbeing:         API_BASE + 'phiyo-wellbeing',
+  morning:           API_BASE + 'phiyo-morning',
+  checkin:           API_BASE + 'phiyo-checkin',
+  history:           API_BASE + 'phiyo-history',
+  profile:           API_BASE + 'phiyo-profile',
+  subscribeValidate: API_BASE + 'phiyo-subscribe-validate',
+  setFree:           API_BASE + 'phiyo-set-free',
+  stripeCheckout:    API_BASE + 'stripe-checkout',
+  stripePortal:      API_BASE + 'stripe-portal'
+};
+
+var MODES_CONFIG = {
+  dream:     { useJwt: true, multiTurn: true,  showAgenda: false },
+  wellbeing: { useJwt: true, multiTurn: true,  showAgenda: false },
+  morning:   { useJwt: true, multiTurn: false, showAgenda: true  },
+  checkin:   { useJwt: true, multiTurn: false, showAgenda: false }
+};
+
+/* ══ i18n ══ */
+var STRINGS = {
+en:{
+  tagline:'Computational dream analysis and wellbeing.\nGrounded in Freud for Machines.',
+  taglineSub:'A computational model of the mind, built on psychoanalytic theory.',
+  emailPlaceholder:'Your email address',authBtnText:'Send me a sign-in code',authBtnSending:'Sending...',
+  authNote:'Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.',
+  emailSentTitle:'Check your inbox.',emailSentSub:'We sent a 6-digit sign-in code to',
+  otpPlaceholder:'6-digit code',otpVerifyBtn:'Verify',otpVerifying:'Verifying...',
+  resendText:"Didn't receive it?",resendBtn:'Send again',
+  greetingMorning:'Good morning.',greetingAfternoon:'Good afternoon.',greetingEvening:'Good evening.',
+  modesSub:'What would you like to explore today?',
+  dreamName:'Dream Analysis',dreamDesc:'Record and analyze your dreams. A personal symbol map evolves with every session.',
+  dreamWelcomeMode:'DREAM ANALYSIS',dreamWelcomeText:'Share your dream. Tell me first whether it is a dream or an experience from waking life.',dreamPlaceholder:'Describe your dream...',
+  wellbeingName:'Wellbeing',wellbeingDesc:'A psychoanalytic space for your everyday inner life. Relationships, emotions, questions.',
+  wellbeingWelcomeMode:'WELLBEING',wellbeingWelcomeText:'What would you like to explore today?',wellbeingPlaceholder:'What is on your mind?',
+  morningName:'Morning Teller',morningDesc:"Start your day prepared. A brief drawn from your recent inner life and today's context.",
+  morningWelcomeMode:'MORNING TELLER',morningAgendaLabel:"Today's agenda (optional)",morningAgendaPlaceholder:'Meetings, tasks, events... or leave empty.',
+  morningBriefBtn:'Get my morning brief',morningPlaceholder:'Continue exploring your day...',morningLoading:'Preparing your morning brief...',
+  checkinName:'Daily Check-in',checkinDesc:'A brief moment of reflection at the end of your day. What happened, what mattered.',
+  checkinWelcomeMode:'DAILY CHECK-IN',checkinWelcomeText:'How was your day?',checkinPlaceholder:'Tell me about today...',
+  dreamExample:'For example: "I was running through a house that kept changing." You will get a thoughtful interpretation, and a symbol map that grows with each dream.',
+  wellbeingExample:'For example: "I keep avoiding a hard conversation at work." A space to think things through. No fixing, no judgement.',
+  morningExample:'Even a line or two is enough, or leave it empty. For example: "Big presentation today, slept badly." You will get a short, grounding brief for the day ahead.',
+  checkinExample:'A quiet minute at the end of the day. Over time, the patterns in your moods and themes become visible. For example: "Tired but calm. A good talk with a friend."',
+  voiceTap:'Tap to speak',voiceListening:'Listening…',voiceCancel:'Cancel',voiceSend:'Send',
+  youLabel:'You',thinkingText:'Thinking...',newSessionConfirm:'Start a new session?',
+  historyTitle:'Your history',historyEmpty:'Nothing here yet. Your past sessions in this space will appear here.',historyLoading:'Loading your history...',historyError:'Could not load your history. Please try again.',historyClose:'Close',historyResumeNote:'A past session. Start typing to begin a new one.',
+  profileTitle:'Before we begin',profileIntro:'A few questions, so Phi-Yo can come to know you across your dreams, mornings, and days. Nothing here is required, and you can skip and answer later.',profileQ1:'Which area of your life is occupying you most right now?',profileQ2:'How do you usually make important decisions: by intuition, or by thinking them through at length?',profileQ3:'Is there a recurring thought that has stayed with you lately?',profileSave:'Save and continue',profileSaving:'Saving...',profileSkip:'Skip for now',profileError:'Could not save. Please try again.',
+  errorInvalidEmail:'Please enter a valid email address.',errorSendLink:'Could not send the sign-in code. Please try again.',
+  paymentCancelled:'Payment was not completed. You can try again or continue with the free plan.',
+  manageSubBtn:'Manage subscription',
+  trialActiveNotice:'Pro trial active until ',
+  proActiveNotice:'Pro plan active.',
+  errorInvalidLink:'Invalid or expired code. Please try again.',errorSessionExpired:'Your session has expired. Please sign in again.',
+  errorBrief:'Could not generate your brief. Please try again.',errorGeneral:'Something went wrong. Please try again.',
+  errorEmpty:'Received an empty response.',errorSpeech:'Speech recognition is not supported in this browser.',errorMic:'Could not start recording.',dupNotice:'You already sent this. It is being processed and will appear in your history shortly.',sendingBusy:'A response is being prepared. Please wait a moment.'
+},
+fr:{
+  taglineSub:"Un modèle computationnel de l'esprit, fondé sur la théorie psychanalytique.",dreamExample:"Par exemple : « Je courais dans une maison qui changeait sans cesse. » Vous recevrez une interprétation réfléchie, et une carte de symboles qui s'enrichit à chaque rêve.",wellbeingExample:"Par exemple : « J'évite sans cesse une conversation difficile au travail. » Un espace pour réfléchir. Sans corriger, sans juger.",morningExample:"Une ligne ou deux suffisent, ou laissez vide. Par exemple : « Grande présentation aujourd'hui, mal dormi. » Vous recevrez un bref point d'ancrage pour la journée.",checkinExample:"Une minute calme en fin de journée. Avec le temps, les schémas de vos humeurs et de vos thèmes deviennent visibles. Par exemple : « Fatigué mais serein. Une bonne discussion avec un ami. »",historyTitle:"Votre historique",historyEmpty:"Rien ici pour l'instant. Vos sessions passées dans cet espace apparaîtront ici.",historyLoading:"Chargement de votre historique...",historyError:"Impossible de charger votre historique. Veuillez réessayer.",historyClose:"Fermer",historyResumeNote:"Une session passée. Commencez à écrire pour en démarrer une nouvelle.",profileTitle:"Avant de commencer",profileIntro:"Quelques questions, pour que Phi-Yo apprenne à vous connaître à travers vos rêves, vos matins et vos journées. Rien n'est obligatoire, et vous pouvez passer et répondre plus tard.",profileQ1:"Quel domaine de votre vie vous occupe le plus en ce moment ?",profileQ2:"Comment prenez-vous habituellement les décisions importantes : par intuition, ou en y réfléchissant longuement ?",profileQ3:"Y a-t-il une pensée récurrente qui vous accompagne ces derniers temps ?",profileSave:"Enregistrer et continuer",profileSaving:"Enregistrement...",profileSkip:"Passer pour l'instant",profileError:"Échec de l'enregistrement. Veuillez réessayer.",
+  tagline:'Analyse computationnelle des rêves et bien-être.\nFondé sur Freud for Machines.',
+  emailPlaceholder:'Votre adresse email',authBtnText:'Envoyer un code de connexion',authBtnSending:'Envoi…',
+  authNote:'Phi-Yo est un outil de réflexion et de soutien au bien-être, non un substitut à un accompagnement professionnel.',
+  emailSentTitle:'Vérifiez votre boîte mail.',emailSentSub:'Nous avons envoyé un code à 6 chiffres à',
+  otpPlaceholder:'Code à 6 chiffres',otpVerifyBtn:'Vérifier',otpVerifying:'Vérification…',
+  resendText:"Vous ne l'avez pas reçu ?",resendBtn:'Renvoyer',
+  greetingMorning:'Bonjour.',greetingAfternoon:'Bon après-midi.',greetingEvening:'Bonsoir.',
+  modesSub:"Qu'aimeriez-vous explorer aujourd'hui ?",
+  dreamName:'Analyse des rêves',dreamDesc:'Enregistrez et analysez vos rêves. Une carte personnelle de symboles évolue à chaque séance.',
+  dreamWelcomeMode:'ANALYSE DES RÊVES',dreamWelcomeText:"Partagez votre rêve. Précisez d'abord s'il s'agit d'un rêve ou d'une expérience éveillée.",dreamPlaceholder:'Décrivez votre rêve…',
+  wellbeingName:'Bien-être',wellbeingDesc:'Un espace psychanalytique pour votre vie intérieure quotidienne. Relations, émotions, questions.',
+  wellbeingWelcomeMode:'BIEN-ÊTRE',wellbeingWelcomeText:"Qu'aimeriez-vous explorer aujourd'hui ?",wellbeingPlaceholder:"Qu'est-ce qui vous préoccupe ?",
+  morningName:'Bilan du matin',morningDesc:"Commencez votre journée préparé. Un bref tiré de votre vie intérieure récente et du contexte d'aujourd'hui.",
+  morningWelcomeMode:'BILAN DU MATIN',morningAgendaLabel:'Agenda du jour (optionnel)',morningAgendaPlaceholder:'Réunions, tâches, événements… ou laissez vide.',
+  morningBriefBtn:'Obtenir mon bilan matinal',morningPlaceholder:'Continuez à explorer votre journée…',morningLoading:'Préparation de votre bilan matinal…',
+  checkinName:'Bilan du soir',checkinDesc:"Un bref moment de réflexion en fin de journée. Ce qui s'est passé, ce qui a compté.",
+  checkinWelcomeMode:'BILAN DU SOIR',checkinWelcomeText:'Comment s\'est passée votre journée ?',checkinPlaceholder:"Parlez-moi d'aujourd'hui…",
+  voiceTap:'Appuyez pour parler',voiceListening:'Écoute…',voiceCancel:'Annuler',voiceSend:'Envoyer',
+  youLabel:'Vous',thinkingText:'Réflexion…',newSessionConfirm:'Démarrer une nouvelle session ?',
+  errorInvalidEmail:'Veuillez saisir une adresse email valide.',errorSendLink:"Impossible d'envoyer le code. Veuillez réessayer.",
+  errorInvalidLink:'Code invalide ou expiré. Veuillez réessayer.',errorSessionExpired:'Votre session a expiré. Veuillez vous reconnecter.',
+  errorBrief:'Impossible de générer votre bilan. Veuillez réessayer.',errorGeneral:'Une erreur est survenue. Veuillez réessayer.',
+  errorEmpty:'Réponse vide reçue.',errorSpeech:"La reconnaissance vocale n'est pas prise en charge par ce navigateur.",errorMic:"Impossible de démarrer l'enregistrement.",dupNotice:'Vous avez déjà envoyé ceci. Le traitement est en cours et apparaîtra bientôt dans votre historique.',sendingBusy:'Une réponse est en cours de préparation. Veuillez patienter un instant.'
+},
+tr:{
+  taglineSub:"Zihnin hesaplamalı bir modeli, psikanalitik kurama dayanır.",dreamExample:"Örneğin: \"Sürekli değişen bir evde koşuyordum.\" Düşünceli bir yorum ve her rüyayla büyüyen kişisel bir sembol haritası alırsın.",wellbeingExample:"Örneğin: \"İş yerinde zor bir konuşmadan sürekli kaçıyorum.\" Düşünmek için bir alan. Düzeltme yok, yargı yok.",morningExample:"Bir iki satır yeter, ya da boş bırak. Örneğin: \"Bugün büyük sunum var, kötü uyudum.\" Güne dair kısa, dengeleyici bir brifing alırsın.",checkinExample:"Günün sonunda sakin bir dakika. Zamanla ruh halinin ve temalarının örüntüleri görünür olur. Örneğin: \"Yorgun ama sakin. Bir arkadaşla güzel bir sohbet.\"",historyTitle:"Geçmişin",historyEmpty:"Burada henüz bir şey yok. Bu alandaki geçmiş seansların burada görünecek.",historyLoading:"Geçmişin yükleniyor...",historyError:"Geçmişin yüklenemedi. Lütfen tekrar dene.",historyClose:"Kapat",historyResumeNote:"Geçmiş bir seans. Yeni bir tane başlatmak için yazmaya başla.",profileTitle:"Başlamadan önce",profileIntro:"Birkaç soru, Phi-Yo seni rüyaların, sabahların ve günlerin boyunca tanıyabilsin diye. Hiçbiri zorunlu değil, atlayıp sonra yanıtlayabilirsin.",profileQ1:"Hayatının hangi alanı şu sıralar seni en çok meşgul ediyor?",profileQ2:"Önemli kararları genelde nasıl alırsın: sezgiyle mi, uzun uzun düşünerek mi?",profileQ3:"Son zamanlarda aklından çıkmayan, tekrar eden bir düşünce var mı?",profileSave:"Kaydet ve devam et",profileSaving:"Kaydediliyor...",profileSkip:"Şimdilik atla",profileError:"Kaydedilemedi. Lütfen tekrar dene.",
+  tagline:'Hesaplamalı rüya analizi ve esenlik.\nFreud for Machines temelinde.',
+  emailPlaceholder:'E-posta adresiniz',authBtnText:'Giriş kodu gönder',authBtnSending:'Gönderiliyor…',
+  authNote:'Phi-Yo bir öz-yansıma ve esenlik destek aracıdır; profesyonel bakımın yerini tutmaz.',
+  emailSentTitle:'Gelen kutunuzu kontrol edin.',emailSentSub:'6 haneli giriş kodunu şu adrese gönderdik:',
+  otpPlaceholder:'6 haneli kod',otpVerifyBtn:'Doğrula',otpVerifying:'Doğrulanıyor…',
+  resendText:'Almadınız mı?',resendBtn:'Tekrar gönder',
+  greetingMorning:'Günaydın.',greetingAfternoon:'İyi günler.',greetingEvening:'İyi akşamlar.',
+  modesSub:'Bugün ne keşfetmek istersiniz?',
+  dreamName:'Rüya Analizi',dreamDesc:'Rüyalarınızı kaydedin ve analiz edin. Kişisel bir sembol haritası her seansta gelişir.',
+  dreamWelcomeMode:'RÜYA ANALİZİ',dreamWelcomeText:'Rüyanızı paylaşın. Önce bir rüya mı yoksa uyanıkken yaşanan bir deneyim mi olduğunu söyleyin.',dreamPlaceholder:'Rüyanızı anlatın…',
+  wellbeingName:'Esenlik',wellbeingDesc:'Günlük iç yaşamınız için psikanalitik bir alan. İlişkiler, duygular, sorular.',
+  wellbeingWelcomeMode:'ESENLİK',wellbeingWelcomeText:'Bugün ne keşfetmek istersiniz?',wellbeingPlaceholder:'Aklınızda ne var?',
+  morningName:'Sabah Brifingi',morningDesc:'Güne hazırlıklı başlayın. Son iç yaşamınızdan ve bugünün bağlamından çizilen kısa bir brifing.',
+  morningWelcomeMode:'SABAH BRİFİNGİ',morningAgendaLabel:'Günün ajandası (isteğe bağlı)',morningAgendaPlaceholder:'Toplantılar, görevler, etkinlikler… ya da boş bırakın.',
+  morningBriefBtn:'Sabah brifingimi al',morningPlaceholder:'Gününüzü keşfetmeye devam edin…',morningLoading:'Sabah brifingiz hazırlanıyor…',
+  checkinName:'Günlük Değerlendirme',checkinDesc:'Günün sonunda kısa bir düşünce anı. Neler oldu, neler önemliydi.',
+  checkinWelcomeMode:'GÜNLÜK DEĞERLENDİRME',checkinWelcomeText:'Gününüz nasıl geçti?',checkinPlaceholder:'Bugünü anlatın…',
+  voiceTap:'Konuşmak için dokunun',voiceListening:'Dinleniyor…',voiceCancel:'İptal',voiceSend:'Gönder',
+  youLabel:'Siz',thinkingText:'Düşünüyor…',newSessionConfirm:'Yeni bir seans başlatılsın mı?',
+  errorInvalidEmail:'Lütfen geçerli bir e-posta adresi girin.',errorSendLink:'Giriş kodu gönderilemedi. Lütfen tekrar deneyin.',
+  errorInvalidLink:'Geçersiz veya süresi dolmuş kod. Lütfen tekrar deneyin.',errorSessionExpired:'Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.',
+  errorBrief:'Brifing oluşturulamadı. Lütfen tekrar deneyin.',errorGeneral:'Bir hata oluştu. Lütfen tekrar deneyin.',
+  errorEmpty:'Boş yanıt alındı.',errorSpeech:'Bu tarayıcıda ses tanıma desteklenmiyor.',errorMic:'Kayıt başlatılamadı.',dupNotice:'Bunu zaten gönderdiniz. İşleniyor ve birazdan geçmişinizde görünecek.',sendingBusy:'Bir yanıt hazırlanıyor. Lütfen biraz bekleyin.'
+},
+de:{
+  taglineSub:"Ein computationales Modell des Geistes, gegründet auf psychoanalytischer Theorie.",dreamExample:"Zum Beispiel: „Ich lief durch ein Haus, das sich ständig veränderte.\" Sie erhalten eine durchdachte Deutung und eine Symbolkarte, die mit jedem Traum wächst.",wellbeingExample:"Zum Beispiel: „Ich vermeide ständig ein schwieriges Gespräch bei der Arbeit.\" Ein Raum zum Nachdenken. Kein Beheben, kein Urteilen.",morningExample:"Ein, zwei Zeilen genügen, oder lassen Sie es leer. Zum Beispiel: „Heute große Präsentation, schlecht geschlafen.\" Sie erhalten eine kurze, erdende Einstimmung auf den Tag.",checkinExample:"Eine stille Minute am Ende des Tages. Mit der Zeit werden die Muster Ihrer Stimmungen und Themen sichtbar. Zum Beispiel: „Müde, aber ruhig. Ein gutes Gespräch mit einem Freund.\"",historyTitle:"Ihr Verlauf",historyEmpty:"Hier ist noch nichts. Ihre vergangenen Sitzungen in diesem Bereich erscheinen hier.",historyLoading:"Ihr Verlauf wird geladen...",historyError:"Verlauf konnte nicht geladen werden. Bitte versuchen Sie es erneut.",historyClose:"Schließen",historyResumeNote:"Eine vergangene Sitzung. Beginnen Sie zu schreiben, um eine neue zu starten.",profileTitle:"Bevor wir beginnen",profileIntro:"Ein paar Fragen, damit Phi-Yo Sie durch Ihre Träume, Morgen und Tage kennenlernen kann. Nichts davon ist erforderlich, und Sie können überspringen und später antworten.",profileQ1:"Welcher Bereich Ihres Lebens beschäftigt Sie gerade am meisten?",profileQ2:"Wie treffen Sie wichtige Entscheidungen normalerweise: aus dem Bauch heraus oder nach langem Nachdenken?",profileQ3:"Gibt es einen wiederkehrenden Gedanken, der Sie in letzter Zeit begleitet?",profileSave:"Speichern und fortfahren",profileSaving:"Wird gespeichert...",profileSkip:"Vorerst überspringen",profileError:"Speichern fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  tagline:'Computationale Traumanalyse und Wohlbefinden.\nBasierend auf Freud for Machines.',
+  emailPlaceholder:'Ihre E-Mail-Adresse',authBtnText:'Anmeldecode senden',authBtnSending:'Wird gesendet…',
+  authNote:'Phi-Yo ist ein Werkzeug zur Selbstreflexion und Wohlbefindensunterstützung, kein Ersatz für professionelle Betreuung.',
+  emailSentTitle:'Prüfen Sie Ihren Posteingang.',emailSentSub:'Wir haben einen 6-stelligen Code gesendet an',
+  otpPlaceholder:'6-stelliger Code',otpVerifyBtn:'Bestätigen',otpVerifying:'Prüfung…',
+  resendText:'Nicht erhalten?',resendBtn:'Erneut senden',
+  greetingMorning:'Guten Morgen.',greetingAfternoon:'Guten Tag.',greetingEvening:'Guten Abend.',
+  modesSub:'Was möchten Sie heute erkunden?',
+  dreamName:'Traumanalyse',dreamDesc:'Zeichnen Sie Ihre Träume auf und analysieren Sie sie. Eine persönliche Symbolkarte entwickelt sich mit jeder Sitzung.',
+  dreamWelcomeMode:'TRAUMANALYSE',dreamWelcomeText:'Teilen Sie Ihren Traum. Sagen Sie mir zuerst, ob es ein Traum oder ein Erlebnis im Wachzustand ist.',dreamPlaceholder:'Beschreiben Sie Ihren Traum…',
+  wellbeingName:'Wohlbefinden',wellbeingDesc:'Ein psychoanalytischer Raum für Ihr alltägliches Innenleben. Beziehungen, Emotionen, Fragen.',
+  wellbeingWelcomeMode:'WOHLBEFINDEN',wellbeingWelcomeText:'Was möchten Sie heute erkunden?',wellbeingPlaceholder:'Was beschäftigt Sie?',
+  morningName:'Morgen-Briefing',morningDesc:'Starten Sie vorbereitet in den Tag. Ein kurzes Briefing aus Ihrem jüngsten Innenleben und dem Kontext des heutigen Tages.',
+  morningWelcomeMode:'MORGEN-BRIEFING',morningAgendaLabel:'Heutige Agenda (optional)',morningAgendaPlaceholder:'Meetings, Aufgaben, Ereignisse… oder leer lassen.',
+  morningBriefBtn:'Mein Morgen-Briefing abrufen',morningPlaceholder:'Erkunden Sie Ihren Tag weiter…',morningLoading:'Ihr Morgen-Briefing wird vorbereitet…',
+  checkinName:'Tägliches Check-in',checkinDesc:'Ein kurzer Moment der Reflexion am Ende Ihres Tages. Was geschah, was zählte.',
+  checkinWelcomeMode:'TÄGLICHES CHECK-IN',checkinWelcomeText:'Wie war Ihr Tag?',checkinPlaceholder:'Erzählen Sie mir von heute…',
+  voiceTap:'Zum Sprechen tippen',voiceListening:'Hört zu…',voiceCancel:'Abbrechen',voiceSend:'Senden',
+  youLabel:'Sie',thinkingText:'Denkt…',newSessionConfirm:'Neue Sitzung starten?',
+  errorInvalidEmail:'Bitte geben Sie eine gültige E-Mail-Adresse ein.',errorSendLink:'Der Anmeldelink konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+  errorInvalidLink:'Ungültiger oder abgelaufener Code. Bitte versuchen Sie es erneut.',errorSessionExpired:'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.',
+  errorBrief:'Das Briefing konnte nicht erstellt werden. Bitte versuchen Sie es erneut.',errorGeneral:'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+  errorEmpty:'Leere Antwort erhalten.',errorSpeech:'Spracherkennung wird in diesem Browser nicht unterstützt.',errorMic:'Die Aufnahme konnte nicht gestartet werden.',dupNotice:'Sie haben dies bereits gesendet. Es wird verarbeitet und erscheint in Kürze in Ihrem Verlauf.',sendingBusy:'Eine Antwort wird vorbereitet. Bitte warten Sie einen Moment.'
+},
+es:{
+  taglineSub:"Un modelo computacional de la mente, basado en la teoría psicoanalítica.",dreamExample:"Por ejemplo: «Corría por una casa que cambiaba sin cesar.» Recibirás una interpretación reflexiva y un mapa de símbolos que crece con cada sueño.",wellbeingExample:"Por ejemplo: «Evito una y otra vez una conversación difícil en el trabajo.» Un espacio para pensar. Sin corregir, sin juzgar.",morningExample:"Basta una línea o dos, o déjalo vacío. Por ejemplo: «Gran presentación hoy, dormí mal.» Recibirás un breve resumen que te ancla para el día.",checkinExample:"Un minuto de calma al final del día. Con el tiempo, los patrones de tus estados de ánimo y temas se hacen visibles. Por ejemplo: «Cansado pero tranquilo. Una buena charla con un amigo.»",historyTitle:"Tu historial",historyEmpty:"Aquí todavía no hay nada. Tus sesiones pasadas en este espacio aparecerán aquí.",historyLoading:"Cargando tu historial...",historyError:"No se pudo cargar tu historial. Inténtalo de nuevo.",historyClose:"Cerrar",historyResumeNote:"Una sesión pasada. Empieza a escribir para iniciar una nueva.",profileTitle:"Antes de empezar",profileIntro:"Unas preguntas, para que Phi-Yo pueda conocerte a través de tus sueños, tus mañanas y tus días. Nada es obligatorio, y puedes omitirlo y responder más tarde.",profileQ1:"¿Qué área de tu vida te ocupa más en este momento?",profileQ2:"¿Cómo sueles tomar las decisiones importantes: por intuición o pensándolas largamente?",profileQ3:"¿Hay algún pensamiento recurrente que te acompañe últimamente?",profileSave:"Guardar y continuar",profileSaving:"Guardando...",profileSkip:"Omitir por ahora",profileError:"No se pudo guardar. Inténtalo de nuevo.",
+  tagline:'Análisis computacional de sueños y bienestar.\nBasado en Freud for Machines.',
+  emailPlaceholder:'Tu dirección de correo',authBtnText:'Enviarme un código de acceso',authBtnSending:'Enviando…',
+  authNote:'Phi-Yo es una herramienta de autorreflexión y apoyo al bienestar, no un sustituto de la atención profesional.',
+  emailSentTitle:'Revisa tu bandeja de entrada.',emailSentSub:'Enviamos un código de 6 dígitos a',
+  otpPlaceholder:'Código de 6 dígitos',otpVerifyBtn:'Verificar',otpVerifying:'Verificando…',
+  resendText:'¿No lo recibiste?',resendBtn:'Enviar de nuevo',
+  greetingMorning:'Buenos días.',greetingAfternoon:'Buenas tardes.',greetingEvening:'Buenas noches.',
+  modesSub:'¿Qué te gustaría explorar hoy?',
+  dreamName:'Análisis de sueños',dreamDesc:'Registra y analiza tus sueños. Un mapa personal de símbolos evoluciona con cada sesión.',
+  dreamWelcomeMode:'ANÁLISIS DE SUEÑOS',dreamWelcomeText:'Comparte tu sueño. Díme primero si es un sueño o una experiencia de la vida despierta.',dreamPlaceholder:'Describe tu sueño…',
+  wellbeingName:'Bienestar',wellbeingDesc:'Un espacio psicoanalítico para tu vida interior cotidiana. Relaciones, emociones, preguntas.',
+  wellbeingWelcomeMode:'BIENESTAR',wellbeingWelcomeText:'¿Qué te gustaría explorar hoy?',wellbeingPlaceholder:'¿Qué tienes en mente?',
+  morningName:'Informe matutino',morningDesc:'Empieza el día preparado. Un breve informe de tu vida interior reciente y el contexto de hoy.',
+  morningWelcomeMode:'INFORME MATUTINO',morningAgendaLabel:'Agenda de hoy (opcional)',morningAgendaPlaceholder:'Reuniones, tareas, eventos… o déjalo vacío.',
+  morningBriefBtn:'Obtener mi informe matutino',morningPlaceholder:'Sigue explorando tu día…',morningLoading:'Preparando tu informe matutino…',
+  checkinName:'Revisión diaria',checkinDesc:'Un breve momento de reflexión al final del día. Qué pasó, qué importó.',
+  checkinWelcomeMode:'REVISIÓN DIARIA',checkinWelcomeText:'¿Cómo fue tu día?',checkinPlaceholder:'Cuéntame sobre hoy…',
+  voiceTap:'Toca para hablar',voiceListening:'Escuchando…',voiceCancel:'Cancelar',voiceSend:'Enviar',
+  youLabel:'Tú',thinkingText:'Pensando…',newSessionConfirm:'¿Iniciar una nueva sesión?',
+  errorInvalidEmail:'Por favor ingresa una dirección de correo válida.',errorSendLink:'No se pudo enviar el código. Por favor inténtalo de nuevo.',
+  errorInvalidLink:'Código inválido o expirado. Por favor inténtalo de nuevo.',errorSessionExpired:'Tu sesión ha expirado. Por favor inicia sesión de nuevo.',
+  errorBrief:'No se pudo generar el informe. Por favor inténtalo de nuevo.',errorGeneral:'Algo salió mal. Por favor inténtalo de nuevo.',
+  errorEmpty:'Se recibió una respuesta vacía.',errorSpeech:'El reconocimiento de voz no está disponible en este navegador.',errorMic:'No se pudo iniciar la grabación.',dupNotice:'Ya enviaste esto. Se está procesando y aparecerá en tu historial en breve.',sendingBusy:'Se está preparando una respuesta. Espera un momento, por favor.'
+},
+ja:{
+  taglineSub:"精神分析理論に基づく、心の計算モデル。",dreamExample:"例:「変わり続ける家の中を走っていた。」 丁寧な解釈と、夢のたびに育つあなただけのシンボルマップが得られます。",wellbeingExample:"例:「職場での難しい会話をずっと避けている。」 考えを巡らせるための場所。直そうとせず、裁きません。",morningExample:"一、二行で十分です。空欄でも構いません。例:「今日は大事なプレゼン、よく眠れなかった。」 一日のための短く落ち着いた要約が得られます。",checkinExample:"一日の終わりの静かな一分。時とともに、あなたの気分やテーマのパターンが見えてきます。例:「疲れたけれど穏やか。友人と良い話ができた。」",historyTitle:"あなたの履歴",historyEmpty:"まだ何もありません。この空間での過去のセッションがここに表示されます。",historyLoading:"履歴を読み込んでいます...",historyError:"履歴を読み込めませんでした。もう一度お試しください。",historyClose:"閉じる",historyResumeNote:"過去のセッションです。入力を始めると新しいセッションが始まります。",profileTitle:"始める前に",profileIntro:"いくつかの質問です。Phi-Yoがあなたの夢、朝、日々を通してあなたを知っていけるように。どれも必須ではなく、スキップして後で答えることもできます。",profileQ1:"今、あなたの人生で最も心を占めているのはどの領域ですか?",profileQ2:"重要な決断は普段どのように下しますか:直感で、それともじっくり考えて?",profileQ3:"最近ずっと頭から離れない、繰り返し浮かぶ思いはありますか?",profileSave:"保存して続ける",profileSaving:"保存しています...",profileSkip:"今はスキップ",profileError:"保存できませんでした。もう一度お試しください。",
+  tagline:'計算論的夢分析とウェルビーイング。\nFreud for Machines に基づく。',
+  emailPlaceholder:'メールアドレス',authBtnText:'サインインコードを送る',authBtnSending:'送信中…',
+  authNote:'Phi-Yoは自己省察とウェルビーイングのサポートツールであり、専門的なケアの代替ではありません。',
+  emailSentTitle:'受信トレイをご確認ください。',emailSentSub:'6桁のサインインコードを送信しました：',
+  otpPlaceholder:'6桁のコード',otpVerifyBtn:'確認',otpVerifying:'確認中…',
+  resendText:'届きませんでしたか？',resendBtn:'再送信',
+  greetingMorning:'おはようございます。',greetingAfternoon:'こんにちは。',greetingEvening:'こんばんは。',
+  modesSub:'今日は何を探求しますか？',
+  dreamName:'夢分析',dreamDesc:'夢を記録して分析します。個人的なシンボルマップがセッションごとに進化します。',
+  dreamWelcomeMode:'夢分析',dreamWelcomeText:'夢を教えてください。まず、夢か現実の体験かをお知らせください。',dreamPlaceholder:'夢を描写してください…',
+  wellbeingName:'ウェルビーイング',wellbeingDesc:'日常の内面生活のための精神分析的空間。関係、感情、疑問。',
+  wellbeingWelcomeMode:'ウェルビーイング',wellbeingWelcomeText:'今日は何を探求しますか？',wellbeingPlaceholder:'何が気になっていますか？',
+  morningName:'朝のブリーフィング',morningDesc:'準備して一日を始めましょう。近最の内面生活と今日の状況から引き出した概要です。',
+  morningWelcomeMode:'朝のブリーフィング',morningAgendaLabel:'今日の予定（任意）',morningAgendaPlaceholder:'会議、タスク、イベント…または空白のまま。',
+  morningBriefBtn:'朝のブリーフィングを取得',morningPlaceholder:'一日の探求を続けてください…',morningLoading:'朝のブリーフィングを準備中…',
+  checkinName:'デイリーチェックイン',checkinDesc:'一日の終わりの短い振り返りの時間。何が起きて、何が重要だったか。',
+  checkinWelcomeMode:'デイリーチェックイン',checkinWelcomeText:'今日はどうでしたか？',checkinPlaceholder:'今日について教えてください…',
+  voiceTap:'タップして話す',voiceListening:'聴いています…',voiceCancel:'キャンセル',voiceSend:'送信',
+  youLabel:'あなた',thinkingText:'考え中…',newSessionConfirm:'新しいセッションを開始しますか？',
+  errorInvalidEmail:'有効なメールアドレスを入力してください。',errorSendLink:'サインインコードを送信できませんでした。もう一度お試しください。',
+  errorInvalidLink:'コードが無効または期限切れです。もう一度お試しください。',errorSessionExpired:'セッションの有効期限が切れました。再度サインインしてください。',
+  errorBrief:'ブリーフィングを生成できませんでした。もう一度お試しください。',errorGeneral:'エラーが発生しました。もう一度お試しください。',
+  errorEmpty:'空のレスポンスが返されました。',errorSpeech:'このブラウザでは音声認識がサポートされていません。',errorMic:'録音を開始できませんでした。',dupNotice:'これはすでに送信されています。処理中で、まもなく履歴に表示されます。',sendingBusy:'応答を準備しています。少々お待ちください。'
+},
+ru:{
+  taglineSub:"Вычислительная модель психики, основанная на психоаналитической теории.",dreamExample:"Например: «Я бежал по дому, который всё время менялся.» Вы получите вдумчивое толкование и карту символов, которая растёт с каждым сном.",wellbeingExample:"Например: «Я всё время избегаю трудного разговора на работе.» Пространство, чтобы всё обдумать. Без исправлений, без осуждения.",morningExample:"Достаточно строки-двух, или оставьте пустым. Например: «Сегодня важная презентация, плохо спал.» Вы получите короткий, заземляющий настрой на день.",checkinExample:"Тихая минута в конце дня. Со временем становятся видны закономерности вашего настроения и тем. Например: «Устал, но спокоен. Хороший разговор с другом.»",historyTitle:"Ваша история",historyEmpty:"Здесь пока пусто. Ваши прошлые сессии в этом пространстве появятся здесь.",historyLoading:"Загрузка вашей истории...",historyError:"Не удалось загрузить историю. Пожалуйста, попробуйте снова.",historyClose:"Закрыть",historyResumeNote:"Прошлая сессия. Начните печатать, чтобы начать новую.",profileTitle:"Прежде чем начать",profileIntro:"Несколько вопросов, чтобы Phi-Yo узнавал вас через ваши сны, утра и дни. Ничего не обязательно, можно пропустить и ответить позже.",profileQ1:"Какая область вашей жизни занимает вас больше всего сейчас?",profileQ2:"Как вы обычно принимаете важные решения: интуитивно или долго обдумывая?",profileQ3:"Есть ли навязчивая мысль, которая не покидает вас в последнее время?",profileSave:"Сохранить и продолжить",profileSaving:"Сохранение...",profileSkip:"Пропустить пока",profileError:"Не удалось сохранить. Пожалуйста, попробуйте снова.",
+  tagline:'Вычислительный анализ снов и благополучие.\nОснован на Freud for Machines.',
+  emailPlaceholder:'Ваш адрес электронной почты',authBtnText:'Отправить код для входа',authBtnSending:'Отправка…',
+  authNote:'Phi-Yo: инструмент для саморефлексии и поддержки благополучия, а не замена профессиональной помощи.',
+  emailSentTitle:'Проверьте свой почтовый ящик.',emailSentSub:'Мы отправили 6-значный код на адрес',
+  otpPlaceholder:'6-значный код',otpVerifyBtn:'Подтвердить',otpVerifying:'Проверка…',
+  resendText:'Не получили?',resendBtn:'Отправить снова',
+  greetingMorning:'Доброе утро.',greetingAfternoon:'Добрый день.',greetingEvening:'Добрый вечер.',
+  modesSub:'Что вы хотите исследовать сегодня?',
+  dreamName:'Анализ снов',dreamDesc:'Записывайте и анализируйте свои сны. Личная карта символов развивается с каждым сеансом.',
+  dreamWelcomeMode:'АНАЛИЗ СНОВ',dreamWelcomeText:'Расскажите свой сон. Сначала уточните: это был сон или опыт наяву?',dreamPlaceholder:'Опишите свой сон…',
+  wellbeingName:'Благополучие',wellbeingDesc:'Психоаналитическое пространство для вашей повседневной внутренней жизни. Отношения, эмоции, вопросы.',
+  wellbeingWelcomeMode:'БЛАГОПОЛУЧИЕ',wellbeingWelcomeText:'Что вы хотите исследовать сегодня?',wellbeingPlaceholder:'Что у вас на уме?',
+  morningName:'Утренний брифинг',morningDesc:'Начните день подготовленным. Краткий брифинг из вашей недавней внутренней жизни и контекста дня.',
+  morningWelcomeMode:'УТРЕННИЙ БРИФИНГ',morningAgendaLabel:'Повестка дня (необязательно)',morningAgendaPlaceholder:'Встречи, задачи, события… или оставьте пустым.',
+  morningBriefBtn:'Получить утренний брифинг',morningPlaceholder:'Продолжайте исследовать свой день…',morningLoading:'Подготовка утреннего брифинга…',
+  checkinName:'Ежедневный чек-ин',checkinDesc:'Краткий момент рефлексии в конце дня. Что произошло, что было важно.',
+  checkinWelcomeMode:'ЕЖЕДНЕВНЫЙ ЧЕК-ИН',checkinWelcomeText:'Как прошёл ваш день?',checkinPlaceholder:'Расскажите о сегодняшнем дне…',
+  voiceTap:'Нажмите, чтобы говорить',voiceListening:'Слушаю…',voiceCancel:'Отмена',voiceSend:'Отправить',
+  youLabel:'Вы',thinkingText:'Думаю…',newSessionConfirm:'Начать новый сеанс?',
+  errorInvalidEmail:'Пожалуйста, введите действительный адрес электронной почты.',errorSendLink:'Не удалось отправить код для входа. Пожалуйста, попробуйте снова.',
+  errorInvalidLink:'Неверный или просроченный код. Пожалуйста, попробуйте снова.',errorSessionExpired:'Ваша сессия истекла. Пожалуйста, войдите снова.',
+  errorBrief:'Не удалось создать брифинг. Пожалуйста, попробуйте снова.',errorGeneral:'Что-то пошло не так. Пожалуйста, попробуйте снова.',
+  errorEmpty:'Получен пустой ответ.',errorSpeech:'Распознавание речи не поддерживается в этом браузере.',errorMic:'Не удалось начать запись.',dupNotice:'Вы уже отправили это. Оно обрабатывается и скоро появится в вашей истории.',sendingBusy:'Ответ готовится. Пожалуйста, подождите немного.'
+},
+ar:{
+  taglineSub:"نموذج حوسبي للنفس، مبني على النظرية التحليلية النفسية.",dreamExample:"مثال: «كنت أركض في منزل يتغيّر باستمرار.» ستحصل على تفسير متأنٍّ، وخريطة رموز تنمو مع كل حلم.",wellbeingExample:"مثال: «أتجنّب باستمرار محادثة صعبة في العمل.» مساحة للتفكير. بلا إصلاح، بلا حُكم.",morningExample:"سطر أو سطران يكفيان، أو اتركه فارغًا. مثال: «عرض تقديمي مهم اليوم، ونمت بشكل سيئ.» ستحصل على ملخص قصير يثبّتك ليومك.",checkinExample:"دقيقة هادئة في نهاية اليوم. مع الوقت، تتّضح أنماط مزاجك وموضوعاتك. مثال: «متعب لكن هادئ. حديث جميل مع صديق.»",historyTitle:"سجلّك",historyEmpty:"لا شيء هنا بعد. ستظهر جلساتك السابقة في هذه المساحة هنا.",historyLoading:"جارٍ تحميل سجلّك...",historyError:"تعذّر تحميل سجلّك. يرجى المحاولة مرة أخرى.",historyClose:"إغلاق",historyResumeNote:"جلسة سابقة. ابدأ الكتابة لبدء جلسة جديدة.",profileTitle:"قبل أن نبدأ",profileIntro:"بضعة أسئلة، كي يتعرّف Phi-Yo عليك عبر أحلامك وصباحاتك وأيامك. لا شيء إلزامي، ويمكنك التخطّي والإجابة لاحقًا.",profileQ1:"أي مجال في حياتك يشغلك أكثر في هذه الفترة؟",profileQ2:"كيف تتّخذ القرارات المهمة عادةً: بالحدس أم بالتفكير المطوّل؟",profileQ3:"هل هناك فكرة متكرّرة لازمتك مؤخرًا؟",profileSave:"احفظ وتابع",profileSaving:"جارٍ الحفظ...",profileSkip:"تخطَّ الآن",profileError:"تعذّر الحفظ. يرجى المحاولة مرة أخرى.",
+  tagline:'تحليل الأحلام الحوسبي والعافية.\nمبني على Freud for Machines.',
+  emailPlaceholder:'عنوان بريدك الإلكتروني',authBtnText:'أرسل لي رمز الدخول',authBtnSending:'جارٍ الإرسال…',
+  authNote:'Phi-Yo أداة للتأمل الذاتي ودعم العافية، وليست بديلاً عن الرعاية المهنية.',
+  emailSentTitle:'تحقق من صندوق الوارد.',emailSentSub:'أرسلنا رمزًا مكونًا من 6 أرقام إلى',
+  otpPlaceholder:'رمز مكون من 6 أرقام',otpVerifyBtn:'تحقق',otpVerifying:'جارٍ التحقق…',
+  resendText:'لم تستلمه؟',resendBtn:'إعادة الإرسال',
+  greetingMorning:'صباح الخير.',greetingAfternoon:'مساء الخير.',greetingEvening:'مساء النور.',
+  modesSub:'ماذا تريد أن تستكشف اليوم؟',
+  dreamName:'تحليل الأحلام',dreamDesc:'سجّل أحلامك وحلّلها. تتطور خريطة رموز شخصية مع كل جلسة.',
+  dreamWelcomeMode:'تحليل الأحلام',dreamWelcomeText:'شارك حلمك. أخبرني أولاً إن كان حلماً أم تجربة من حياة اليقظة.',dreamPlaceholder:'صف حلمك…',
+  wellbeingName:'العافية',wellbeingDesc:'فضاء تحليلي نفسي لحياتك الداخلية اليومية. العلاقات والمشاعر والأسئلة.',
+  wellbeingWelcomeMode:'العافية',wellbeingWelcomeText:'ماذا تريد أن تستكشف اليوم؟',wellbeingPlaceholder:'ما الذي يدور في ذهنك؟',
+  morningName:'إحاطة الصباح',morningDesc:'ابدأ يومك مستعداً. إحاطة مختصرة مستمدة من حياتك الداخلية الأخيرة وسياق اليوم.',
+  morningWelcomeMode:'إحاطة الصباح',morningAgendaLabel:'أجندة اليوم (اختياري)',morningAgendaPlaceholder:'اجتماعات، مهام، أحداث… أو اتركه فارغاً.',
+  morningBriefBtn:'الحصول على إحاطة الصباح',morningPlaceholder:'تابع استكشاف يومك…',morningLoading:'جارٍ تحضير إحاطة الصباح…',
+  checkinName:'المراجعة اليومية',checkinDesc:'لحظة تأمل قصيرة في نهاية يومك. ما الذي جرى وما الذي أهمّ.',
+  checkinWelcomeMode:'المراجعة اليومية',checkinWelcomeText:'كيف كان يومك؟',checkinPlaceholder:'حدثني عن اليوم…',
+  voiceTap:'اضغط للكلام',voiceListening:'أستمع…',voiceCancel:'إلغاء',voiceSend:'إرسال',
+  youLabel:'أنت',thinkingText:'أفكر…',newSessionConfirm:'بدء جلسة جديدة؟',
+  errorInvalidEmail:'يرجى إدخال عنوان بريد إلكتروني صالح.',errorSendLink:'تعذّر إرسال رمز الدخول. يرجى المحاولة مرة أخرى.',
+  errorInvalidLink:'الرمز غير صالح أو منتهي الصلاحية. يرجى المحاولة مرة أخرى.',errorSessionExpired:'انتهت جلستك. يرجى تسجيل الدخول مجدداً.',
+  errorBrief:'تعذّر إنشاء الإحاطة. يرجى المحاولة مرة أخرى.',errorGeneral:'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
+  errorEmpty:'تم استلام استجابة فارغة.',errorSpeech:'التعرف على الكلام غير مدعوم في هذا المتصفح.',errorMic:'تعذّر بدء التسجيل.',dupNotice:'لقد أرسلت هذا بالفعل. تتم معالجته وسيظهر في سجلّك قريبًا.',sendingBusy:'يتم إعداد الرد. يرجى الانتظار لحظة.'
+},
+zh:{
+  taglineSub:"一个关于心智的计算模型，建立在精神分析理论之上。",dreamExample:"例如：「我在一座不断变化的房子里奔跑。」你会得到一份用心的解读，以及一张随每个梦境成长的个人符号图谱。",wellbeingExample:"例如：「我一直在回避工作中一场艰难的对话。」一个思考的空间。不评判，不急于解决。",morningExample:"一两句话就够了，也可以留空。例如：「今天有重要演示，没睡好。」你会得到一段简短、让你安定下来的当日简报。",checkinExample:"一天结束时安静的一分钟。随着时间推移，你情绪与主题的规律会逐渐显现。例如：「累但平静。和朋友聊得很好。」",historyTitle:"你的历史",historyEmpty:"这里还什么都没有。你在此空间的过往会话将显示在这里。",historyLoading:"正在加载你的历史…",historyError:"无法加载你的历史。请重试。",historyClose:"关闭",historyResumeNote:"一段过往会话。开始输入即可开启新的会话。",profileTitle:"在开始之前",profileIntro:"几个问题，让 Phi-Yo 能在你的梦境、清晨与日常中逐渐了解你。这些都不是必填，你可以跳过，稍后再回答。",profileQ1:"现在你生活中哪个方面最占据你的心思？",profileQ2:"你通常如何做重要决定：凭直觉，还是反复思量？",profileQ3:"最近有没有一个反复萦绕的念头？",profileSave:"保存并继续",profileSaving:"正在保存…",profileSkip:"暂时跳过",profileError:"保存失败。请重试。",
+  tagline:'计算梦境分析与身心健康。\n基于《Freud for Machines》。',
+  emailPlaceholder:'您的电子邮箱地址',authBtnText:'发送登录验证码',authBtnSending:'发送中…',
+  authNote:'Phi-Yo 是一款自我反思和健康支持工具，不能替代专业护理。',
+  emailSentTitle:'请检查您的收件箱。',emailSentSub:'我们已向以下地址发送了6位验证码：',
+  otpPlaceholder:'6位验证码',otpVerifyBtn:'验证',otpVerifying:'验证中…',
+  resendText:'没有收到？',resendBtn:'重新发送',
+  greetingMorning:'早上好。',greetingAfternoon:'下午好。',greetingEvening:'晚上好。',
+  modesSub:'您今天想探索什么？',
+  dreamName:'梦境分析',dreamDesc:'记录并分析您的梦境。个人符号地图随着每次会话不断演进。',
+  dreamWelcomeMode:'梦境分析',dreamWelcomeText:'请分享您的梦境。首先告诉我这是一个梦还是清醒生活中的经历。',dreamPlaceholder:'描述您的梦境…',
+  wellbeingName:'身心健康',wellbeingDesc:'为您日常内心生活提供的精神分析空间。关系、情感、疑问。',
+  wellbeingWelcomeMode:'身心健康',wellbeingWelcomeText:'您今天想探索什么？',wellbeingPlaceholder:'您在想什么？',
+  morningName:'晨间简报',morningDesc:'有备而来迎接新的一天。从您近期的内心生活和今日背景中提炼的简短简报。',
+  morningWelcomeMode:'晨间简报',morningAgendaLabel:'今日议程（可选）',morningAgendaPlaceholder:'会议、任务、活动…或留空。',
+  morningBriefBtn:'获取晨间简报',morningPlaceholder:'继续探索您的一天…',morningLoading:'正在准备晨间简报…',
+  checkinName:'每日记录',checkinDesc:'在一天结束时进行简短的自我反思。发生了什么，什么是重要的。',
+  checkinWelcomeMode:'每日记录',checkinWelcomeText:'您今天过得怎么样？',checkinPlaceholder:'告诉我今天的事…',
+  voiceTap:'点击说话',voiceListening:'正在聆听…',voiceCancel:'取消',voiceSend:'发送',
+  youLabel:'您',thinkingText:'思考中…',newSessionConfirm:'开始新会话？',
+  errorInvalidEmail:'请输入有效的电子邮箱地址。',errorSendLink:'无法发送登录验证码。请重试。',
+  errorInvalidLink:'验证码无效或已过期。请重试。',errorSessionExpired:'您的会话已过期。请重新登录。',
+  errorBrief:'无法生成简报。请重试。',errorGeneral:'出现错误。请重试。',
+  errorEmpty:'收到空响应。',errorSpeech:'此浏览器不支持语音识别。',errorMic:'无法开始录音。',dupNotice:'您已经发送过这条内容。正在处理中，稍后会出现在您的历史记录中。',sendingBusy:'正在准备回复，请稍候。'
+}
+};
+
+var LANG_LOCALE = {en:'en-US',fr:'fr-FR',tr:'tr-TR',de:'de-DE',es:'es-ES',ja:'ja-JP',ru:'ru-RU',ar:'ar-SA',zh:'zh-CN'};
+
+var curLang;
+try { curLang = localStorage.getItem('phiyo-lang') || 'en'; } catch(e) { curLang = 'en'; }
+if (!STRINGS[curLang]) curLang = 'en';
+
+function s(key) {
+  var d = STRINGS[curLang] || STRINGS.en;
+  return d[key] !== undefined ? d[key] : (STRINGS.en[key] || key);
+}
+
+function setLocale(lang) {
+  if (!STRINGS[lang]) return;
+  curLang = lang;
+  try { localStorage.setItem('phiyo-lang', lang); } catch(e) {}
+  document.querySelectorAll('.ui-lang-select').forEach(function(el){ el.value = lang; });
+  $('authTagline').innerHTML = s('tagline').replace('\n','<br>');
+  $('authTaglineSub').textContent = s('taglineSub');
+  $('authNote').innerHTML = s('authNote') + '<br><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>';
+  $('emailInput').placeholder = s('emailPlaceholder');
+  $('authBtn').textContent = s('authBtnText');
+  $('emailSentTitle').textContent = s('emailSentTitle');
+  var savedEmail = ($('sentEmailDisplay') || {}).textContent || '';
+  $('emailSentSub').innerHTML = s('emailSentSub') + '<br><span class="email-sent-email" id="sentEmailDisplay">' + escHtml(savedEmail) + '</span>';
+  $('otpInput').placeholder = s('otpPlaceholder');
+  $('otpVerifyBtn').textContent = s('otpVerifyBtn');
+  $('resendTextSpan').textContent = s('resendText') + ' ';
+  $('resendBtn').textContent = s('resendBtn');
+  $('modesSub').textContent = s('modesSub');
+  localizeProfile();
+  document.querySelectorAll('.mode-card').forEach(function(card){
+    var m = card.getAttribute('data-mode');
+    var nameEl = card.querySelector('.mode-name');
+    var descEl = card.querySelector('.mode-desc');
+    if (nameEl) nameEl.textContent = s(m + 'Name');
+    if (descEl) descEl.textContent = s(m + 'Desc');
+  });
+  $('morningAgendaLabel').textContent = s('morningAgendaLabel');
+  $('morningAgendaInput').placeholder = s('morningAgendaPlaceholder');
+  $('morningBriefBtn').textContent = s('morningBriefBtn');
+  $('voiceLabel').textContent = s('voiceTap');
+  $('voiceCancel').textContent = s('voiceCancel');
+  $('voiceSend').textContent = s('voiceSend');
+  if (state.mode) {
+    $('chatModeLabel').textContent = s(state.mode + 'Name');
+    $('composerInput').setAttribute('placeholder', s(state.mode + 'Placeholder'));
+  }
+  if (!$('screen-modes').classList.contains('hidden')) {
+    var h = new Date().getHours();
+    $('modesGreeting').textContent = h < 12 ? s('greetingMorning') : h < 18 ? s('greetingAfternoon') : s('greetingEvening');
+  }
+}
+
+/* ══ State ══ */
+var state = {
+  jwt: null,
+  userId: null,
+  email: null,
+  mode: null,
+  sessionId: null,
+  msgCount: 0,
+  pendingEmail: null,
+  briefRequested: false,
+  subStatus: null,
+  selectedPlan: 'pro_monthly'
+};
+
+/* ══ DOM refs ══ */
+var $ = function(id){ return document.getElementById(id); };
+var screens = {
+  loading:   $('screen-loading'),
+  auth:      $('screen-auth'),
+  emailSent: $('screen-email-sent'),
+  paywall:   $('screen-paywall'),
+  profile:   $('screen-profile'),
+  modes:     $('screen-modes'),
+  chat:      $('screen-chat')
+};
+
+/* ══ JWT utils ══ */
+function parseJWT(token) {
+  try {
+    var parts = token.split('.');
+    if (parts.length !== 3) return null;
+    return JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+  } catch(e) { return null; }
+}
+
+function isJWTValid(token) {
+  if (!token) return false;
+  var p = parseJWT(token);
+  if (!p) return false;
+  return p.exp > Math.floor(Date.now() / 1000);
+}
+
+function loadStoredJWT() {
+  try {
+    var t = localStorage.getItem('phiyo-jwt');
+    if (t && isJWTValid(t)) {
+      var p = parseJWT(t);
+      state.jwt = t;
+      state.userId = p.sub;
+      state.email = p.email;
+      return true;
+    }
+    localStorage.removeItem('phiyo-jwt');
+  } catch(e) {}
+  return false;
+}
+
+function storeJWT(jwt, userId, email) {
+  state.jwt = jwt;
+  state.userId = userId;
+  state.email = email;
+  try { localStorage.setItem('phiyo-jwt', jwt); } catch(e) {}
+}
+
+/* ══ Screen management ══ */
+function showScreen(name) {
+  Object.keys(screens).forEach(function(k) {
+    screens[k].classList[k === name ? 'remove' : 'add']('hidden');
+  });
+}
+
+/* ══ Theme ══ */
+var MOON_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+var SUN_SVG  = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+var curTheme;
+try { curTheme = localStorage.getItem('phiyo-theme') || 'dark'; } catch(e) { curTheme = 'dark'; }
+
+function setTheme(t) {
+  curTheme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('phiyo-theme', t); } catch(e) {}
+  var ic = t === 'dark' ? MOON_SVG : SUN_SVG;
+  $('themeIconMode').innerHTML = ic;
+  $('themeIconChat').innerHTML = ic;
+}
+
+$('themeToggleMode').addEventListener('click', function(){ setTheme(curTheme === 'dark' ? 'light' : 'dark'); });
+$('themeToggleChat').addEventListener('click', function(){ setTheme(curTheme === 'dark' ? 'light' : 'dark'); });
+setTheme(curTheme);
+
+document.querySelectorAll('.ui-lang-select').forEach(function(el){
+  el.addEventListener('change', function(){ setLocale(this.value); });
+});
+
+function logout() {
+  try { localStorage.removeItem('phiyo-jwt'); } catch(e) {}
+  state.jwt = null; state.userId = null; state.email = null;
+  showScreen('auth');
+}
+$('logoutBtnMode').addEventListener('click', logout);
+$('logoutBtnChat').addEventListener('click', logout);
+
+/* ══ Error toast ══ */
+var toastTimer;
+function showError(msg) {
+  var t = $('errorToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
+
+/* ══ API call ══ */
+function apiCall(url, data, useJwt, cb, timeoutMs) {
+  var headers = { 'Content-Type': 'application/json' };
+  if (useJwt && state.jwt) headers['Authorization'] = 'Bearer ' + state.jwt;
+  // Safety net: a hung request must never leave the UI stuck on a loading state.
+  // Per-call timeout. Default is SHORT (20s) for fast CRUD/auth/status endpoints so a
+  // dead connection is detected quickly. The generative LLM modes pass an explicit LONG
+  // value (120s) because their backend p95 can legitimately run past 45s. A single global
+  // value was wrong both ways: 45s aborted healthy slow generations, while raising it
+  // globally would leave fast calls hanging for the long bound on a dead socket.
+  var TIMEOUT = (typeof timeoutMs === 'number' && timeoutMs > 0) ? timeoutMs : 20000;
+  var done = false;
+  var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  function finish(err, res){ if (done) return; done = true; clearTimeout(timer); cb(err, res); }
+  var timer = setTimeout(function(){
+    if (ctrl) { try { ctrl.abort(); } catch(e) {} }
+    finish(new Error('timeout'), null);
+  }, TIMEOUT);
+  fetch(url, { method: 'POST', headers: headers, body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined })
+    .then(function(r){ return r.json(); })
+    .then(function(r){
+      if (useJwt && r && (r.error === 'Token expired' || r.error === 'Authentication required' || r.error === 'Invalid token signature')) {
+        try { localStorage.removeItem('phiyo-jwt'); } catch(e) {}
+        state.jwt = null; state.userId = null; state.email = null;
+        showScreen('auth');
+        showError(s('errorSessionExpired'));
+        finish({ authExpired: true }, null);
+        return;
+      }
+      finish(null, r);
+    })
+    .catch(function(e){ finish(e, null); });
+}
+
+/* ══ Auth flow ══ */
+function requestMagicLink(email) {
+  var btn = $('authBtn');
+  btn.disabled = true;
+  btn.textContent = s('authBtnSending');
+  state.pendingEmail = email;
+  apiCall(URLS.authRequest, { email: email }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = s('authBtnText');
+    if (err || !res || !res.success) {
+      showError(s('errorSendLink'));
+      return;
+    }
+    $('sentEmailDisplay').textContent = email;
+    showScreen('emailSent');
+  });
+}
+
+function verifyOTP() {
+  var code = $('otpInput').value.replace(/\s/g, '');
+  if (!/^\d{6}$/.test(code)) { showError(s('errorInvalidLink')); return; }
+  var btn = $('otpVerifyBtn');
+  btn.disabled = true;
+  btn.textContent = s('otpVerifying');
+  apiCall(URLS.authVerify, { token: code, email: state.pendingEmail }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = s('otpVerifyBtn');
+    if (err || !res || !res.success || !res.jwt) {
+      showError(s('errorInvalidLink'));
+      return;
+    }
+    storeJWT(res.jwt, res.user_id, res.email);
+    checkSubscriptionAndRoute();
+  });
+}
+
+/* ══ Auth form ══ */
+$('authBtn').addEventListener('click', function() {
+  var email = $('emailInput').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError(s('errorInvalidEmail'));
+    return;
+  }
+  requestMagicLink(email);
+});
+
+$('emailInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); $('authBtn').click(); }
+});
+
+$('haveCodeLink').addEventListener('click', function(e) {
+  e.preventDefault();
+  var email = $('emailInput').value.trim().toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError(s('errorInvalidEmail'));
+    $('emailInput').focus();
+    return;
+  }
+  state.pendingEmail = email;
+  $('sentEmailDisplay').textContent = email;
+  $('otpInput').value = '';
+  $('otpVerifyBtn').disabled = true;
+  showScreen('emailSent');
+});
+
+$('resendBtn').addEventListener('click', function() {
+  $('otpInput').value = '';
+  $('otpVerifyBtn').disabled = true;
+  if (state.pendingEmail) requestMagicLink(state.pendingEmail);
+  else showScreen('auth');
+});
+
+$('otpInput').addEventListener('input', function() {
+  $('otpVerifyBtn').disabled = !/^\d{6}$/.test(this.value.replace(/\s/g, ''));
+});
+
+$('otpInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); if (!$('otpVerifyBtn').disabled) verifyOTP(); }
+});
+
+$('otpVerifyBtn').addEventListener('click', verifyOTP);
+
+/* ══ Subscription ══ */
+function checkSubscriptionAndRoute(allowRetry) {
+  apiCall(URLS.subscribeValidate, { email: state.email }, false, function(err, res) {
+    if (err || !res) {
+      // Network error: default to paywall
+      showScreen('paywall');
+      return;
+    }
+    state.subStatus = res;
+    var notReady = (res.status === 'none' || res.status === 'expired' || res.status === 'inactive');
+    if (notReady && allowRetry) {
+      // Webhook race: status not yet written. Retry once after 2s.
+      setTimeout(function(){ checkSubscriptionAndRoute(false); }, 2000);
+      return;
+    }
+    if (notReady) {
+      showScreen('paywall');
+    } else {
+      showModesScreen();
+    }
+  });
+}
+
+function getFreeUsageKey() {
+  var d = new Date();
+  return 'phiyo-dreams-' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function getFreeUsageCount() {
+  try { return parseInt(localStorage.getItem(getFreeUsageKey()) || '0', 10); } catch(e) { return 0; }
+}
+function incrementFreeUsage() {
+  try { localStorage.setItem(getFreeUsageKey(), String(getFreeUsageCount() + 1)); } catch(e) {}
+}
+
+function startStripeCheckout() {
+  var btn = $('btnStartTrial');
+  if (!state.email) {
+    showError('Please sign in first.');
+    showScreen('auth');
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+  var plan = state.selectedPlan || 'pro_monthly';
+  apiCall(URLS.stripeCheckout, { product: 'phiyo', plan: plan, email: state.email }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = 'Start 7-day free trial';
+    if (err || !res || !res.checkout_url) {
+      showError(res && res.error ? res.error : 'Could not start checkout. Please try again.');
+      return;
+    }
+    window.location.href = res.checkout_url;
+  });
+}
+
+function setFreeTierUI() {
+  var sub = state.subStatus;
+  if (!sub) return;
+  var dreamLimit = (typeof sub.dream_limit === 'number') ? sub.dream_limit : 3;
+
+  // Show notice based on plan status
+  var notice = $('modesTrialNotice');
+  if (notice) {
+    if (sub.status === 'trialing' && sub.trial_ends_at) {
+      var d = new Date(sub.trial_ends_at);
+      notice.innerHTML = s('trialActiveNotice') + d.toLocaleDateString() + '. <button class="manage-sub-btn" data-action="manage" style="display:inline;margin:0 0 0 6px">' + s('manageSubBtn') + '</button>';
+      notice.classList.remove('hidden');
+    } else if (sub.status === 'active') {
+      notice.innerHTML = s('proActiveNotice') + ' <button class="manage-sub-btn" data-action="manage" style="display:inline;margin:0 0 0 6px">' + s('manageSubBtn') + '</button>';
+      notice.classList.remove('hidden');
+    } else if (sub.status === 'free') {
+      var used = getFreeUsageCount();
+      var remaining = Math.max(0, dreamLimit - used);
+      notice.innerHTML = 'Free plan: <strong>' + remaining + ' of ' + dreamLimit + ' dreams</strong> remaining this month. <button class="manage-sub-btn" data-action="upgrade" style="display:inline;margin:0 0 0 6px">Upgrade to Pro</button>';
+      notice.classList.remove('hidden');
+    } else {
+      notice.classList.add('hidden');
+    }
+  }
+
+  // Lock non-dream mode cards for free users
+  if (sub.status === 'free' || sub.plan === 'free') {
+    ['wellbeing', 'morning', 'checkin'].forEach(function(m) {
+      var card = document.querySelector('.mode-card[data-mode="' + m + '"]');
+      if (card) card.classList.add('locked');
+    });
+  }
+
+  // Wire all .manage-sub-btn instances by data-action
+  document.querySelectorAll('.manage-sub-btn').forEach(function(btn) {
+    if (btn.dataset.wired === '1') return;
+    btn.dataset.wired = '1';
+    btn.addEventListener('click', function() {
+      if (btn.dataset.action === 'upgrade') showScreen('paywall');
+      else openStripePortal();
+    });
+  });
+
+  // Upgrade from locked card click
+  document.querySelectorAll('.mode-card.locked').forEach(function(card) {
+    if (card.dataset.lockWired === '1') return;
+    card.dataset.lockWired = '1';
+    card.addEventListener('click', function(e) {
+      e.stopImmediatePropagation();
+      showScreen('paywall');
+    }, true);
+  });
+}
+
+function openStripePortal() {
+  apiCall(URLS.stripePortal, { email: state.email, product: 'phiyo' }, false, function(err, res) {
+    if (err || !res || !res.portal_url) {
+      showError('Could not open subscription portal. Please try again.');
+      return;
+    }
+    window.open(res.portal_url, '_blank');
+  });
+}
+
+/* ══ Mode selector ══ */
+function showModesScreen() {
+  if (!profileSeen()) { showScreen('profile'); return; }
+  var h = new Date().getHours();
+  $('modesGreeting').textContent = h < 12 ? s('greetingMorning') : h < 18 ? s('greetingAfternoon') : s('greetingEvening');
+  showScreen('modes');
+  setFreeTierUI();
+}
+
+/* ══ Profile (Psychological Anchoring) — shown once, skippable ══ */
+function profileSeenKey() { return 'phiyo-profile-seen-' + (state.userId || ''); }
+function profileSeen() {
+  try { return localStorage.getItem(profileSeenKey()) === '1'; } catch(e) { return true; }
+}
+function markProfileSeen() {
+  try { localStorage.setItem(profileSeenKey(), '1'); } catch(e) {}
+}
+function localizeProfile() {
+  if (!$('profileTitle')) return;
+  $('profileTitle').textContent = s('profileTitle');
+  $('profileIntro').textContent = s('profileIntro');
+  $('profileQ1Label').textContent = s('profileQ1');
+  $('profileQ2Label').textContent = s('profileQ2');
+  $('profileQ3Label').textContent = s('profileQ3');
+  $('profileSaveBtn').textContent = s('profileSave');
+  $('profileSkipBtn').textContent = s('profileSkip');
+}
+$('profileSkipBtn').addEventListener('click', function() {
+  markProfileSeen();
+  showModesScreen();
+});
+$('profileSaveBtn').addEventListener('click', function() {
+  var btn = $('profileSaveBtn');
+  var payload = {
+    q1: $('profileQ1').value.trim(),
+    q2: $('profileQ2').value.trim(),
+    q3: $('profileQ3').value.trim()
+  };
+  if (!payload.q1 && !payload.q2 && !payload.q3) { markProfileSeen(); showModesScreen(); return; }
+  btn.disabled = true;
+  btn.textContent = s('profileSaving');
+  apiCall(URLS.profile, payload, true, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = s('profileSave');
+    if (err || !res || !res.success) { showError(s('profileError')); return; }
+    markProfileSeen();
+    showModesScreen();
+  });
+});
+
+document.querySelectorAll('.mode-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    enterMode(card.getAttribute('data-mode'));
+  });
+});
+
+/* ══ Enter mode ══ */
+function genId() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxx-xxxx-xxxx'.replace(/x/g, function(){ return (Math.random()*16|0).toString(16); });
+}
+
+function enterMode(modeName) {
+  var cfg = MODES_CONFIG[modeName];
+  if (!cfg) return;
+
+  // Free tier: block non-dream modes
+  var sub = state.subStatus;
+  var isFree = sub && (sub.status === 'free' || sub.plan === 'free');
+  if (isFree && modeName !== 'dream') {
+    showScreen('paywall');
+    return;
+  }
+
+  // Free tier dream limit check
+  var dreamLimit = (sub && typeof sub.dream_limit === 'number') ? sub.dream_limit : 3;
+  if (isFree && modeName === 'dream' && getFreeUsageCount() >= dreamLimit) {
+    showScreen('paywall');
+    return;
+  }
+  state.mode = modeName;
+  state.sessionId = (modeName === 'dream' ? 'ses' : 'ws') + '-' + genId();
+  state.msgCount = 0;
+  state.briefRequested = false;
+
+  $('chatModeLabel').textContent = s(modeName + 'Name');
+  $('chatWelcomeMode').textContent = s(modeName + 'WelcomeMode');
+  $('chatWelcomeText').textContent = s(modeName + 'WelcomeText');
+  $('chatWelcomeExample').textContent = s(modeName + 'Example');
+  $('chatMessages').innerHTML = '';
+  $('chatWelcome').classList.remove('collapsed');
+  $('composerInput').value = '';
+  $('composerInput').style.height = 'auto';
+  $('composerInput').setAttribute('placeholder', s(modeName + 'Placeholder'));
+  $('sendBtn').disabled = true;
+  updateComposerButtons();
+
+  $('morningAgendaWrap').classList[cfg.showAgenda ? 'remove' : 'add']('hidden');
+
+  showScreen('chat');
+
+  if (modeName === 'morning') {
+    $('composer').style.display = 'none';
+    $('morningBriefBtn').onclick = function() { requestMorningBrief(); };
+  } else {
+    $('composer').style.display = '';
+  }
+}
+
+/* ══ Back button ══ */
+$('backBtn').addEventListener('click', function() { showModesScreen(); });
+
+/* ══ New session ══ */
+$('newSessionBtn').addEventListener('click', function() {
+  if (state.msgCount > 0 && !confirm(s('newSessionConfirm'))) return;
+  enterMode(state.mode);
+});
+
+/* ══ History ══ */
+function fmtHistDate(iso) {
+  try {
+    var d = new Date(String(iso).replace(' ', 'T'));
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { month:'short', day:'numeric' }) + ' · ' + d.toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+  } catch(e) { return ''; }
+}
+
+function openHistory() {
+  var panel = $('historyPanel'), bodyEl = $('historyBody');
+  $('historyTitleEl').textContent = s('historyTitle');
+  bodyEl.innerHTML = '<div class="history-loading">' + escHtml(s('historyLoading')) + '</div>';
+  panel.classList.add('show');
+  panel.setAttribute('aria-hidden', 'false');
+  apiCall(URLS.history, { mode: state.mode }, true, function(err, res) {
+    if (err || !res || !res.success) {
+      bodyEl.innerHTML = '<div class="history-empty">' + escHtml(s('historyError')) + '</div>';
+      return;
+    }
+    var entries = res.entries || [];
+    if (!entries.length) {
+      bodyEl.innerHTML = '<div class="history-empty">' + escHtml(s('historyEmpty')) + '</div>';
+      return;
+    }
+    bodyEl.innerHTML = '';
+    entries.forEach(function(en) {
+      var item = document.createElement('button');
+      item.className = 'history-item';
+      var date = document.createElement('div');
+      date.className = 'history-item-date';
+      date.textContent = fmtHistDate(en.created_at || en.last_at || en.started_at || '');
+      var txt = document.createElement('div');
+      txt.className = 'history-item-text';
+      txt.textContent = en.user_text || en.title || s(state.mode + 'Name');
+      item.appendChild(date);
+      item.appendChild(txt);
+      item.addEventListener('click', function(){ renderHistoryEntry(en); });
+      bodyEl.appendChild(item);
+    });
+  });
+}
+
+function closeHistory() {
+  var p = $('historyPanel');
+  p.classList.remove('show');
+  p.setAttribute('aria-hidden', 'true');
+}
+
+function renderHistoryEntry(en) {
+  closeHistory();
+  $('morningAgendaWrap').classList.add('hidden');
+  $('chatWelcome').classList.add('collapsed');
+  $('chatMessages').innerHTML = '';
+  if (en.messages && en.messages.length) {
+    en.messages.forEach(function(m) {
+      addMessage(m.role === 'user' ? 'user' : 'assistant', m.content || '', m.role === 'user' ? null : 'normal');
+    });
+  } else {
+    if (en.user_text) addMessage('user', en.user_text);
+    if (en.assistant_text) addMessage('assistant', en.assistant_text, state.mode === 'morning' ? 'brief' : 'normal');
+  }
+  var note = document.createElement('div');
+  note.className = 'history-resume-note';
+  note.textContent = s('historyResumeNote');
+  $('chatMessages').appendChild(note);
+  scrollToBottom();
+}
+
+$('historyBtn').addEventListener('click', openHistory);
+$('historyCloseBtn').addEventListener('click', closeHistory);
+
+/* ══ Morning Teller ══ */
+function requestMorningBrief() {
+  if (state.briefRequested) return;
+  state.briefRequested = true;
+  var agenda = ($('morningAgendaInput') || {}).value || '';
+  $('morningAgendaWrap').classList.add('hidden');
+  $('chatWelcome').classList.add('collapsed');
+
+  var loadId = addMessage('assistant', s('morningLoading'), 'loading');
+  apiCall(URLS.morning, { agenda_input: agenda, language: curLang }, true, function(err, res) {
+    removeMessage(loadId);
+    if (err || !res || !res.success) {
+      showError(s('errorBrief'));
+      state.briefRequested = false;
+      return;
+    }
+    addMessage('assistant', res.brief || '', 'brief');
+    state.msgCount++;
+  }, 120000);
+}
+
+/* ══ Chat send ══ */
+// Single clear primary action: mic when the field is empty, send when there is text.
+// Removes the "both icons flickering while typing" ambiguity reported in testing.
+function updateComposerButtons() {
+  var hasText = !!$('composerInput').value.trim();
+  $('sendBtn').style.display = hasText ? 'flex' : 'none';
+  $('sendBtn').disabled = !hasText;
+  $('micBtn').style.display = hasText ? 'none' : 'flex';
+}
+
+$('composerInput').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+  updateComposerButtons();
+});
+
+$('composerInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); doSend(); }
+});
+$('sendBtn').addEventListener('click', doSend);
+
+var lastInputType = 'text';
+// In-flight guard: a generative request can take up to ~120s. Blocking a second
+// doSend() until the first resolves stops the double-tap / impatient-resubmit that
+// was creating duplicate submissions (and duplicate memory writes) on the backend.
+var sending = false;
+
+function doSend() {
+  if (sending) { showError(s('sendingBusy')); return; }
+  var text = $('composerInput').value.trim();
+  if (!text) return;
+  var cfg = MODES_CONFIG[state.mode];
+  if (!cfg) return;
+  var sentMode = state.mode;
+  sending = true;
+  $('composerInput').value = '';
+  $('composerInput').style.height = 'auto';
+  $('sendBtn').disabled = true;
+  updateComposerButtons();
+
+  if (state.msgCount === 0) $('chatWelcome').classList.add('collapsed');
+  var userMsgId = addMessage('user', text);
+  state.msgCount++;
+
+  var payload = {};
+  var url = '';
+
+  if (state.mode === 'dream') {
+    payload = { dream: text, text: text, message: text, user_id: state.userId || ('phiyo-legacy-' + genId()), session_id: state.sessionId, input_type: lastInputType, language: curLang };
+    url = URLS.dream;
+  } else if (state.mode === 'wellbeing') {
+    payload = { message: text, session_id: state.sessionId, language: curLang };
+    url = URLS.wellbeing;
+  } else if (state.mode === 'morning') {
+    payload = { message: text, agenda_input: text, language: curLang };
+    url = URLS.morning;
+  } else if (state.mode === 'checkin') {
+    payload = { message: text, language: curLang };
+    url = URLS.checkin;
+  }
+
+  var loadId = addMessage('assistant', s('thinkingText'), 'loading');
+
+  // Roll back the optimistic user bubble and restore the typed text on failure, so a
+  // timeout/error never forces the user to retype (retyping was the main driver of
+  // duplicate submissions). The backend may still have saved the message; idempotency
+  // (Faz 1 / O5) collapses any resulting duplicate server-side.
+  function rollback() {
+    removeMessage(userMsgId);
+    state.msgCount = Math.max(0, state.msgCount - 1);
+    if (state.msgCount === 0) $('chatWelcome').classList.remove('collapsed');
+    $('composerInput').value = text;
+    $('composerInput').style.height = 'auto';
+    updateComposerButtons();
+  }
+
+  apiCall(url, payload, cfg.useJwt, function(err, res) {
+    sending = false;
+    removeMessage(loadId);
+    // Auth expired mid-send: auth screen + session-expired notice already shown. Reset state and
+    // keep the typed text (survives re-login); do not stack a second generic error.
+    if (err && err.authExpired) { rollback(); return; }
+    // User switched modes while in flight: the result is saved server-side and loads when they
+    // return to that mode. Never inject it into the now-different (cleared) mode view.
+    var switched = (state.mode !== sentMode);
+    // Server-side idempotency duplicate: NOT a real failure. Do not roll back or re-cue a resend.
+    if (res && res.success === false && res.error === 'duplicate') {
+      if (!switched) showError(s('dupNotice'));
+      return;
+    }
+    if (err || !res || !res.success) { if (!switched) { rollback(); showError(s('errorGeneral')); } return; }
+    var responseText = res.interpretation || res.response || res.brief || '';
+    if (!responseText) { if (!switched) { rollback(); showError(s('errorEmpty')); } return; }
+    if (switched) return;
+    addMessage('assistant', responseText, sentMode === 'morning' ? 'brief' : 'normal');
+    updateComposerButtons();
+    if (sentMode === 'dream' && state.subStatus && (state.subStatus.status === 'free' || state.subStatus.plan === 'free')) {
+      incrementFreeUsage();
+    }
+  }, 120000);
+}
+
+/* ══ Add / remove messages ══ */
+var msgCounter = 0;
+function addMessage(role, text, type) {
+  var id = 'msg-' + (++msgCounter);
+  var wrap = document.createElement('div');
+  wrap.id = id;
+  wrap.className = role === 'user' ? 'msg-user' : 'msg-assistant';
+  if (type) wrap.classList.add('msg-' + type);
+
+  var label = document.createElement('div');
+  label.className = role === 'user' ? 'msg-user-label' : 'msg-assistant-label';
+  label.textContent = role === 'user' ? s('youLabel') : 'Phi-Yo';
+
+  var bubble = document.createElement('div');
+  bubble.className = role === 'user' ? 'msg-user-bubble' : 'msg-assistant-bubble';
+  bubble.innerHTML = role === 'user' ? escHtml(text) : formatAssistant(text);
+
+  wrap.appendChild(label);
+  wrap.appendChild(bubble);
+  $('chatMessages').appendChild(wrap);
+  scrollToBottom();
+  return id;
+}
+
+function removeMessage(id) {
+  var el = $(id);
+  if (el) el.parentNode.removeChild(el);
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatAssistant(text) {
+  var lines = text.split('\n');
+  var out = '';
+  var buf = [];
+
+  function applyInline(s) {
+    return s
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+  }
+
+  function flushBuf() {
+    if (!buf.length) return;
+    out += '<p>' + buf.join('<br>') + '</p>';
+    buf = [];
+  }
+
+  for (var i = 0; i < lines.length; i++) {
+    var raw = lines[i];
+    if (/^-{3,}$/.test(raw.trim())) {
+      flushBuf();
+      out += '<hr style="border:none;border-top:1px solid var(--border);margin:var(--s4) 0">';
+    } else if (!raw.trim()) {
+      flushBuf();
+    } else {
+      buf.push(applyInline(raw));
+    }
+  }
+  flushBuf();
+
+  return out || escHtml(text);
+}
+
+function scrollToBottom() {
+  var s = $('chatScroll');
+  s.scrollTop = s.scrollHeight;
+}
+
+/* ══ Voice input ══ */
+var isRec = false, recog = null, vText = '', vInterim = '', recSec = 0, recInt = null;
+
+$('micBtn').addEventListener('click', openVoiceOverlay);
+
+function openVoiceOverlay() {
+  $('voiceOverlay').classList.add('active');
+  vText = ''; vInterim = ''; recSec = 0;
+  $('voiceTranscript').textContent = '';
+  $('voiceTimer').textContent = '';
+  $('voiceLabel').textContent = s('voiceTap');
+  $('voiceSend').disabled = true;
+  $('micOrb').classList.remove('recording');
+}
+
+$('voiceCancel').addEventListener('click', function() {
+  stopVoiceRec();
+  $('voiceOverlay').classList.remove('active');
+});
+
+$('voiceSend').addEventListener('click', function() {
+  stopVoiceRec();
+  var t = vText.trim();
+  $('voiceOverlay').classList.remove('active');
+  if (t) {
+    lastInputType = 'voice';
+    $('composerInput').value = t;
+    $('composerInput').dispatchEvent(new Event('input'));
+    doSend();
+  }
+});
+
+$('micOrb').addEventListener('click', function(){ isRec ? stopVoiceRec() : startVoiceRec(); });
+
+function startVoiceRec() {
+  var cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition;
+  if (cap) { startNativeVoiceRec(cap); return; }
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showError(s('errorSpeech')); return; }
+  recog = new SR();
+  recog.continuous = true;
+  recog.interimResults = true;
+  recog.maxAlternatives = 1;
+  recog.lang = LANG_LOCALE[curLang] || 'en-US';
+  vText = ''; vInterim = ''; recSec = 0;
+  recog.onresult = function(e) {
+    vInterim = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) vText += e.results[i][0].transcript + ' ';
+      else vInterim += e.results[i][0].transcript;
+    }
+    var full = vText + vInterim;
+    $('voiceTranscript').textContent = full;
+    $('voiceSend').disabled = !vText.trim();
+  };
+  recog.onerror = function(e){ if (e.error !== 'no-speech') stopVoiceRec(); };
+  recog.onend = function(){ if (isRec) try { recog.start(); } catch(x){} };
+  try {
+    recog.start();
+    isRec = true;
+    $('micOrb').classList.add('recording');
+    $('voiceLabel').textContent = s('voiceListening');
+    $('voiceTimer').textContent = '00:00';
+    recInt = setInterval(function() {
+      recSec++;
+      var m = Math.floor(recSec / 60), ss = recSec % 60;
+      $('voiceTimer').textContent = (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
+    }, 1000);
+  } catch(e) { showError(s('errorMic')); }
+}
+
+function startNativeVoiceRec(cap) {
+  cap.requestPermissions().then(function() {
+    vText = ''; vInterim = ''; recSec = 0;
+    isRec = true;
+    $('micOrb').classList.add('recording');
+    $('voiceLabel').textContent = s('voiceListening');
+    $('voiceTimer').textContent = '00:00';
+    recInt = setInterval(function() {
+      recSec++;
+      var m = Math.floor(recSec / 60), ss = recSec % 60;
+      $('voiceTimer').textContent = (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
+    }, 1000);
+    cap.addListener('partialResults', function(data) {
+      if (data.matches && data.matches.length > 0) {
+        vText = data.matches[0];
+        $('voiceTranscript').textContent = vText;
+        $('voiceSend').disabled = !vText.trim();
+      }
+    });
+    cap.start({ language: LANG_LOCALE[curLang] || 'en-US', maxResults: 1, partialResults: true, popup: false })
+      .catch(function() { stopVoiceRec(); showError(s('errorMic')); });
+  }).catch(function() { showError(s('errorMic')); });
+}
+
+function stopVoiceRec() {
+  isRec = false;
+  clearInterval(recInt);
+  $('micOrb').classList.remove('recording');
+  $('voiceLabel').textContent = s('voiceTap');
+  $('voiceTimer').textContent = '';
+  var cap = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition;
+  if (cap) {
+    try { cap.stop(); cap.removeAllListeners(); } catch(e) {}
+  } else {
+    try { if (recog) recog.stop(); } catch(e) {}
+  }
+}
+
+/* ══ Paywall buttons ══ */
+$('btnContinueFree').addEventListener('click', function() {
+  if (!state.email) {
+    showError('Please sign in first.');
+    showScreen('auth');
+    return;
+  }
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'Setting up...';
+  apiCall(URLS.setFree, { email: state.email }, false, function(err, res) {
+    btn.disabled = false;
+    btn.textContent = 'Continue free';
+    if (res && res.status) {
+      state.subStatus = res;
+    } else {
+      // Fallback if endpoint unreachable: set local free state
+      state.subStatus = { status: 'free', plan: 'free', features: ['dream'], dream_limit: 3 };
+    }
+    showModesScreen();
+  });
+});
+
+$('btnStartTrial').addEventListener('click', startStripeCheckout);
+
+$('btnIntervalMonthly').addEventListener('click', function() {
+  state.selectedPlan = 'pro_monthly';
+  $('btnIntervalMonthly').classList.add('active');
+  $('btnIntervalAnnual').classList.remove('active');
+});
+$('btnIntervalAnnual').addEventListener('click', function() {
+  state.selectedPlan = 'pro_annual';
+  $('btnIntervalAnnual').classList.add('active');
+  $('btnIntervalMonthly').classList.remove('active');
+});
+
+/* ══ Init ══ */
+function init() {
+  // Detect return from Stripe Checkout
+  var params = new URLSearchParams(window.location.search);
+  var subState = params.get('sub'); // 'activated' | 'cancelled' | null
+  var returnedEmail = (params.get('email') || '').toLowerCase();
+  if (subState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  // Returning from Stripe SUCCESS with email param — force OTP flow for that email,
+  // clearing any stale JWT so webhook-sent code can be entered without hitting the
+  // paywall against an old session.
+  if (subState === 'activated' && returnedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(returnedEmail)) {
+    try { localStorage.removeItem('phiyo-jwt'); } catch(e) {}
+    state.jwt = null; state.userId = null; state.email = null;
+    state.pendingEmail = returnedEmail;
+    $('sentEmailDisplay').textContent = returnedEmail;
+    showScreen('emailSent');
+    return;
+  }
+
+  // Returning from Stripe CANCEL — if logged in, show paywall + message; else auth
+  if (subState === 'cancelled') {
+    if (loadStoredJWT()) {
+      showScreen('paywall');
+      showError(s('paymentCancelled'));
+      return;
+    }
+    if (returnedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(returnedEmail)) {
+      $('emailInput').value = returnedEmail;
+    }
+    showScreen('auth');
+    showError(s('paymentCancelled'));
+    return;
+  }
+
+  if (loadStoredJWT()) {
+    if (subState === 'activated') {
+      // Webhook may not have fired yet — wait before validating
+      setTimeout(function(){ checkSubscriptionAndRoute(true); }, 3000);
+    } else {
+      checkSubscriptionAndRoute();
+    }
+    return;
+  }
+
+  if (subState === 'activated') {
+    showScreen('auth');
+    showError('Payment successful! Please sign in to access your account.');
+    return;
+  }
+
+  showScreen('auth');
+}
+
+setLocale(curLang);
+
+// Small delay to ensure fonts load for the loading spinner.
+// Guard against a synchronous init failure leaving the loading screen stuck.
+setTimeout(function(){ try { init(); } catch(e) { showScreen('auth'); } }, 300);
+
+})();
+</script>
+</body>
+</html>
