@@ -276,7 +276,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 .paywall-card{width:100%;max-width:620px;text-align:center;animation:fadeUp .8s var(--ease-out) forwards}
 .paywall-logo{font-family:var(--font-mystery);font-size:clamp(2rem,8vw,3.5rem);font-weight:400;line-height:1;margin-bottom:var(--s2);overflow:visible;padding-bottom:.1em}
 .paywall-tagline{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--text-2);margin-bottom:var(--s5)}
-.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s5)}
+.plan-grid{display:grid;grid-template-columns:minmax(0,340px);justify-content:center;gap:var(--s4);margin-bottom:var(--s5)}
 @media(max-width:540px){.plan-grid{grid-template-columns:1fr}}
 .plan-card{background:var(--bg-raised);border:1px solid var(--border);border-radius:var(--r4);padding:var(--s5);text-align:left;position:relative}
 .plan-card-pro{border-color:var(--amber-dim);background:linear-gradient(135deg,var(--bg-raised) 0%,var(--bg-deep) 100%)}
@@ -593,23 +593,8 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
           </ul>
           <button class="plan-btn plan-btn-free" id="btnContinueFree">Continue free</button>
         </div>
-        <div class="plan-card plan-card-pro">
-          <div class="plan-badge">7 days free</div>
-          <div class="plan-name">Pro</div>
-          <div class="plan-interval-group">
-            <button class="plan-interval active" id="btnIntervalMonthly" data-plan="pro_monthly">&#8364;5 / month</button>
-            <button class="plan-interval" id="btnIntervalAnnual" data-plan="pro_annual">&#8364;45 / year</button>
-          </div>
-          <ul class="plan-features">
-            <li class="feat-on">&#10003; Dream Interpreter, unlimited</li>
-            <li class="feat-on">&#10003; Wellbeing Conversations</li>
-            <li class="feat-on">&#10003; Morning Brief</li>
-            <li class="feat-on">&#10003; Daily Check-in</li>
-          </ul>
-          <button class="plan-btn plan-btn-pro" id="btnStartTrial">Start 7-day free trial</button>
-          <p class="plan-note">No charge for 7 days. Cancel any time.</p>
-        </div>
       </div>
+      <p class="plan-note">Phi-Yo for organisations and partners: <a href="mailto:contact@llulllab.com">contact@llulllab.com</a></p>
     </div>
     <p class="paywall-footer"><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://feix.app" target="_blank" rel="noopener">Created by Feix</a></p>
   </div>
@@ -1208,26 +1193,8 @@ function incrementFreeUsage() {
   try { localStorage.setItem(getFreeUsageKey(), String(getFreeUsageCount() + 1)); } catch(e) {}
 }
 
-function startStripeCheckout() {
-  var btn = $('btnStartTrial');
-  if (!state.email) {
-    showError('Please sign in first.');
-    showScreen('auth');
-    return;
-  }
-  btn.disabled = true;
-  btn.textContent = 'Loading...';
-  var plan = state.selectedPlan || 'pro_monthly';
-  apiCall(URLS.stripeCheckout, { product: 'phiyo', plan: plan, email: state.email }, false, function(err, res) {
-    btn.disabled = false;
-    btn.textContent = 'Start 7-day free trial';
-    if (err || !res || !res.checkout_url) {
-      showError(res && res.error ? res.error : 'Could not start checkout. Please try again.');
-      return;
-    }
-    window.location.href = res.checkout_url;
-  });
-}
+// Individual Pro sales closed 2026-07-22 (B2B path): no checkout from this app.
+// Existing subscribers are untouched: validate + portal + webhook flows stay live.
 
 function setFreeTierUI() {
   var sub = state.subStatus;
@@ -1247,7 +1214,7 @@ function setFreeTierUI() {
     } else if (sub.status === 'free') {
       var used = getFreeUsageCount();
       var remaining = Math.max(0, dreamLimit - used);
-      notice.innerHTML = 'Free plan: <strong>' + remaining + ' of ' + dreamLimit + ' dreams</strong> remaining this month. <button class="manage-sub-btn" data-action="upgrade" style="display:inline;margin:0 0 0 6px">Upgrade to Pro</button>';
+      notice.innerHTML = 'Free plan: <strong>' + remaining + ' of ' + dreamLimit + ' dreams</strong> remaining this month.';
       notice.classList.remove('hidden');
     } else {
       notice.classList.add('hidden');
@@ -1278,7 +1245,7 @@ function setFreeTierUI() {
     card.dataset.lockWired = '1';
     card.addEventListener('click', function(e) {
       e.stopImmediatePropagation();
-      showScreen('paywall');
+      showError('This module is not part of the free plan.');
     }, true);
   });
 }
@@ -1808,19 +1775,6 @@ $('btnContinueFree').addEventListener('click', function() {
     }
     showModesScreen();
   });
-});
-
-$('btnStartTrial').addEventListener('click', startStripeCheckout);
-
-$('btnIntervalMonthly').addEventListener('click', function() {
-  state.selectedPlan = 'pro_monthly';
-  $('btnIntervalMonthly').classList.add('active');
-  $('btnIntervalAnnual').classList.remove('active');
-});
-$('btnIntervalAnnual').addEventListener('click', function() {
-  state.selectedPlan = 'pro_annual';
-  $('btnIntervalAnnual').classList.add('active');
-  $('btnIntervalMonthly').classList.remove('active');
 });
 
 /* ══ Init ══ */
