@@ -312,6 +312,9 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 .free-usage-wrap{margin-bottom:var(--s4);font-size:12px;color:var(--text-2)}
 .free-usage-bar-bg{height:4px;background:var(--bg-surface);border-radius:2px;margin-top:6px}
 .free-usage-bar-fill{height:4px;background:var(--plum);border-radius:2px;transition:width .4s var(--ease)}
+
+.phiyo-safety-note{font-size:.72rem;line-height:1.45;opacity:.62;margin:0 0 .5rem;padding:0 .25rem;text-align:center;}
+.phiyo-safety-note a{color:inherit;text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -338,7 +341,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
       <button class="auth-btn" id="authBtn">Send me a sign-in code</button>
       <p style="text-align:center;margin:12px 0 0;font-size:13px;color:var(--text-3)"><a href="#" id="haveCodeLink" style="color:var(--amber);text-decoration:none">I already have a code</a></p>
     </div>
-    <p class="auth-note" id="authNote">Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.<br><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a></p>
+    <p class="auth-note" id="authNote">Phi-Yo is a self-reflection and wellbeing support tool, not a substitute for professional care.<br><a href="/privacy-policy">Privacy</a> <a href="/terms">Terms</a> <a href="/mentions-legales">Mentions légales</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a></p>
     <div class="auth-lang-row">
       <select class="ui-lang-select" aria-label="Interface language">
         <option value="en">English</option>
@@ -521,6 +524,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
     </div>
 
     <div class="composer" id="composer">
+      <p class="phiyo-safety-note" id="phiyoSafetyNote">Phi-Yo is for reflection, not therapy or diagnosis, and it is not a crisis service. If you are in danger or thinking of harming yourself, contact your local emergency number, or in the EU call 112. <a href="/privacy-policy">How your entries are handled</a>.</p>
       <div class="composer-inner">
         <div class="composer-row">
           <textarea class="composer-input" id="composerInput" rows="1" aria-label="Message"></textarea>
@@ -534,7 +538,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
           </div>
         </div>
         <div class="composer-meta">
-          <div id="composerMeta">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; France</div>
+          <div id="composerMeta">&copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="/privacy-policy">Privacy</a> <a href="/terms">Terms</a> <a href="/mentions-legales">Mentions légales</a> &middot; France</div>
         </div>
       </div>
     </div>
@@ -596,7 +600,7 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
       </div>
       <p class="plan-note">Phi-Yo for organisations and partners: <a href="mailto:contact@llulllab.com">contact@llulllab.com</a></p>
     </div>
-    <p class="paywall-footer"><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://feix.app" target="_blank" rel="noopener">Created by Feix</a></p>
+    <p class="paywall-footer"><a href="/privacy-policy">Privacy</a> <a href="/terms">Terms</a> <a href="/mentions-legales">Mentions légales</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a> &middot; <a href="https://feix.app" target="_blank" rel="noopener">Created by Feix</a></p>
   </div>
 </div>
 
@@ -896,7 +900,7 @@ function setLocale(lang) {
   document.querySelectorAll('.ui-lang-select').forEach(function(el){ el.value = lang; });
   $('authTagline').innerHTML = s('tagline').replace('\n','<br>');
   $('authTaglineSub').textContent = s('taglineSub');
-  $('authNote').innerHTML = s('authNote') + '<br><a href="https://llulllab.com/privacy-policy.html" target="_blank" rel="noopener">Privacy</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>';
+  $('authNote').innerHTML = s('authNote') + '<br><a href="/privacy-policy">Privacy</a> <a href="/terms">Terms</a> <a href="/mentions-legales">Mentions légales</a> &middot; &copy; 2026 <a href="https://llulllab.com" target="_blank" rel="noopener">Llull Lab</a>';
   $('emailInput').placeholder = s('emailPlaceholder');
   $('authBtn').textContent = s('authBtnText');
   $('emailSentTitle').textContent = s('emailSentTitle');
@@ -1269,7 +1273,7 @@ function showModesScreen() {
   setFreeTierUI();
 }
 
-/* ══ Profile (Psychological Anchoring) — shown once, skippable ══ */
+/* ══ Profile (Psychological Anchoring): shown once, skippable ══ */
 function profileSeenKey() { return 'phiyo-profile-seen-' + (state.userId || ''); }
 function profileSeen() {
   try { return localStorage.getItem(profileSeenKey()) === '1'; } catch(e) { return true; }
@@ -1787,7 +1791,7 @@ function init() {
     window.history.replaceState({}, '', window.location.pathname);
   }
 
-  // Returning from Stripe SUCCESS with email param — force OTP flow for that email,
+  // Returning from Stripe SUCCESS with email param: force OTP flow for that email,
   // clearing any stale JWT so webhook-sent code can be entered without hitting the
   // paywall against an old session.
   if (subState === 'activated' && returnedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(returnedEmail)) {
@@ -1799,7 +1803,7 @@ function init() {
     return;
   }
 
-  // Returning from Stripe CANCEL — if logged in, show paywall + message; else auth
+  // Returning from Stripe CANCEL: if logged in, show paywall + message; else auth
   if (subState === 'cancelled') {
     if (loadStoredJWT()) {
       showScreen('paywall');
@@ -1816,7 +1820,7 @@ function init() {
 
   if (loadStoredJWT()) {
     if (subState === 'activated') {
-      // Webhook may not have fired yet — wait before validating
+      // Webhook may not have fired yet: wait before validating
       setTimeout(function(){ checkSubscriptionAndRoute(true); }, 3000);
     } else {
       checkSubscriptionAndRoute();
