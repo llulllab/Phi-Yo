@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Page not found. Phi-Yo.</title>
+<style>
+  :root{
+    --bg:#0e0a14; --ink:#cdbfe0; --hero:#f4eefa; --accent:#d4a24c; --line:#241c32;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#eef3f7; --ink:#4a5568; --hero:#0e0a14; --accent:#b8862f; --line:#d6e1eb; }
+  }
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Instrument Sans','Helvetica Neue',system-ui,sans-serif;
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;
+  }
+  .wrap{max-width:460px}
+  .code{
+    font-family:'Fraunces',Georgia,serif;
+    font-size:76px;font-weight:600;line-height:1;color:var(--accent);margin:0;
+  }
+  h1{font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:500;color:var(--hero);margin:14px 0 10px}
+  p{font-size:15px;line-height:1.65;color:var(--ink);margin:0 0 26px;opacity:.85}
+  a{display:inline-block;padding:11px 24px;border:1px solid var(--accent);border-radius:8px;
+    color:var(--accent);font-weight:600;text-decoration:none;font-size:14px}
+  a:hover{background:var(--accent);color:var(--bg)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="code">404</p>
+    <h1>Page not found</h1>
+    <p>The page you are looking for does not exist or has moved.</p>
+    <a href="/">Back to Phi-Yo</a>
+  </div>
+</body>
+</html>
