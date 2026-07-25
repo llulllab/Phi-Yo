@@ -612,13 +612,14 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 
 /* ══ Config ══ */
 var API_BASE = 'https://api.llulllab.com/';
+var GEN_BASE = 'https://run.llulllab.com/webhook/';
 var URLS = {
   authRequest:       API_BASE + 'phiyo-auth-request',
   authVerify:        API_BASE + 'phiyo-auth-verify',
-  dream:             API_BASE + 'phiyo-dream',
-  wellbeing:         API_BASE + 'phiyo-wellbeing',
-  morning:           API_BASE + 'phiyo-morning',
-  checkin:           API_BASE + 'phiyo-checkin',
+  dream:             GEN_BASE + 'phiyo-dream',
+  wellbeing:         GEN_BASE + 'phiyo-wellbeing',
+  morning:           GEN_BASE + 'phiyo-morning',
+  checkin:           GEN_BASE + 'phiyo-checkin',
   history:           API_BASE + 'phiyo-history',
   profile:           API_BASE + 'phiyo-profile',
   subscribeValidate: API_BASE + 'phiyo-subscribe-validate',
@@ -1057,6 +1058,10 @@ function apiCall(url, data, useJwt, cb, timeoutMs) {
   // value (120s) because their backend p95 can legitimately run past 45s. A single global
   // value was wrong both ways: 45s aborted healthy slow generations, while raising it
   // globally would leave fast calls hanging for the long bound on a dead socket.
+  // 2026-07-25: the long bound went 120s -> 300s. Two constraints that used to sit below
+  // it are gone: generative calls no longer traverse a proxy that closes the response at
+  // ~100s, and the model's output cap was raised, so a long answer is no longer cut short
+  // by the client before the server is done.
   var TIMEOUT = (typeof timeoutMs === 'number' && timeoutMs > 0) ? timeoutMs : 20000;
   var done = false;
   var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
@@ -1472,7 +1477,7 @@ function requestMorningBrief() {
     }
     addMessage('assistant', res.brief || '', 'brief');
     state.msgCount++;
-  }, 120000);
+  }, 300000);
 }
 
 /* ══ Chat send ══ */
@@ -1574,7 +1579,7 @@ function doSend() {
     if (sentMode === 'dream' && state.subStatus && (state.subStatus.status === 'free' || state.subStatus.plan === 'free')) {
       incrementFreeUsage();
     }
-  }, 120000);
+  }, 300000);
 }
 
 /* ══ Add / remove messages ══ */
