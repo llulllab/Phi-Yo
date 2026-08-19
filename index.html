@@ -262,6 +262,13 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
 .history-empty,.history-loading{color:var(--text-2);font-size:14px;text-align:center;padding:var(--s7) var(--s4);line-height:1.6}
 .history-resume-note{font-size:12px;color:var(--text-3);font-style:italic;text-align:center;padding:var(--s2) 0 var(--s4)}
 
+/* ═══ SYMBOL MAP ═══ */
+.symbol-item{display:flex;align-items:center;gap:var(--s3);background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r3);padding:var(--s3) var(--s4)}
+.symbol-name{flex:1;min-width:0;font-size:15px;color:var(--text-1);text-transform:capitalize;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.symbol-bar-bg{flex-shrink:0;width:72px;height:5px;background:var(--bg-raised);border-radius:3px;overflow:hidden}
+.symbol-bar-fill{height:5px;background:var(--amber);border-radius:3px}
+.symbol-count{flex-shrink:0;font-size:12px;color:var(--text-3);font-variant-numeric:tabular-nums;min-width:1.6em;text-align:right}
+
 /* ═══ UI LANG SELECT ═══ */
 .ui-lang-select{background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r2);color:var(--text-2);font-family:var(--font-body);font-size:12px;padding:4px 6px;outline:none;cursor:pointer;transition:border-color .2s}
 .ui-lang-select:focus{border-color:var(--amber)}
@@ -491,6 +498,9 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
       <button class="icon-btn" id="historyBtn" aria-label="History" title="History">
         <svg viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l3 2"/></svg>
       </button>
+      <button class="icon-btn" id="symbolsBtn" aria-label="Symbols" title="Symbols">
+        <svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="13" cy="17" r="2"/><line x1="7.7" y1="8.1" x2="11.4" y2="15.4"/><line x1="8" y1="6.7" x2="16" y2="6.2"/><line x1="16.9" y1="7.7" x2="14" y2="15.2"/></svg>
+      </button>
       <button class="icon-btn" id="newSessionBtn" aria-label="New session" title="New session">
         <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       </button>
@@ -577,6 +587,19 @@ body{font-family:var(--font-body);background:var(--bg-abyss);color:var(--text-1)
   </div>
 </div>
 
+<!-- Symbols panel -->
+<div class="history-panel" id="symbolsPanel" aria-hidden="true">
+  <div class="history-panel-inner">
+    <div class="history-head">
+      <span class="history-title" id="symbolsTitleEl">Your symbols</span>
+      <button class="icon-btn" id="symbolsCloseBtn" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="history-body" id="symbolsBody"></div>
+  </div>
+</div>
+
 <!-- Subscription paywall -->
 <div id="screen-paywall" class="hidden">
   <div class="paywall-card">
@@ -652,7 +675,7 @@ en:{
   wellbeingName:'Wellbeing',wellbeingDesc:'A psychoanalytic space for your everyday inner life. Relationships, emotions, questions.',
   wellbeingWelcomeMode:'WELLBEING',wellbeingWelcomeText:'What would you like to explore today?',wellbeingPlaceholder:'What is on your mind?',
   morningName:'Morning Teller',morningDesc:"Start your day prepared. A brief drawn from your recent inner life and today's context.",
-  morningWelcomeMode:'MORNING TELLER',morningAgendaLabel:"Today's agenda (optional)",morningAgendaPlaceholder:'Meetings, tasks, events... or leave empty.',
+  morningWelcomeText:"A brief for the day ahead, drawn from your recent inner life.",morningWelcomeMode:'MORNING TELLER',morningAgendaLabel:"Today's agenda (optional)",morningAgendaPlaceholder:'Meetings, tasks, events... or leave empty.',
   morningBriefBtn:'Get my morning brief',morningPlaceholder:'Continue exploring your day...',morningLoading:'Preparing your morning brief...',
   checkinName:'Daily Check-in',checkinDesc:'A brief moment of reflection at the end of your day. What happened, what mattered.',
   checkinWelcomeMode:'DAILY CHECK-IN',checkinWelcomeText:'How was your day?',checkinPlaceholder:'Tell me about today...',
@@ -662,7 +685,7 @@ en:{
   checkinExample:'A quiet minute at the end of the day. Over time, the patterns in your moods and themes become visible. For example: "Tired but calm. A good talk with a friend."',
   voiceTap:'Tap to speak',voiceListening:'Listening…',voiceCancel:'Cancel',voiceSend:'Send',
   youLabel:'You',thinkingText:'Thinking...',newSessionConfirm:'Start a new session?',
-  historyTitle:'Your history',historyEmpty:'Nothing here yet. Your past sessions in this space will appear here.',historyLoading:'Loading your history...',historyError:'Could not load your history. Please try again.',historyClose:'Close',historyResumeNote:'A past session. Start typing to begin a new one.',
+  historyTitle:'Your history',historyEmpty:'Nothing here yet. Your past sessions in this space will appear here.',historyLoading:'Loading your history...',historyError:'Could not load your history. Please try again.',historyClose:'Close',historyResumeNote:'A past session. Start typing to begin a new one.',symbolsTitle:'Your symbols',symbolsEmpty:'No symbols yet. As you record dreams and reflections, the symbols that recur for you gather here.',symbolsLoading:'Loading your symbols...',symbolsError:'Could not load your symbols. Please try again.',
   profileTitle:'Before we begin',profileIntro:'A few questions, so Phi-Yo can come to know you across your dreams, mornings, and days. Nothing here is required, and you can skip and answer later.',profileQ1:'Which area of your life is occupying you most right now?',profileQ2:'How do you usually make important decisions: by intuition, or by thinking them through at length?',profileQ3:'Is there a recurring thought that has stayed with you lately?',profileSave:'Save and continue',profileSaving:'Saving...',profileSkip:'Skip for now',profileError:'Could not save. Please try again.',
   errorInvalidEmail:'Please enter a valid email address.',errorSendLink:'Could not send the sign-in code. Please try again.',
   paymentCancelled:'Payment was not completed. You can try again or continue with the free plan.',
@@ -674,7 +697,7 @@ en:{
   errorEmpty:'Received an empty response.',errorSpeech:'Speech recognition is not supported in this browser.',errorMic:'Could not start recording.',dupNotice:'You already sent this. It is being processed and will appear in your history shortly.',sendingBusy:'A response is being prepared. Please wait a moment.'
 },
 fr:{
-  taglineSub:"Un modèle computationnel de l'esprit, fondé sur la théorie psychanalytique.",dreamExample:"Par exemple : « Je courais dans une maison qui changeait sans cesse. » Vous recevrez une interprétation réfléchie, et une carte de symboles qui s'enrichit à chaque rêve.",wellbeingExample:"Par exemple : « J'évite sans cesse une conversation difficile au travail. » Un espace pour réfléchir. Sans corriger, sans juger.",morningExample:"Une ligne ou deux suffisent, ou laissez vide. Par exemple : « Grande présentation aujourd'hui, mal dormi. » Vous recevrez un bref point d'ancrage pour la journée.",checkinExample:"Une minute calme en fin de journée. Avec le temps, les schémas de vos humeurs et de vos thèmes deviennent visibles. Par exemple : « Fatigué mais serein. Une bonne discussion avec un ami. »",historyTitle:"Votre historique",historyEmpty:"Rien ici pour l'instant. Vos sessions passées dans cet espace apparaîtront ici.",historyLoading:"Chargement de votre historique...",historyError:"Impossible de charger votre historique. Veuillez réessayer.",historyClose:"Fermer",historyResumeNote:"Une session passée. Commencez à écrire pour en démarrer une nouvelle.",profileTitle:"Avant de commencer",profileIntro:"Quelques questions, pour que Phi-Yo apprenne à vous connaître à travers vos rêves, vos matins et vos journées. Rien n'est obligatoire, et vous pouvez passer et répondre plus tard.",profileQ1:"Quel domaine de votre vie vous occupe le plus en ce moment ?",profileQ2:"Comment prenez-vous habituellement les décisions importantes : par intuition, ou en y réfléchissant longuement ?",profileQ3:"Y a-t-il une pensée récurrente qui vous accompagne ces derniers temps ?",profileSave:"Enregistrer et continuer",profileSaving:"Enregistrement...",profileSkip:"Passer pour l'instant",profileError:"Échec de l'enregistrement. Veuillez réessayer.",
+  taglineSub:"Un modèle computationnel de l'esprit, fondé sur la théorie psychanalytique.",dreamExample:"Par exemple : « Je courais dans une maison qui changeait sans cesse. » Vous recevrez une interprétation réfléchie, et une carte de symboles qui s'enrichit à chaque rêve.",wellbeingExample:"Par exemple : « J'évite sans cesse une conversation difficile au travail. » Un espace pour réfléchir. Sans corriger, sans juger.",morningExample:"Une ligne ou deux suffisent, ou laissez vide. Par exemple : « Grande présentation aujourd'hui, mal dormi. » Vous recevrez un bref point d'ancrage pour la journée.",checkinExample:"Une minute calme en fin de journée. Avec le temps, les schémas de vos humeurs et de vos thèmes deviennent visibles. Par exemple : « Fatigué mais serein. Une bonne discussion avec un ami. »",historyTitle:"Votre historique",historyEmpty:"Rien ici pour l'instant. Vos sessions passées dans cet espace apparaîtront ici.",historyLoading:"Chargement de votre historique...",historyError:"Impossible de charger votre historique. Veuillez réessayer.",historyClose:"Fermer",historyResumeNote:"Une session passée. Commencez à écrire pour en démarrer une nouvelle.",symbolsTitle:"Vos symboles",symbolsEmpty:"Aucun symbole pour l'instant. À mesure que vous notez vos rêves et vos réflexions, les symboles qui reviennent se rassemblent ici.",symbolsLoading:"Chargement de vos symboles...",symbolsError:"Impossible de charger vos symboles. Veuillez réessayer.",profileTitle:"Avant de commencer",profileIntro:"Quelques questions, pour que Phi-Yo apprenne à vous connaître à travers vos rêves, vos matins et vos journées. Rien n'est obligatoire, et vous pouvez passer et répondre plus tard.",profileQ1:"Quel domaine de votre vie vous occupe le plus en ce moment ?",profileQ2:"Comment prenez-vous habituellement les décisions importantes : par intuition, ou en y réfléchissant longuement ?",profileQ3:"Y a-t-il une pensée récurrente qui vous accompagne ces derniers temps ?",profileSave:"Enregistrer et continuer",profileSaving:"Enregistrement...",profileSkip:"Passer pour l'instant",profileError:"Échec de l'enregistrement. Veuillez réessayer.",
   tagline:'Analyse computationnelle des rêves et bien-être.\nFondé sur Freud for Machines.',
   emailPlaceholder:'Votre adresse email',authBtnText:'Envoyer un code de connexion',authBtnSending:'Envoi…',
   authNote:'Phi-Yo est un outil de réflexion et de soutien au bien-être, non un substitut à un accompagnement professionnel.',
@@ -688,7 +711,7 @@ fr:{
   wellbeingName:'Bien-être',wellbeingDesc:'Un espace psychanalytique pour votre vie intérieure quotidienne. Relations, émotions, questions.',
   wellbeingWelcomeMode:'BIEN-ÊTRE',wellbeingWelcomeText:"Qu'aimeriez-vous explorer aujourd'hui ?",wellbeingPlaceholder:"Qu'est-ce qui vous préoccupe ?",
   morningName:'Bilan du matin',morningDesc:"Commencez votre journée préparé. Un bref tiré de votre vie intérieure récente et du contexte d'aujourd'hui.",
-  morningWelcomeMode:'BILAN DU MATIN',morningAgendaLabel:'Agenda du jour (optionnel)',morningAgendaPlaceholder:'Réunions, tâches, événements… ou laissez vide.',
+  morningWelcomeText:"Un point d'ancrage pour la journée, tiré de votre vie intérieure récente.",morningWelcomeMode:'BILAN DU MATIN',morningAgendaLabel:'Agenda du jour (optionnel)',morningAgendaPlaceholder:'Réunions, tâches, événements… ou laissez vide.',
   morningBriefBtn:'Obtenir mon bilan matinal',morningPlaceholder:'Continuez à explorer votre journée…',morningLoading:'Préparation de votre bilan matinal…',
   checkinName:'Bilan du soir',checkinDesc:"Un bref moment de réflexion en fin de journée. Ce qui s'est passé, ce qui a compté.",
   checkinWelcomeMode:'BILAN DU SOIR',checkinWelcomeText:'Comment s\'est passée votre journée ?',checkinPlaceholder:"Parlez-moi d'aujourd'hui…",
@@ -700,7 +723,7 @@ fr:{
   errorEmpty:'Réponse vide reçue.',errorSpeech:"La reconnaissance vocale n'est pas prise en charge par ce navigateur.",errorMic:"Impossible de démarrer l'enregistrement.",dupNotice:'Vous avez déjà envoyé ceci. Le traitement est en cours et apparaîtra bientôt dans votre historique.',sendingBusy:'Une réponse est en cours de préparation. Veuillez patienter un instant.'
 },
 tr:{
-  taglineSub:"Zihnin hesaplamalı bir modeli, psikanalitik kurama dayanır.",dreamExample:"Örneğin: \"Sürekli değişen bir evde koşuyordum.\" Düşünceli bir yorum ve her rüyayla büyüyen kişisel bir sembol haritası alırsın.",wellbeingExample:"Örneğin: \"İş yerinde zor bir konuşmadan sürekli kaçıyorum.\" Düşünmek için bir alan. Düzeltme yok, yargı yok.",morningExample:"Bir iki satır yeter, ya da boş bırak. Örneğin: \"Bugün büyük sunum var, kötü uyudum.\" Güne dair kısa, dengeleyici bir brifing alırsın.",checkinExample:"Günün sonunda sakin bir dakika. Zamanla ruh halinin ve temalarının örüntüleri görünür olur. Örneğin: \"Yorgun ama sakin. Bir arkadaşla güzel bir sohbet.\"",historyTitle:"Geçmişin",historyEmpty:"Burada henüz bir şey yok. Bu alandaki geçmiş seansların burada görünecek.",historyLoading:"Geçmişin yükleniyor...",historyError:"Geçmişin yüklenemedi. Lütfen tekrar dene.",historyClose:"Kapat",historyResumeNote:"Geçmiş bir seans. Yeni bir tane başlatmak için yazmaya başla.",profileTitle:"Başlamadan önce",profileIntro:"Birkaç soru, Phi-Yo seni rüyaların, sabahların ve günlerin boyunca tanıyabilsin diye. Hiçbiri zorunlu değil, atlayıp sonra yanıtlayabilirsin.",profileQ1:"Hayatının hangi alanı şu sıralar seni en çok meşgul ediyor?",profileQ2:"Önemli kararları genelde nasıl alırsın: sezgiyle mi, uzun uzun düşünerek mi?",profileQ3:"Son zamanlarda aklından çıkmayan, tekrar eden bir düşünce var mı?",profileSave:"Kaydet ve devam et",profileSaving:"Kaydediliyor...",profileSkip:"Şimdilik atla",profileError:"Kaydedilemedi. Lütfen tekrar dene.",
+  taglineSub:"Zihnin hesaplamalı bir modeli, psikanalitik kurama dayanır.",dreamExample:"Örneğin: \"Sürekli değişen bir evde koşuyordum.\" Düşünceli bir yorum ve her rüyayla büyüyen kişisel bir sembol haritası alırsın.",wellbeingExample:"Örneğin: \"İş yerinde zor bir konuşmadan sürekli kaçıyorum.\" Düşünmek için bir alan. Düzeltme yok, yargı yok.",morningExample:"Bir iki satır yeter, ya da boş bırak. Örneğin: \"Bugün büyük sunum var, kötü uyudum.\" Güne dair kısa, dengeleyici bir brifing alırsın.",checkinExample:"Günün sonunda sakin bir dakika. Zamanla ruh halinin ve temalarının örüntüleri görünür olur. Örneğin: \"Yorgun ama sakin. Bir arkadaşla güzel bir sohbet.\"",historyTitle:"Geçmişin",historyEmpty:"Burada henüz bir şey yok. Bu alandaki geçmiş seansların burada görünecek.",historyLoading:"Geçmişin yükleniyor...",historyError:"Geçmişin yüklenemedi. Lütfen tekrar dene.",historyClose:"Kapat",historyResumeNote:"Geçmiş bir seans. Yeni bir tane başlatmak için yazmaya başla.",symbolsTitle:"Sembollerin",symbolsEmpty:"Henüz sembol yok. Rüyalarını ve yansımalarını kaydettikçe, sende tekrar eden semboller burada toplanır.",symbolsLoading:"Sembollerin yükleniyor...",symbolsError:"Sembollerin yüklenemedi. Lütfen tekrar dene.",profileTitle:"Başlamadan önce",profileIntro:"Birkaç soru, Phi-Yo seni rüyaların, sabahların ve günlerin boyunca tanıyabilsin diye. Hiçbiri zorunlu değil, atlayıp sonra yanıtlayabilirsin.",profileQ1:"Hayatının hangi alanı şu sıralar seni en çok meşgul ediyor?",profileQ2:"Önemli kararları genelde nasıl alırsın: sezgiyle mi, uzun uzun düşünerek mi?",profileQ3:"Son zamanlarda aklından çıkmayan, tekrar eden bir düşünce var mı?",profileSave:"Kaydet ve devam et",profileSaving:"Kaydediliyor...",profileSkip:"Şimdilik atla",profileError:"Kaydedilemedi. Lütfen tekrar dene.",
   tagline:'Hesaplamalı rüya analizi ve esenlik.\nFreud for Machines temelinde.',
   emailPlaceholder:'E-posta adresiniz',authBtnText:'Giriş kodu gönder',authBtnSending:'Gönderiliyor…',
   authNote:'Phi-Yo bir öz-yansıma ve esenlik destek aracıdır; profesyonel bakımın yerini tutmaz.',
@@ -714,7 +737,7 @@ tr:{
   wellbeingName:'Esenlik',wellbeingDesc:'Günlük iç yaşamınız için psikanalitik bir alan. İlişkiler, duygular, sorular.',
   wellbeingWelcomeMode:'ESENLİK',wellbeingWelcomeText:'Bugün ne keşfetmek istersiniz?',wellbeingPlaceholder:'Aklınızda ne var?',
   morningName:'Sabah Brifingi',morningDesc:'Güne hazırlıklı başlayın. Son iç yaşamınızdan ve bugünün bağlamından çizilen kısa bir brifing.',
-  morningWelcomeMode:'SABAH BRİFİNGİ',morningAgendaLabel:'Günün ajandası (isteğe bağlı)',morningAgendaPlaceholder:'Toplantılar, görevler, etkinlikler… ya da boş bırakın.',
+  morningWelcomeText:"Önünüzdeki güne dair kısa bir brifing, son zamanlardaki iç dünyanızdan damıtılmış.",morningWelcomeMode:'SABAH BRİFİNGİ',morningAgendaLabel:'Günün ajandası (isteğe bağlı)',morningAgendaPlaceholder:'Toplantılar, görevler, etkinlikler… ya da boş bırakın.',
   morningBriefBtn:'Sabah brifingimi al',morningPlaceholder:'Gününüzü keşfetmeye devam edin…',morningLoading:'Sabah brifingiz hazırlanıyor…',
   checkinName:'Günlük Değerlendirme',checkinDesc:'Günün sonunda kısa bir düşünce anı. Neler oldu, neler önemliydi.',
   checkinWelcomeMode:'GÜNLÜK DEĞERLENDİRME',checkinWelcomeText:'Gününüz nasıl geçti?',checkinPlaceholder:'Bugünü anlatın…',
@@ -726,7 +749,7 @@ tr:{
   errorEmpty:'Boş yanıt alındı.',errorSpeech:'Bu tarayıcıda ses tanıma desteklenmiyor.',errorMic:'Kayıt başlatılamadı.',dupNotice:'Bunu zaten gönderdiniz. İşleniyor ve birazdan geçmişinizde görünecek.',sendingBusy:'Bir yanıt hazırlanıyor. Lütfen biraz bekleyin.'
 },
 de:{
-  taglineSub:"Ein computationales Modell des Geistes, gegründet auf psychoanalytischer Theorie.",dreamExample:"Zum Beispiel: „Ich lief durch ein Haus, das sich ständig veränderte.\" Sie erhalten eine durchdachte Deutung und eine Symbolkarte, die mit jedem Traum wächst.",wellbeingExample:"Zum Beispiel: „Ich vermeide ständig ein schwieriges Gespräch bei der Arbeit.\" Ein Raum zum Nachdenken. Kein Beheben, kein Urteilen.",morningExample:"Ein, zwei Zeilen genügen, oder lassen Sie es leer. Zum Beispiel: „Heute große Präsentation, schlecht geschlafen.\" Sie erhalten eine kurze, erdende Einstimmung auf den Tag.",checkinExample:"Eine stille Minute am Ende des Tages. Mit der Zeit werden die Muster Ihrer Stimmungen und Themen sichtbar. Zum Beispiel: „Müde, aber ruhig. Ein gutes Gespräch mit einem Freund.\"",historyTitle:"Ihr Verlauf",historyEmpty:"Hier ist noch nichts. Ihre vergangenen Sitzungen in diesem Bereich erscheinen hier.",historyLoading:"Ihr Verlauf wird geladen...",historyError:"Verlauf konnte nicht geladen werden. Bitte versuchen Sie es erneut.",historyClose:"Schließen",historyResumeNote:"Eine vergangene Sitzung. Beginnen Sie zu schreiben, um eine neue zu starten.",profileTitle:"Bevor wir beginnen",profileIntro:"Ein paar Fragen, damit Phi-Yo Sie durch Ihre Träume, Morgen und Tage kennenlernen kann. Nichts davon ist erforderlich, und Sie können überspringen und später antworten.",profileQ1:"Welcher Bereich Ihres Lebens beschäftigt Sie gerade am meisten?",profileQ2:"Wie treffen Sie wichtige Entscheidungen normalerweise: aus dem Bauch heraus oder nach langem Nachdenken?",profileQ3:"Gibt es einen wiederkehrenden Gedanken, der Sie in letzter Zeit begleitet?",profileSave:"Speichern und fortfahren",profileSaving:"Wird gespeichert...",profileSkip:"Vorerst überspringen",profileError:"Speichern fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  taglineSub:"Ein computationales Modell des Geistes, gegründet auf psychoanalytischer Theorie.",dreamExample:"Zum Beispiel: „Ich lief durch ein Haus, das sich ständig veränderte.\" Sie erhalten eine durchdachte Deutung und eine Symbolkarte, die mit jedem Traum wächst.",wellbeingExample:"Zum Beispiel: „Ich vermeide ständig ein schwieriges Gespräch bei der Arbeit.\" Ein Raum zum Nachdenken. Kein Beheben, kein Urteilen.",morningExample:"Ein, zwei Zeilen genügen, oder lassen Sie es leer. Zum Beispiel: „Heute große Präsentation, schlecht geschlafen.\" Sie erhalten eine kurze, erdende Einstimmung auf den Tag.",checkinExample:"Eine stille Minute am Ende des Tages. Mit der Zeit werden die Muster Ihrer Stimmungen und Themen sichtbar. Zum Beispiel: „Müde, aber ruhig. Ein gutes Gespräch mit einem Freund.\"",historyTitle:"Ihr Verlauf",historyEmpty:"Hier ist noch nichts. Ihre vergangenen Sitzungen in diesem Bereich erscheinen hier.",historyLoading:"Ihr Verlauf wird geladen...",historyError:"Verlauf konnte nicht geladen werden. Bitte versuchen Sie es erneut.",historyClose:"Schließen",historyResumeNote:"Eine vergangene Sitzung. Beginnen Sie zu schreiben, um eine neue zu starten.",symbolsTitle:"Ihre Symbole",symbolsEmpty:"Noch keine Symbole. Während Sie Träume und Reflexionen festhalten, sammeln sich hier die Symbole, die bei Ihnen wiederkehren.",symbolsLoading:"Ihre Symbole werden geladen...",symbolsError:"Symbole konnten nicht geladen werden. Bitte versuchen Sie es erneut.",profileTitle:"Bevor wir beginnen",profileIntro:"Ein paar Fragen, damit Phi-Yo Sie durch Ihre Träume, Morgen und Tage kennenlernen kann. Nichts davon ist erforderlich, und Sie können überspringen und später antworten.",profileQ1:"Welcher Bereich Ihres Lebens beschäftigt Sie gerade am meisten?",profileQ2:"Wie treffen Sie wichtige Entscheidungen normalerweise: aus dem Bauch heraus oder nach langem Nachdenken?",profileQ3:"Gibt es einen wiederkehrenden Gedanken, der Sie in letzter Zeit begleitet?",profileSave:"Speichern und fortfahren",profileSaving:"Wird gespeichert...",profileSkip:"Vorerst überspringen",profileError:"Speichern fehlgeschlagen. Bitte versuchen Sie es erneut.",
   tagline:'Computationale Traumanalyse und Wohlbefinden.\nBasierend auf Freud for Machines.',
   emailPlaceholder:'Ihre E-Mail-Adresse',authBtnText:'Anmeldecode senden',authBtnSending:'Wird gesendet…',
   authNote:'Phi-Yo ist ein Werkzeug zur Selbstreflexion und Wohlbefindensunterstützung, kein Ersatz für professionelle Betreuung.',
@@ -740,7 +763,7 @@ de:{
   wellbeingName:'Wohlbefinden',wellbeingDesc:'Ein psychoanalytischer Raum für Ihr alltägliches Innenleben. Beziehungen, Emotionen, Fragen.',
   wellbeingWelcomeMode:'WOHLBEFINDEN',wellbeingWelcomeText:'Was möchten Sie heute erkunden?',wellbeingPlaceholder:'Was beschäftigt Sie?',
   morningName:'Morgen-Briefing',morningDesc:'Starten Sie vorbereitet in den Tag. Ein kurzes Briefing aus Ihrem jüngsten Innenleben und dem Kontext des heutigen Tages.',
-  morningWelcomeMode:'MORGEN-BRIEFING',morningAgendaLabel:'Heutige Agenda (optional)',morningAgendaPlaceholder:'Meetings, Aufgaben, Ereignisse… oder leer lassen.',
+  morningWelcomeText:"Eine kurze Einstimmung auf den Tag, aus Ihrem jüngsten Innenleben geschöpft.",morningWelcomeMode:'MORGEN-BRIEFING',morningAgendaLabel:'Heutige Agenda (optional)',morningAgendaPlaceholder:'Meetings, Aufgaben, Ereignisse… oder leer lassen.',
   morningBriefBtn:'Mein Morgen-Briefing abrufen',morningPlaceholder:'Erkunden Sie Ihren Tag weiter…',morningLoading:'Ihr Morgen-Briefing wird vorbereitet…',
   checkinName:'Tägliches Check-in',checkinDesc:'Ein kurzer Moment der Reflexion am Ende Ihres Tages. Was geschah, was zählte.',
   checkinWelcomeMode:'TÄGLICHES CHECK-IN',checkinWelcomeText:'Wie war Ihr Tag?',checkinPlaceholder:'Erzählen Sie mir von heute…',
@@ -752,7 +775,7 @@ de:{
   errorEmpty:'Leere Antwort erhalten.',errorSpeech:'Spracherkennung wird in diesem Browser nicht unterstützt.',errorMic:'Die Aufnahme konnte nicht gestartet werden.',dupNotice:'Sie haben dies bereits gesendet. Es wird verarbeitet und erscheint in Kürze in Ihrem Verlauf.',sendingBusy:'Eine Antwort wird vorbereitet. Bitte warten Sie einen Moment.'
 },
 es:{
-  taglineSub:"Un modelo computacional de la mente, basado en la teoría psicoanalítica.",dreamExample:"Por ejemplo: «Corría por una casa que cambiaba sin cesar.» Recibirás una interpretación reflexiva y un mapa de símbolos que crece con cada sueño.",wellbeingExample:"Por ejemplo: «Evito una y otra vez una conversación difícil en el trabajo.» Un espacio para pensar. Sin corregir, sin juzgar.",morningExample:"Basta una línea o dos, o déjalo vacío. Por ejemplo: «Gran presentación hoy, dormí mal.» Recibirás un breve resumen que te ancla para el día.",checkinExample:"Un minuto de calma al final del día. Con el tiempo, los patrones de tus estados de ánimo y temas se hacen visibles. Por ejemplo: «Cansado pero tranquilo. Una buena charla con un amigo.»",historyTitle:"Tu historial",historyEmpty:"Aquí todavía no hay nada. Tus sesiones pasadas en este espacio aparecerán aquí.",historyLoading:"Cargando tu historial...",historyError:"No se pudo cargar tu historial. Inténtalo de nuevo.",historyClose:"Cerrar",historyResumeNote:"Una sesión pasada. Empieza a escribir para iniciar una nueva.",profileTitle:"Antes de empezar",profileIntro:"Unas preguntas, para que Phi-Yo pueda conocerte a través de tus sueños, tus mañanas y tus días. Nada es obligatorio, y puedes omitirlo y responder más tarde.",profileQ1:"¿Qué área de tu vida te ocupa más en este momento?",profileQ2:"¿Cómo sueles tomar las decisiones importantes: por intuición o pensándolas largamente?",profileQ3:"¿Hay algún pensamiento recurrente que te acompañe últimamente?",profileSave:"Guardar y continuar",profileSaving:"Guardando...",profileSkip:"Omitir por ahora",profileError:"No se pudo guardar. Inténtalo de nuevo.",
+  taglineSub:"Un modelo computacional de la mente, basado en la teoría psicoanalítica.",dreamExample:"Por ejemplo: «Corría por una casa que cambiaba sin cesar.» Recibirás una interpretación reflexiva y un mapa de símbolos que crece con cada sueño.",wellbeingExample:"Por ejemplo: «Evito una y otra vez una conversación difícil en el trabajo.» Un espacio para pensar. Sin corregir, sin juzgar.",morningExample:"Basta una línea o dos, o déjalo vacío. Por ejemplo: «Gran presentación hoy, dormí mal.» Recibirás un breve resumen que te ancla para el día.",checkinExample:"Un minuto de calma al final del día. Con el tiempo, los patrones de tus estados de ánimo y temas se hacen visibles. Por ejemplo: «Cansado pero tranquilo. Una buena charla con un amigo.»",historyTitle:"Tu historial",historyEmpty:"Aquí todavía no hay nada. Tus sesiones pasadas en este espacio aparecerán aquí.",historyLoading:"Cargando tu historial...",historyError:"No se pudo cargar tu historial. Inténtalo de nuevo.",historyClose:"Cerrar",historyResumeNote:"Una sesión pasada. Empieza a escribir para iniciar una nueva.",symbolsTitle:"Tus símbolos",symbolsEmpty:"Aún no hay símbolos. A medida que registres sueños y reflexiones, los símbolos que se repiten para ti se reunirán aquí.",symbolsLoading:"Cargando tus símbolos...",symbolsError:"No se pudieron cargar tus símbolos. Inténtalo de nuevo.",profileTitle:"Antes de empezar",profileIntro:"Unas preguntas, para que Phi-Yo pueda conocerte a través de tus sueños, tus mañanas y tus días. Nada es obligatorio, y puedes omitirlo y responder más tarde.",profileQ1:"¿Qué área de tu vida te ocupa más en este momento?",profileQ2:"¿Cómo sueles tomar las decisiones importantes: por intuición o pensándolas largamente?",profileQ3:"¿Hay algún pensamiento recurrente que te acompañe últimamente?",profileSave:"Guardar y continuar",profileSaving:"Guardando...",profileSkip:"Omitir por ahora",profileError:"No se pudo guardar. Inténtalo de nuevo.",
   tagline:'Análisis computacional de sueños y bienestar.\nBasado en Freud for Machines.',
   emailPlaceholder:'Tu dirección de correo',authBtnText:'Enviarme un código de acceso',authBtnSending:'Enviando…',
   authNote:'Phi-Yo es una herramienta de autorreflexión y apoyo al bienestar, no un sustituto de la atención profesional.',
@@ -766,7 +789,7 @@ es:{
   wellbeingName:'Bienestar',wellbeingDesc:'Un espacio psicoanalítico para tu vida interior cotidiana. Relaciones, emociones, preguntas.',
   wellbeingWelcomeMode:'BIENESTAR',wellbeingWelcomeText:'¿Qué te gustaría explorar hoy?',wellbeingPlaceholder:'¿Qué tienes en mente?',
   morningName:'Informe matutino',morningDesc:'Empieza el día preparado. Un breve informe de tu vida interior reciente y el contexto de hoy.',
-  morningWelcomeMode:'INFORME MATUTINO',morningAgendaLabel:'Agenda de hoy (opcional)',morningAgendaPlaceholder:'Reuniones, tareas, eventos… o déjalo vacío.',
+  morningWelcomeText:"Un resumen para la jornada que empieza, extraído de tu vida interior reciente.",morningWelcomeMode:'INFORME MATUTINO',morningAgendaLabel:'Agenda de hoy (opcional)',morningAgendaPlaceholder:'Reuniones, tareas, eventos… o déjalo vacío.',
   morningBriefBtn:'Obtener mi informe matutino',morningPlaceholder:'Sigue explorando tu día…',morningLoading:'Preparando tu informe matutino…',
   checkinName:'Revisión diaria',checkinDesc:'Un breve momento de reflexión al final del día. Qué pasó, qué importó.',
   checkinWelcomeMode:'REVISIÓN DIARIA',checkinWelcomeText:'¿Cómo fue tu día?',checkinPlaceholder:'Cuéntame sobre hoy…',
@@ -778,7 +801,7 @@ es:{
   errorEmpty:'Se recibió una respuesta vacía.',errorSpeech:'El reconocimiento de voz no está disponible en este navegador.',errorMic:'No se pudo iniciar la grabación.',dupNotice:'Ya enviaste esto. Se está procesando y aparecerá en tu historial en breve.',sendingBusy:'Se está preparando una respuesta. Espera un momento, por favor.'
 },
 ja:{
-  taglineSub:"精神分析理論に基づく、心の計算モデル。",dreamExample:"例:「変わり続ける家の中を走っていた。」 丁寧な解釈と、夢のたびに育つあなただけのシンボルマップが得られます。",wellbeingExample:"例:「職場での難しい会話をずっと避けている。」 考えを巡らせるための場所。直そうとせず、裁きません。",morningExample:"一、二行で十分です。空欄でも構いません。例:「今日は大事なプレゼン、よく眠れなかった。」 一日のための短く落ち着いた要約が得られます。",checkinExample:"一日の終わりの静かな一分。時とともに、あなたの気分やテーマのパターンが見えてきます。例:「疲れたけれど穏やか。友人と良い話ができた。」",historyTitle:"あなたの履歴",historyEmpty:"まだ何もありません。この空間での過去のセッションがここに表示されます。",historyLoading:"履歴を読み込んでいます...",historyError:"履歴を読み込めませんでした。もう一度お試しください。",historyClose:"閉じる",historyResumeNote:"過去のセッションです。入力を始めると新しいセッションが始まります。",profileTitle:"始める前に",profileIntro:"いくつかの質問です。Phi-Yoがあなたの夢、朝、日々を通してあなたを知っていけるように。どれも必須ではなく、スキップして後で答えることもできます。",profileQ1:"今、あなたの人生で最も心を占めているのはどの領域ですか?",profileQ2:"重要な決断は普段どのように下しますか:直感で、それともじっくり考えて?",profileQ3:"最近ずっと頭から離れない、繰り返し浮かぶ思いはありますか?",profileSave:"保存して続ける",profileSaving:"保存しています...",profileSkip:"今はスキップ",profileError:"保存できませんでした。もう一度お試しください。",
+  taglineSub:"精神分析理論に基づく、心の計算モデル。",dreamExample:"例:「変わり続ける家の中を走っていた。」 丁寧な解釈と、夢のたびに育つあなただけのシンボルマップが得られます。",wellbeingExample:"例:「職場での難しい会話をずっと避けている。」 考えを巡らせるための場所。直そうとせず、裁きません。",morningExample:"一、二行で十分です。空欄でも構いません。例:「今日は大事なプレゼン、よく眠れなかった。」 一日のための短く落ち着いた要約が得られます。",checkinExample:"一日の終わりの静かな一分。時とともに、あなたの気分やテーマのパターンが見えてきます。例:「疲れたけれど穏やか。友人と良い話ができた。」",historyTitle:"あなたの履歴",historyEmpty:"まだ何もありません。この空間での過去のセッションがここに表示されます。",historyLoading:"履歴を読み込んでいます...",historyError:"履歴を読み込めませんでした。もう一度お試しください。",historyClose:"閉じる",historyResumeNote:"過去のセッションです。入力を始めると新しいセッションが始まります。",symbolsTitle:"あなたのシンボル",symbolsEmpty:"まだシンボルがありません。夢や振り返りを記録していくと、繰り返し現れるシンボルがここに集まります。",symbolsLoading:"シンボルを読み込んでいます...",symbolsError:"シンボルを読み込めませんでした。もう一度お試しください。",profileTitle:"始める前に",profileIntro:"いくつかの質問です。Phi-Yoがあなたの夢、朝、日々を通してあなたを知っていけるように。どれも必須ではなく、スキップして後で答えることもできます。",profileQ1:"今、あなたの人生で最も心を占めているのはどの領域ですか?",profileQ2:"重要な決断は普段どのように下しますか:直感で、それともじっくり考えて?",profileQ3:"最近ずっと頭から離れない、繰り返し浮かぶ思いはありますか?",profileSave:"保存して続ける",profileSaving:"保存しています...",profileSkip:"今はスキップ",profileError:"保存できませんでした。もう一度お試しください。",
   tagline:'計算論的夢分析とウェルビーイング。\nFreud for Machines に基づく。',
   emailPlaceholder:'メールアドレス',authBtnText:'サインインコードを送る',authBtnSending:'送信中…',
   authNote:'Phi-Yoは自己省察とウェルビーイングのサポートツールであり、専門的なケアの代替ではありません。',
@@ -792,7 +815,7 @@ ja:{
   wellbeingName:'ウェルビーイング',wellbeingDesc:'日常の内面生活のための精神分析的空間。関係、感情、疑問。',
   wellbeingWelcomeMode:'ウェルビーイング',wellbeingWelcomeText:'今日は何を探求しますか？',wellbeingPlaceholder:'何が気になっていますか？',
   morningName:'朝のブリーフィング',morningDesc:'準備して一日を始めましょう。近最の内面生活と今日の状況から引き出した概要です。',
-  morningWelcomeMode:'朝のブリーフィング',morningAgendaLabel:'今日の予定（任意）',morningAgendaPlaceholder:'会議、タスク、イベント…または空白のまま。',
+  morningWelcomeText:"これからの一日のための短い要約。あなたの最近の内面から紡がれます。",morningWelcomeMode:'朝のブリーフィング',morningAgendaLabel:'今日の予定（任意）',morningAgendaPlaceholder:'会議、タスク、イベント…または空白のまま。',
   morningBriefBtn:'朝のブリーフィングを取得',morningPlaceholder:'一日の探求を続けてください…',morningLoading:'朝のブリーフィングを準備中…',
   checkinName:'デイリーチェックイン',checkinDesc:'一日の終わりの短い振り返りの時間。何が起きて、何が重要だったか。',
   checkinWelcomeMode:'デイリーチェックイン',checkinWelcomeText:'今日はどうでしたか？',checkinPlaceholder:'今日について教えてください…',
@@ -804,7 +827,7 @@ ja:{
   errorEmpty:'空のレスポンスが返されました。',errorSpeech:'このブラウザでは音声認識がサポートされていません。',errorMic:'録音を開始できませんでした。',dupNotice:'これはすでに送信されています。処理中で、まもなく履歴に表示されます。',sendingBusy:'応答を準備しています。少々お待ちください。'
 },
 ru:{
-  taglineSub:"Вычислительная модель психики, основанная на психоаналитической теории.",dreamExample:"Например: «Я бежал по дому, который всё время менялся.» Вы получите вдумчивое толкование и карту символов, которая растёт с каждым сном.",wellbeingExample:"Например: «Я всё время избегаю трудного разговора на работе.» Пространство, чтобы всё обдумать. Без исправлений, без осуждения.",morningExample:"Достаточно строки-двух, или оставьте пустым. Например: «Сегодня важная презентация, плохо спал.» Вы получите короткий, заземляющий настрой на день.",checkinExample:"Тихая минута в конце дня. Со временем становятся видны закономерности вашего настроения и тем. Например: «Устал, но спокоен. Хороший разговор с другом.»",historyTitle:"Ваша история",historyEmpty:"Здесь пока пусто. Ваши прошлые сессии в этом пространстве появятся здесь.",historyLoading:"Загрузка вашей истории...",historyError:"Не удалось загрузить историю. Пожалуйста, попробуйте снова.",historyClose:"Закрыть",historyResumeNote:"Прошлая сессия. Начните печатать, чтобы начать новую.",profileTitle:"Прежде чем начать",profileIntro:"Несколько вопросов, чтобы Phi-Yo узнавал вас через ваши сны, утра и дни. Ничего не обязательно, можно пропустить и ответить позже.",profileQ1:"Какая область вашей жизни занимает вас больше всего сейчас?",profileQ2:"Как вы обычно принимаете важные решения: интуитивно или долго обдумывая?",profileQ3:"Есть ли навязчивая мысль, которая не покидает вас в последнее время?",profileSave:"Сохранить и продолжить",profileSaving:"Сохранение...",profileSkip:"Пропустить пока",profileError:"Не удалось сохранить. Пожалуйста, попробуйте снова.",
+  taglineSub:"Вычислительная модель психики, основанная на психоаналитической теории.",dreamExample:"Например: «Я бежал по дому, который всё время менялся.» Вы получите вдумчивое толкование и карту символов, которая растёт с каждым сном.",wellbeingExample:"Например: «Я всё время избегаю трудного разговора на работе.» Пространство, чтобы всё обдумать. Без исправлений, без осуждения.",morningExample:"Достаточно строки-двух, или оставьте пустым. Например: «Сегодня важная презентация, плохо спал.» Вы получите короткий, заземляющий настрой на день.",checkinExample:"Тихая минута в конце дня. Со временем становятся видны закономерности вашего настроения и тем. Например: «Устал, но спокоен. Хороший разговор с другом.»",historyTitle:"Ваша история",historyEmpty:"Здесь пока пусто. Ваши прошлые сессии в этом пространстве появятся здесь.",historyLoading:"Загрузка вашей истории...",historyError:"Не удалось загрузить историю. Пожалуйста, попробуйте снова.",historyClose:"Закрыть",historyResumeNote:"Прошлая сессия. Начните печатать, чтобы начать новую.",symbolsTitle:"Ваши символы",symbolsEmpty:"Пока нет символов. По мере того как вы записываете сны и размышления, повторяющиеся символы собираются здесь.",symbolsLoading:"Загрузка ваших символов...",symbolsError:"Не удалось загрузить символы. Пожалуйста, попробуйте снова.",profileTitle:"Прежде чем начать",profileIntro:"Несколько вопросов, чтобы Phi-Yo узнавал вас через ваши сны, утра и дни. Ничего не обязательно, можно пропустить и ответить позже.",profileQ1:"Какая область вашей жизни занимает вас больше всего сейчас?",profileQ2:"Как вы обычно принимаете важные решения: интуитивно или долго обдумывая?",profileQ3:"Есть ли навязчивая мысль, которая не покидает вас в последнее время?",profileSave:"Сохранить и продолжить",profileSaving:"Сохранение...",profileSkip:"Пропустить пока",profileError:"Не удалось сохранить. Пожалуйста, попробуйте снова.",
   tagline:'Вычислительный анализ снов и благополучие.\nОснован на Freud for Machines.',
   emailPlaceholder:'Ваш адрес электронной почты',authBtnText:'Отправить код для входа',authBtnSending:'Отправка…',
   authNote:'Phi-Yo: инструмент для саморефлексии и поддержки благополучия, а не замена профессиональной помощи.',
@@ -818,7 +841,7 @@ ru:{
   wellbeingName:'Благополучие',wellbeingDesc:'Психоаналитическое пространство для вашей повседневной внутренней жизни. Отношения, эмоции, вопросы.',
   wellbeingWelcomeMode:'БЛАГОПОЛУЧИЕ',wellbeingWelcomeText:'Что вы хотите исследовать сегодня?',wellbeingPlaceholder:'Что у вас на уме?',
   morningName:'Утренний брифинг',morningDesc:'Начните день подготовленным. Краткий брифинг из вашей недавней внутренней жизни и контекста дня.',
-  morningWelcomeMode:'УТРЕННИЙ БРИФИНГ',morningAgendaLabel:'Повестка дня (необязательно)',morningAgendaPlaceholder:'Встречи, задачи, события… или оставьте пустым.',
+  morningWelcomeText:"Краткий настрой на предстоящий день, взятый из вашей недавней внутренней жизни.",morningWelcomeMode:'УТРЕННИЙ БРИФИНГ',morningAgendaLabel:'Повестка дня (необязательно)',morningAgendaPlaceholder:'Встречи, задачи, события… или оставьте пустым.',
   morningBriefBtn:'Получить утренний брифинг',morningPlaceholder:'Продолжайте исследовать свой день…',morningLoading:'Подготовка утреннего брифинга…',
   checkinName:'Ежедневный чек-ин',checkinDesc:'Краткий момент рефлексии в конце дня. Что произошло, что было важно.',
   checkinWelcomeMode:'ЕЖЕДНЕВНЫЙ ЧЕК-ИН',checkinWelcomeText:'Как прошёл ваш день?',checkinPlaceholder:'Расскажите о сегодняшнем дне…',
@@ -830,7 +853,7 @@ ru:{
   errorEmpty:'Получен пустой ответ.',errorSpeech:'Распознавание речи не поддерживается в этом браузере.',errorMic:'Не удалось начать запись.',dupNotice:'Вы уже отправили это. Оно обрабатывается и скоро появится в вашей истории.',sendingBusy:'Ответ готовится. Пожалуйста, подождите немного.'
 },
 ar:{
-  taglineSub:"نموذج حوسبي للنفس، مبني على النظرية التحليلية النفسية.",dreamExample:"مثال: «كنت أركض في منزل يتغيّر باستمرار.» ستحصل على تفسير متأنٍّ، وخريطة رموز تنمو مع كل حلم.",wellbeingExample:"مثال: «أتجنّب باستمرار محادثة صعبة في العمل.» مساحة للتفكير. بلا إصلاح، بلا حُكم.",morningExample:"سطر أو سطران يكفيان، أو اتركه فارغًا. مثال: «عرض تقديمي مهم اليوم، ونمت بشكل سيئ.» ستحصل على ملخص قصير يثبّتك ليومك.",checkinExample:"دقيقة هادئة في نهاية اليوم. مع الوقت، تتّضح أنماط مزاجك وموضوعاتك. مثال: «متعب لكن هادئ. حديث جميل مع صديق.»",historyTitle:"سجلّك",historyEmpty:"لا شيء هنا بعد. ستظهر جلساتك السابقة في هذه المساحة هنا.",historyLoading:"جارٍ تحميل سجلّك...",historyError:"تعذّر تحميل سجلّك. يرجى المحاولة مرة أخرى.",historyClose:"إغلاق",historyResumeNote:"جلسة سابقة. ابدأ الكتابة لبدء جلسة جديدة.",profileTitle:"قبل أن نبدأ",profileIntro:"بضعة أسئلة، كي يتعرّف Phi-Yo عليك عبر أحلامك وصباحاتك وأيامك. لا شيء إلزامي، ويمكنك التخطّي والإجابة لاحقًا.",profileQ1:"أي مجال في حياتك يشغلك أكثر في هذه الفترة؟",profileQ2:"كيف تتّخذ القرارات المهمة عادةً: بالحدس أم بالتفكير المطوّل؟",profileQ3:"هل هناك فكرة متكرّرة لازمتك مؤخرًا؟",profileSave:"احفظ وتابع",profileSaving:"جارٍ الحفظ...",profileSkip:"تخطَّ الآن",profileError:"تعذّر الحفظ. يرجى المحاولة مرة أخرى.",
+  taglineSub:"نموذج حوسبي للنفس، مبني على النظرية التحليلية النفسية.",dreamExample:"مثال: «كنت أركض في منزل يتغيّر باستمرار.» ستحصل على تفسير متأنٍّ، وخريطة رموز تنمو مع كل حلم.",wellbeingExample:"مثال: «أتجنّب باستمرار محادثة صعبة في العمل.» مساحة للتفكير. بلا إصلاح، بلا حُكم.",morningExample:"سطر أو سطران يكفيان، أو اتركه فارغًا. مثال: «عرض تقديمي مهم اليوم، ونمت بشكل سيئ.» ستحصل على ملخص قصير يثبّتك ليومك.",checkinExample:"دقيقة هادئة في نهاية اليوم. مع الوقت، تتّضح أنماط مزاجك وموضوعاتك. مثال: «متعب لكن هادئ. حديث جميل مع صديق.»",historyTitle:"سجلّك",historyEmpty:"لا شيء هنا بعد. ستظهر جلساتك السابقة في هذه المساحة هنا.",historyLoading:"جارٍ تحميل سجلّك...",historyError:"تعذّر تحميل سجلّك. يرجى المحاولة مرة أخرى.",historyClose:"إغلاق",historyResumeNote:"جلسة سابقة. ابدأ الكتابة لبدء جلسة جديدة.",symbolsTitle:"رموزك",symbolsEmpty:"لا رموز بعد. كلما دوّنت أحلامك وتأملاتك، تتجمع هنا الرموز التي تتكرر لديك.",symbolsLoading:"جارٍ تحميل رموزك...",symbolsError:"تعذّر تحميل رموزك. يرجى المحاولة مرة أخرى.",profileTitle:"قبل أن نبدأ",profileIntro:"بضعة أسئلة، كي يتعرّف Phi-Yo عليك عبر أحلامك وصباحاتك وأيامك. لا شيء إلزامي، ويمكنك التخطّي والإجابة لاحقًا.",profileQ1:"أي مجال في حياتك يشغلك أكثر في هذه الفترة؟",profileQ2:"كيف تتّخذ القرارات المهمة عادةً: بالحدس أم بالتفكير المطوّل؟",profileQ3:"هل هناك فكرة متكرّرة لازمتك مؤخرًا؟",profileSave:"احفظ وتابع",profileSaving:"جارٍ الحفظ...",profileSkip:"تخطَّ الآن",profileError:"تعذّر الحفظ. يرجى المحاولة مرة أخرى.",
   tagline:'تحليل الأحلام الحوسبي والعافية.\nمبني على Freud for Machines.',
   emailPlaceholder:'عنوان بريدك الإلكتروني',authBtnText:'أرسل لي رمز الدخول',authBtnSending:'جارٍ الإرسال…',
   authNote:'Phi-Yo أداة للتأمل الذاتي ودعم العافية، وليست بديلاً عن الرعاية المهنية.',
@@ -844,7 +867,7 @@ ar:{
   wellbeingName:'العافية',wellbeingDesc:'فضاء تحليلي نفسي لحياتك الداخلية اليومية. العلاقات والمشاعر والأسئلة.',
   wellbeingWelcomeMode:'العافية',wellbeingWelcomeText:'ماذا تريد أن تستكشف اليوم؟',wellbeingPlaceholder:'ما الذي يدور في ذهنك؟',
   morningName:'إحاطة الصباح',morningDesc:'ابدأ يومك مستعداً. إحاطة مختصرة مستمدة من حياتك الداخلية الأخيرة وسياق اليوم.',
-  morningWelcomeMode:'إحاطة الصباح',morningAgendaLabel:'أجندة اليوم (اختياري)',morningAgendaPlaceholder:'اجتماعات، مهام، أحداث… أو اتركه فارغاً.',
+  morningWelcomeText:"إحاطة موجزة لليوم المقبل، مستمدة من حياتك الداخلية الأخيرة.",morningWelcomeMode:'إحاطة الصباح',morningAgendaLabel:'أجندة اليوم (اختياري)',morningAgendaPlaceholder:'اجتماعات، مهام، أحداث… أو اتركه فارغاً.',
   morningBriefBtn:'الحصول على إحاطة الصباح',morningPlaceholder:'تابع استكشاف يومك…',morningLoading:'جارٍ تحضير إحاطة الصباح…',
   checkinName:'المراجعة اليومية',checkinDesc:'لحظة تأمل قصيرة في نهاية يومك. ما الذي جرى وما الذي أهمّ.',
   checkinWelcomeMode:'المراجعة اليومية',checkinWelcomeText:'كيف كان يومك؟',checkinPlaceholder:'حدثني عن اليوم…',
@@ -856,7 +879,7 @@ ar:{
   errorEmpty:'تم استلام استجابة فارغة.',errorSpeech:'التعرف على الكلام غير مدعوم في هذا المتصفح.',errorMic:'تعذّر بدء التسجيل.',dupNotice:'لقد أرسلت هذا بالفعل. تتم معالجته وسيظهر في سجلّك قريبًا.',sendingBusy:'يتم إعداد الرد. يرجى الانتظار لحظة.'
 },
 zh:{
-  taglineSub:"一个关于心智的计算模型，建立在精神分析理论之上。",dreamExample:"例如：「我在一座不断变化的房子里奔跑。」你会得到一份用心的解读，以及一张随每个梦境成长的个人符号图谱。",wellbeingExample:"例如：「我一直在回避工作中一场艰难的对话。」一个思考的空间。不评判，不急于解决。",morningExample:"一两句话就够了，也可以留空。例如：「今天有重要演示，没睡好。」你会得到一段简短、让你安定下来的当日简报。",checkinExample:"一天结束时安静的一分钟。随着时间推移，你情绪与主题的规律会逐渐显现。例如：「累但平静。和朋友聊得很好。」",historyTitle:"你的历史",historyEmpty:"这里还什么都没有。你在此空间的过往会话将显示在这里。",historyLoading:"正在加载你的历史…",historyError:"无法加载你的历史。请重试。",historyClose:"关闭",historyResumeNote:"一段过往会话。开始输入即可开启新的会话。",profileTitle:"在开始之前",profileIntro:"几个问题，让 Phi-Yo 能在你的梦境、清晨与日常中逐渐了解你。这些都不是必填，你可以跳过，稍后再回答。",profileQ1:"现在你生活中哪个方面最占据你的心思？",profileQ2:"你通常如何做重要决定：凭直觉，还是反复思量？",profileQ3:"最近有没有一个反复萦绕的念头？",profileSave:"保存并继续",profileSaving:"正在保存…",profileSkip:"暂时跳过",profileError:"保存失败。请重试。",
+  taglineSub:"一个关于心智的计算模型，建立在精神分析理论之上。",dreamExample:"例如：「我在一座不断变化的房子里奔跑。」你会得到一份用心的解读，以及一张随每个梦境成长的个人符号图谱。",wellbeingExample:"例如：「我一直在回避工作中一场艰难的对话。」一个思考的空间。不评判，不急于解决。",morningExample:"一两句话就够了，也可以留空。例如：「今天有重要演示，没睡好。」你会得到一段简短、让你安定下来的当日简报。",checkinExample:"一天结束时安静的一分钟。随着时间推移，你情绪与主题的规律会逐渐显现。例如：「累但平静。和朋友聊得很好。」",historyTitle:"你的历史",historyEmpty:"这里还什么都没有。你在此空间的过往会话将显示在这里。",historyLoading:"正在加载你的历史…",historyError:"无法加载你的历史。请重试。",historyClose:"关闭",historyResumeNote:"一段过往会话。开始输入即可开启新的会话。",symbolsTitle:"你的符号",symbolsEmpty:"还没有符号。随着你记录梦境与反思，反复出现的符号会汇集在这里。",symbolsLoading:"正在加载你的符号…",symbolsError:"无法加载你的符号。请重试。",profileTitle:"在开始之前",profileIntro:"几个问题，让 Phi-Yo 能在你的梦境、清晨与日常中逐渐了解你。这些都不是必填，你可以跳过，稍后再回答。",profileQ1:"现在你生活中哪个方面最占据你的心思？",profileQ2:"你通常如何做重要决定：凭直觉，还是反复思量？",profileQ3:"最近有没有一个反复萦绕的念头？",profileSave:"保存并继续",profileSaving:"正在保存…",profileSkip:"暂时跳过",profileError:"保存失败。请重试。",
   tagline:'计算梦境分析与身心健康。\n基于《Freud for Machines》。',
   emailPlaceholder:'您的电子邮箱地址',authBtnText:'发送登录验证码',authBtnSending:'发送中…',
   authNote:'Phi-Yo 是一款自我反思和健康支持工具，不能替代专业护理。',
@@ -870,7 +893,7 @@ zh:{
   wellbeingName:'身心健康',wellbeingDesc:'为您日常内心生活提供的精神分析空间。关系、情感、疑问。',
   wellbeingWelcomeMode:'身心健康',wellbeingWelcomeText:'您今天想探索什么？',wellbeingPlaceholder:'您在想什么？',
   morningName:'晨间简报',morningDesc:'有备而来迎接新的一天。从您近期的内心生活和今日背景中提炼的简短简报。',
-  morningWelcomeMode:'晨间简报',morningAgendaLabel:'今日议程（可选）',morningAgendaPlaceholder:'会议、任务、活动…或留空。',
+  morningWelcomeText:"为即将到来的一天准备的简短简报，源自你近来的内心生活。",morningWelcomeMode:'晨间简报',morningAgendaLabel:'今日议程（可选）',morningAgendaPlaceholder:'会议、任务、活动…或留空。',
   morningBriefBtn:'获取晨间简报',morningPlaceholder:'继续探索您的一天…',morningLoading:'正在准备晨间简报…',
   checkinName:'每日记录',checkinDesc:'在一天结束时进行简短的自我反思。发生了什么，什么是重要的。',
   checkinWelcomeMode:'每日记录',checkinWelcomeText:'您今天过得怎么样？',checkinPlaceholder:'告诉我今天的事…',
@@ -1458,6 +1481,67 @@ function renderHistoryEntry(en) {
 
 $('historyBtn').addEventListener('click', openHistory);
 $('historyCloseBtn').addEventListener('click', closeHistory);
+
+/* ══ Symbols ══ */
+function openSymbols() {
+  var panel = $('symbolsPanel'), bodyEl = $('symbolsBody');
+  $('symbolsTitleEl').textContent = s('symbolsTitle');
+  bodyEl.innerHTML = '<div class="history-loading">' + escHtml(s('symbolsLoading')) + '</div>';
+  panel.classList.add('show');
+  panel.setAttribute('aria-hidden', 'false');
+  var reqJwt = state.jwt;
+  apiCall(URLS.history, { mode: 'symbols' }, true, function(err, res) {
+    // Session/staleness guard: drop a late response if the session changed
+    // (logout then a different login) or the panel was closed meanwhile, so
+    // one account can never render into another account's open panel.
+    if (state.jwt !== reqJwt || !panel.classList.contains('show')) return;
+    if (err || !res || !res.success) {
+      bodyEl.innerHTML = '<div class="history-empty">' + escHtml(s('symbolsError')) + '</div>';
+      return;
+    }
+    var entries = (res.entries || []).filter(function(en){
+      // Defence in depth for the "symbols carry no free text / no PII" contract:
+      // a symbol is a short single token, so drop anything empty or unusually long.
+      var sym = (en.symbol || '').trim();
+      return sym && sym.length <= 40;
+    });
+    if (!entries.length) {
+      bodyEl.innerHTML = '<div class="history-empty">' + escHtml(s('symbolsEmpty')) + '</div>';
+      return;
+    }
+    var maxOcc = 1;
+    entries.forEach(function(en){ var o = parseInt(en.occurrences, 10) || 0; if (o > maxOcc) maxOcc = o; });
+    bodyEl.innerHTML = '';
+    entries.forEach(function(en) {
+      var occ = parseInt(en.occurrences, 10) || 0;
+      var row = document.createElement('div');
+      row.className = 'symbol-item';
+      var name = document.createElement('span');
+      name.className = 'symbol-name';
+      name.textContent = en.symbol || '';
+      var barBg = document.createElement('div');
+      barBg.className = 'symbol-bar-bg';
+      var barFill = document.createElement('div');
+      barFill.className = 'symbol-bar-fill';
+      barFill.style.width = occ > 0 ? Math.max(8, Math.round(occ / maxOcc * 100)) + '%' : '0%';
+      barBg.appendChild(barFill);
+      var count = document.createElement('span');
+      count.className = 'symbol-count';
+      count.textContent = String(occ);
+      row.appendChild(name);
+      row.appendChild(barBg);
+      row.appendChild(count);
+      bodyEl.appendChild(row);
+    });
+  });
+}
+function closeSymbols() {
+  var p = $('symbolsPanel');
+  p.classList.remove('show');
+  p.setAttribute('aria-hidden', 'true');
+}
+$('symbolsBtn').addEventListener('click', openSymbols);
+$('symbolsCloseBtn').addEventListener('click', closeSymbols);
 
 /* ══ Morning Teller ══ */
 function requestMorningBrief() {
