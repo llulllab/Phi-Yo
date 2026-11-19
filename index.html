@@ -1657,6 +1657,11 @@ function doSend() {
       if (!switched) showError(s('dupNotice'));
       return;
     }
+    // Plan limits enforced by the server (monthly free dream limit, paid-only mode): open the paywall. The typed text is restored.
+    if (res && res.success === false && (res.error === 'free_limit' || res.error === 'paid_only')) {
+      if (!switched) { rollback(); showScreen('paywall'); }
+      return;
+    }
     if (err || !res || !res.success) { if (!switched) { rollback(); showError(s('errorGeneral')); } return; }
     var responseText = res.interpretation || res.response || res.brief || '';
     if (!responseText) { if (!switched) { rollback(); showError(s('errorEmpty')); } return; }
