@@ -1196,7 +1196,7 @@ $('otpVerifyBtn').addEventListener('click', verifyOTP);
 
 /* ══ Subscription ══ */
 function checkSubscriptionAndRoute(allowRetry) {
-  apiCall(URLS.subscribeValidate, { email: state.email }, false, function(err, res) {
+  apiCall(URLS.subscribeValidate, { email: state.email }, true, function(err, res) {
     if (err || !res) {
       // Network error: default to paywall
       showScreen('paywall');
@@ -1921,7 +1921,7 @@ $('btnContinueFree').addEventListener('click', function() {
   var btn = this;
   btn.disabled = true;
   btn.textContent = 'Setting up...';
-  apiCall(URLS.setFree, { email: state.email }, false, function(err, res) {
+  apiCall(URLS.setFree, { email: state.email }, true, function(err, res) {
     btn.disabled = false;
     btn.textContent = 'Continue free';
     if (res && res.status) {
